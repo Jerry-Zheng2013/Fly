@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	    <!-- Meta, title, CSS, favicons, etc. -->
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" href="img/favicon.ico" type="image/ico" />
+	
+	    <title>飞机票抢票系统</title>
+	
+	    <!-- Bootstrap -->
+	    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Font Awesome -->
+	    <link href="dist/css/font-awesome.min.css" rel="stylesheet">
+	    <!-- NProgress -->
+	    <link href="dist/css/nprogress.css" rel="stylesheet">
+	    <!-- iCheck -->
+	    <link href="dist/css/green.css" rel="stylesheet">
+		
+	    <!-- bootstrap-progressbar -->
+	    <link href="dist/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+	    <!-- JQVMap -->
+	    <link href="dist/css/jqvmap.min.css" rel="stylesheet"/>
+	    <!-- bootstrap-daterangepicker -->
+	    <link href="dist/css/daterangepicker.css" rel="stylesheet">
+	
+	    <!-- Custom Theme Style -->
+	    <link href="dist/css/custom.min.css" rel="stylesheet">
+  </head>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="showFlight.html" class="site_title"><i class="fa fa-paw"></i> <span>飞机票抢票系统</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="img/img.jpg" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>Simon Pan</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>基础业务</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-desktop"></i> 票务管理 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="showFlight.html">汇总报表</a></li>
+                      <li><a href="flightTicket.html">机票抢定</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-users"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="form.html">角色管理</a></li>
+                      <li><a href="form_advanced.html">用户列表</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> 账号管理 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="general_elements.html">账号列表</a></li>
+                      <li><a href="media_gallery.html">回收站</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <div class="menu_section">
+                <h3>其他业务</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-bug"></i> 业务1 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="e_commerce.html">E-commerce</a></li>
+                      <li><a href="projects.html">Projects</a></li>
+                      <li><a href="project_detail.html">Project Detail</a></li>
+                      <li><a href="contacts.html">Contacts</a></li>
+                      <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-windows"></i> 业务2 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="page_403.html">403 Error</a></li>
+                      <li><a href="page_404.html">404 Error</a></li>
+                      <li><a href="page_500.html">500 Error</a></li>
+                      <li><a href="plain_page.html">Plain Page</a></li>
+                      <li><a href="login.html">Login Page</a></li>
+                      <li><a href="pricing_tables.html">Pricing Tables</a></li>
+                    </ul>
+                  </li>      
+                </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <nav class="nav navbar-nav">
+              <ul class=" navbar-right">
+                <li class="nav-item dropdown open" style="padding-left: 15px;">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                    <img src="img/img.jpg" alt="">John Doe
+                  </a>
+                  <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item"  href="javascript:;"> Profile</a>
+                      <a class="dropdown-item"  href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                  <a class="dropdown-item"  href="javascript:;">Help</a>
+                    <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                  </div>
+                </li>
+
+                <li role="presentation" class="nav-item dropdown open">
+                  <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge bg-green">2</span>
+                  </a>
+                  <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                    <li class="nav-item">
+                      <a class="dropdown-item">
+                        <span class="image"><img src="img/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">3 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="dropdown-item">
+                        <span class="image"><img src="img/img.jpg" alt="Profile Image" /></span>
+                        <span>
+                          <span>John Smith</span>
+                          <span class="time">10 mins ago</span>
+                        </span>
+                        <span class="message">
+                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                        </span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <div class="text-center">
+                        <a class="dropdown-item">
+                          <strong>See All Alerts</strong>
+                          <i class="fa fa-angle-right"></i>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="row">
+			<div class="col-md-12 col-sm-12 ">
+				<div class="x_panel">
+					<div class="x_content">
+						<br />
+						<form id="searche-ticket" data-parsley-validate class="form-inline">
+
+							<div class="item form-group">
+								<label class="col-form-label col-md-4 col-sm-4 label-align" for="first-name">行程代码:<span class="required">*</span>
+								</label>
+								<div class="col-md-6 col-sm-6 ">
+									<input type="text" id="first-name" required="required" class="form-control ">
+								</div>
+							</div>
+							<div class="item form-group">
+								<label class="col-form-label col-md-4 col-sm-4 label-align" for="last-name">航班号:<span class="required">*</span>
+								</label>
+								<div class="col-md-6 col-sm-6 ">
+									<input type="text" id="last-name" name="last-name" required="required" class="form-control">
+								</div>
+							</div>
+							<div class="item form-group">
+								<label for="middle-name" class="col-form-label col-md-4 col-sm-4 label-align">仓位:</label>
+								<div class="col-md-6 col-sm-6 ">
+									<input id="middle-name" class="form-control" type="text" name="middle-name">
+								</div>
+							</div>
+							<div class="item form-group col-md-12 col-sm-12" style="margin-top: 30px;">
+								<div class="col-md-7 col-sm-7 offset-md-3">
+									<button class="btn btn-primary" type="reset">清空</button>
+									<button type="submit" class="btn btn-success">添加</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		  </div>
+		  <div class="row">
+			<div class="col-md-12 col-sm-12  ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>抢票任务 <small>实时更新</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="x_content">
+                    <div class="table-responsive">
+                      <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                          <tr class="headings">
+                            <th>
+                              <input type="checkbox" id="check-all" class="flat">
+                            </th>
+                            <th class="column-title">官网账号 </th>
+                            <th class="column-title">行程代码 </th>
+                            <th class="column-title">航班号 </th>
+                            <th class="column-title">仓位 </th>
+                            <th class="column-title">价格/张 </th>
+                            <th class="column-title">余票 </th>
+                            <th class="column-title">倒计时 </th>
+                            <th class="column-title">轮次 </th>
+                            <th class="column-title no-link last"><span class="nobr">操作</span>
+                            </th>
+                            <th class="bulk-actions" colspan="7">
+                              <a class="antoo" style="color:#fff; font-weight:500;">批量操作 ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr class="even pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:01:00</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">取消</a>
+                            </td>
+                          </tr>
+                          <tr class="odd pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:05:00</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">启动</a>
+                            </td>
+                          </tr>
+                          <tr class="even pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:11:30</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">取消</a>
+                            </td>
+                          </tr>
+                          <tr class="odd pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:09:30</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">启动</a>
+                            </td>
+                          </tr>
+                          <tr class="even pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:11:24</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">取消</a>
+                            </td>
+                          </tr>
+                          <tr class="odd pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:13:30</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">取消</a>
+                            </td>
+                          </tr>
+                          <tr class="even pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:12:00</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">取消</a>
+                            </td>
+                          </tr>
+                          <tr class="odd pointer">
+                            <td class="a-center ">
+                              <input type="checkbox" class="flat" name="table_records">
+                            </td>
+                            <td class=" ">17607161039</td>
+                            <td class=" ">AVH/PKXSHA/20200101/D/KN </td>
+                            <td class=" ">KN0000</td>
+                            <td class=" ">C</td>
+                            <td class="a-right a-right ">￥1000.00</td>
+                            <td class=" ">4</td>
+                            <td class="remainedTime">00:14:00</td>
+                            <td class=" ">2</td>
+                            <td class=" last"><a href="#">取消</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+							
+						
+                  </div>
+                </div>
+              </div>
+		  </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="dist/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="dist/js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="dist/js/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="dist/js/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="dist/js/gauge.min.js"></script>
+    <script src="dist/js/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="dist/js/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="dist/js/skycons.js"></script>
+    <!-- Flot -->
+    <script src="dist/js/jquery.flot.js"></script>
+    <script src="dist/js/jquery.flot.pie.js"></script>
+    <script src="dist/js/jquery.flot.time.js"></script>
+    <script src="dist/js/jquery.flot.stack.js"></script>
+    <script src="dist/js/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="dist/js/jquery.flot.orderBars.js"></script>
+    <script src="dist/js/jquery.flot.spline.min.js"></script>
+    <script src="dist/js/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="dist/js/date.js"></script>
+    <!-- JQVMap -->
+    <script src="dist/js/jquery.vmap.js"></script>
+    <script src="dist/js/jquery.vmap.world.js"></script>
+    <script src="dist/js/jquery.vmap.sampledata.js"></script>
+    <script src="dist/js/moment.min.js"></script>
+    <script src="dist/js/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="dist/js/custom.min.js"></script>
+	<script>
+	    function remainedTimeAct (){
+	    	$('.remainedTime').each(function(){
+	    	    var colum_value = $(this).text();
+	    	    if (colum_value != null && colum_value != "") {
+	    	        var ary_format = colum_value.split(':');
+	    	        var h = parseInt(ary_format[0]);
+	    	        var m = parseInt(ary_format[1]);
+	    	        var s = parseInt(ary_format[2]);
+	    	        var remained_Time =  h * 60 * 60 + m * 60 + s;
+
+	    	        if (remained_Time > 0) {
+	    	        	var new_remained_Time = remained_Time - 1;
+	    	        	var new_h = Math.floor(new_remained_Time/60/60);
+		    	        var new_m = Math.floor(new_remained_Time/60);
+		    	        var new_s = new_remained_Time - new_h * 60 * 60 - new_m * 60;
+
+		    	        var new_date_time = PrefixInteger(new_h,2) + ":" + PrefixInteger(new_m,2) + ":" + PrefixInteger(new_s,2);
+		    	        $(this).text(new_date_time);
+	    	        }
+	    	    }
+	    	});
+	 
+	    };
+	    
+	    function PrefixInteger(num, length) {  
+    	    return ( "0000000000000000" + num ).substr( -length );  
+    	} 
+	    
+	    
+	    window.onload=function starttime(){
+	    	    remainedTimeAct();
+		        setTimeout(starttime,1000);            // 添加计时器
+		}
+    </script>
+  </body>
+</html>
