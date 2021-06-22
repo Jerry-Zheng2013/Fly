@@ -37,10 +37,10 @@ public interface UserMapper {
     int deleteByPrimaryKey(Integer userId);
 
     @Insert({
-            "insert into user (user_id, is_manager, ",
+            "insert into user (is_manager, ",
             "user_name, user_password, ",
             "is_VIP)",
-            "values (#{userId,jdbcType=INTEGER}, #{isManager,jdbcType=VARCHAR}, ",
+            "values (#{isManager,jdbcType=VARCHAR}, ",
             "#{userName,jdbcType=CHAR}, #{userPassword,jdbcType=CHAR}, ",
             "#{isVip,jdbcType=DECIMAL})"
     })

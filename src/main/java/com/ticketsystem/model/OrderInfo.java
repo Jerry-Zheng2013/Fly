@@ -1,77 +1,163 @@
 package com.ticketsystem.model;
 
-import lombok.Data;
+public class OrderInfo {
+    private String oiId;
 
-import java.io.Serializable;
+    private String accountNo;
 
-@Data
-public class OrderInfo implements Serializable {
-    private static final long serialVersionUID = 8655851615465363473L;
-    private Integer userId;
+    private String orderNo;
 
-    private String isManager;
+    private String tripCode;
 
-    private String userName;
+    private String flightNo;
 
-    private String userPassword;
+    private String cabinCode;
 
-    private Short isVip;
-    
-    
+    private String price;
 
-    public Integer getUserId() {
-		return userId;
-	}
+    private String standbyCount;
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    private String orderStatus;
 
-	public String getIsManager() {
-		return isManager;
-	}
+    private String countTime;
 
-	public void setIsManager(String isManager) {
-		this.isManager = isManager;
-	}
+    private String round;
 
-	public String getUserName() {
-		return userName;
-	}
+    private String inputTime;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    private String updateTime;
 
-	public String getUserPassword() {
-		return userPassword;
-	}
+    private String inputUser;
 
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
+    private String attribute0;
 
-	public Short getIsVip() {
-		return isVip;
-	}
+    private String remark;
 
-	public void setIsVip(Short isVip) {
-		this.isVip = isVip;
-	}
-
-	public OrderInfo() {
+    public String getOiId() {
+        return oiId;
     }
 
-    public OrderInfo(String username, String password) {
-        this.userName = username;
-        this.userPassword = password;
+    public void setOiId(String oiId) {
+        this.oiId = oiId == null ? null : oiId.trim();
     }
 
-    public OrderInfo(Integer id, String username, String password) {
-        this.userId = id;
-        this.userName = username;
-        this.userPassword = password;
+    public String getAccountNo() {
+        return accountNo;
     }
 
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo == null ? null : accountNo.trim();
+    }
 
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo == null ? null : orderNo.trim();
+    }
+
+    public String getTripCode() {
+        return tripCode;
+    }
+
+    public void setTripCode(String tripCode) {
+        this.tripCode = tripCode == null ? null : tripCode.trim();
+    }
+
+    public String getFlightNo() {
+        return flightNo;
+    }
+
+    public void setFlightNo(String flightNo) {
+        this.flightNo = flightNo == null ? null : flightNo.trim();
+    }
+
+    public String getCabinCode() {
+        return cabinCode;
+    }
+
+    public void setCabinCode(String cabinCode) {
+        this.cabinCode = cabinCode == null ? null : cabinCode.trim();
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price == null ? null : price.trim();
+    }
+
+    public String getStandbyCount() {
+        return standbyCount;
+    }
+
+    public void setStandbyCount(String standbyCount) {
+        this.standbyCount = standbyCount == null ? null : standbyCount.trim();
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus == null ? null : orderStatus.trim();
+    }
+
+    public String getCountTime() {
+        return countTime;
+    }
+
+    public void setCountTime(String countTime) {
+        this.countTime = countTime == null ? null : countTime.trim();
+    }
+
+    public String getRound() {
+        return round;
+    }
+
+    public void setRound(String round) {
+        this.round = round == null ? null : round.trim();
+    }
+
+    public String getInputTime() {
+        return inputTime;
+    }
+
+    public void setInputTime(String inputTime) {
+        this.inputTime = inputTime == null ? null : inputTime.trim();
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
+    }
+
+    public String getInputUser() {
+        return inputUser;
+    }
+
+    public void setInputUser(String inputUser) {
+        this.inputUser = inputUser == null ? null : inputUser.trim();
+    }
+
+    public String getAttribute0() {
+        return attribute0;
+    }
+
+    public void setAttribute0(String attribute0) {
+        this.attribute0 = attribute0 == null ? null : attribute0.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
 }

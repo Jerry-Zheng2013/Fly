@@ -37,17 +37,6 @@ public class LoginController {
         request.getSession().setAttribute("session_user", user);
         return checkService.login(user);
     }
-    /*public String login(HttpServletRequest request, HttpSession session) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String tname = checkService.login(username,password);
-        session.setAttribute("tname",tname);
-        if(tname == null){
-            return "/";
-        }
-        else
-            return "index";
-    }*/
 
     @ApiOperation(value = "注册功能", notes = "注册逻辑实现的接口")
     @RequestMapping("/registered")

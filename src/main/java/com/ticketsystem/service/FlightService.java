@@ -4,9 +4,13 @@ import com.ticketsystem.dao.FlightMapper;
 import com.ticketsystem.model.Flight;
 import com.ticketsystem.model.FlightExample;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FlightService {
@@ -15,6 +19,10 @@ public class FlightService {
     private FlightMapper flightMapper;
 
     public List<Flight> getAllFlight() {
+    	RestTemplate restTemplate=new RestTemplate();
+    	Map<String,String> params=new HashMap<>();
+    	params.put("name","dada");  //
+    	ResponseEntity<String> responseEntity=restTemplate.getForEntity("http://USERSERVICE/user?name={name}",String.class,params);
         return flightMapper.selectByExample(new FlightExample());
     }
 

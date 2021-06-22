@@ -6,28 +6,28 @@
 	    <meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" href="img/favicon.ico" type="image/ico" />
+		<link rel="icon" href="../img/favicon.ico" type="image/ico" />
 	
 	    <title>飞机票抢票系统</title>
 	
 	    <!-- Bootstrap -->
-	    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+	    <link href="../dist/css/bootstrap.min.css" rel="stylesheet">
 	    <!-- Font Awesome -->
-	    <link href="dist/css/font-awesome.min.css" rel="stylesheet">
+	    <link href="../dist/css/font-awesome.min.css" rel="stylesheet">
 	    <!-- NProgress -->
-	    <link href="dist/css/nprogress.css" rel="stylesheet">
+	    <link href="../dist/css/nprogress.css" rel="stylesheet">
 	    <!-- iCheck -->
-	    <link href="dist/css/green.css" rel="stylesheet">
+	    <link href="../dist/css/green.css" rel="stylesheet">
 		
 	    <!-- bootstrap-progressbar -->
-	    <link href="dist/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+	    <link href="../dist/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
 	    <!-- JQVMap -->
-	    <link href="dist/css/jqvmap.min.css" rel="stylesheet"/>
+	    <link href="../dist/css/jqvmap.min.css" rel="stylesheet"/>
 	    <!-- bootstrap-daterangepicker -->
-	    <link href="dist/css/daterangepicker.css" rel="stylesheet">
+	    <link href="../dist/css/daterangepicker.css" rel="stylesheet">
 	
 	    <!-- Custom Theme Style -->
-	    <link href="dist/css/custom.min.css" rel="stylesheet">
+	    <link href="../dist/css/custom.min.css" rel="stylesheet">
   </head>
   <body class="nav-md">
     <div class="container body">
@@ -35,7 +35,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="showFlight.html" class="site_title"><i class="fa fa-paw"></i> <span>飞机票抢票系统</span></a>
+              <a href="dashboard.html" class="site_title"><i class="fa fa-paw"></i> <span>飞机票抢票系统</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -43,7 +43,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="img/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="../img/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
@@ -61,8 +61,8 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-desktop"></i> 票务管理 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="showFlight.html">汇总报表</a></li>
-                      <li><a href="flightTicket.html">机票抢定</a></li>
+                      <li><a href="#" id="dashboard">汇总报表</a></li>
+                      <li><a href="#" id="managesFlightTicks">机票抢定</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-users"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
@@ -136,7 +136,7 @@
               <ul class=" navbar-right">
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                   <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                    <img src="img/img.jpg" alt="">John Doe
+                    <img src="../img/img.jpg" alt="">John Doe
                   </a>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item"  href="javascript:;"> Profile</a>
@@ -157,7 +157,7 @@
                   <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
                     <li class="nav-item">
                       <a class="dropdown-item">
-                        <span class="image"><img src="img/img.jpg" alt="Profile Image" /></span>
+                        <span class="image"><img src="../img/img.jpg" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">3 mins ago</span>
@@ -169,7 +169,7 @@
                     </li>
                     <li class="nav-item">
                       <a class="dropdown-item">
-                        <span class="image"><img src="img/img.jpg" alt="Profile Image" /></span>
+                        <span class="image"><img src="../img/img.jpg" alt="Profile Image" /></span>
                         <span>
                           <span>John Smith</span>
                           <span class="time">10 mins ago</span>
@@ -889,44 +889,45 @@
     </div>
 
     <!-- jQuery -->
-    <script src="dist/js/jquery.min.js"></script>
+    <script src="../dist/js/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../dist/js/bootstrap.bundle.min.js"></script>
     <!-- FastClick -->
-    <script src="dist/js/fastclick.js"></script>
+    <script src="../dist/js/fastclick.js"></script>
     <!-- NProgress -->
-    <script src="dist/js/nprogress.js"></script>
+    <script src="../dist/js/nprogress.js"></script>
     <!-- Chart.js -->
-    <script src="dist/js/Chart.min.js"></script>
+    <script src="../dist/js/Chart.min.js"></script>
     <!-- gauge.js -->
-    <script src="dist/js/gauge.min.js"></script>
-    <script src="dist/js/bootstrap-progressbar.min.js"></script>
+    <script src="../dist/js/gauge.min.js"></script>
+    <script src="../dist/js/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
-    <script src="dist/js/icheck.min.js"></script>
+    <script src="../dist/js/icheck.min.js"></script>
     <!-- Skycons -->
-    <script src="dist/js/skycons.js"></script>
+    <script src="../dist/js/skycons.js"></script>
     <!-- Flot -->
-    <script src="dist/js/jquery.flot.js"></script>
-    <script src="dist/js/jquery.flot.pie.js"></script>
-    <script src="dist/js/jquery.flot.time.js"></script>
-    <script src="dist/js/jquery.flot.stack.js"></script>
-    <script src="dist/js/jquery.flot.resize.js"></script>
+    <script src="../dist/js/jquery.flot.js"></script>
+    <script src="../dist/js/jquery.flot.pie.js"></script>
+    <script src="../dist/js/jquery.flot.time.js"></script>
+    <script src="../dist/js/jquery.flot.stack.js"></script>
+    <script src="../dist/js/jquery.flot.resize.js"></script>
     <!-- Flot plugins -->
-    <script src="dist/js/jquery.flot.orderBars.js"></script>
-    <script src="dist/js/jquery.flot.spline.min.js"></script>
-    <script src="dist/js/curvedLines.js"></script>
+    <script src="../dist/js/jquery.flot.orderBars.js"></script>
+    <script src="../dist/js/jquery.flot.spline.min.js"></script>
+    <script src="../dist/js/curvedLines.js"></script>
     <!-- DateJS -->
-    <script src="dist/js/date.js"></script>
+    <script src="../dist/js/date.js"></script>
     <!-- JQVMap -->
-    <script src="dist/js/jquery.vmap.js"></script>
-    <script src="dist/js/jquery.vmap.world.js"></script>
-    <script src="dist/js/jquery.vmap.sampledata.js"></script>
+    <script src="../dist/js/jquery.vmap.js"></script>
+    <script src="../dist/js/jquery.vmap.world.js"></script>
+    <script src="../dist/js/jquery.vmap.sampledata.js"></script>
     <!-- bootstrap-daterangepicker -->
-    <script src="dist/js/moment.min.js"></script>
-    <script src="dist/js/daterangepicker.js"></script>
+    <script src="../dist/js/moment.min.js"></script>
+    <script src="../dist/js/daterangepicker.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="dist/js/custom.min.js"></script>
+    <script src="../dist/js/custom.min.js"></script>
+    <script src="../js/dashboard.js"></script>
 	
   </body>
 </html>

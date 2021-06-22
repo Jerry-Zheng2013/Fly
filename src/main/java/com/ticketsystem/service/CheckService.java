@@ -47,7 +47,10 @@ public class CheckService {
     public User registered(User user) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andUserNameEqualTo(user.getUserName());
+        user.setIsManager("1");
+        user.setIsVip(new Short("1"));
+        userMapper.insert(user);
+        //criteria.andUserNameEqualTo(user.getUserName());
         if (userMapper.selectByExample(userExample).size() != 0) {
             criteria.andUserPasswordEqualTo(user.getUserPassword());
             if (userMapper.selectByExample(userExample).size() != 0) {

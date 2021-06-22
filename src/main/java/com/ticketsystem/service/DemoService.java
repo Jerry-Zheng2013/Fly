@@ -37,6 +37,8 @@ public class DemoService {
 		int standbyCount = bigData.getIntValue("standbyCount");
 		if (standbyCount > 0) {
 			this.bookLoop(bigData);
+			
+			
 		}
 	}
 	
