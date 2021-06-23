@@ -24,7 +24,10 @@ public class SessionInterceptor implements WebMvcConfigurer {
                 ,"/swagger-resources/**","/swagger-ui.html#!/**","/v2/**",
                 "/netdemo/query",
                 "/netdemo/book",
-                "/netdemo/cancel"
+                "/netdemo/cancel",
+                "/demo/add",
+                "/demo/cancel",
+                "/demo/readd"
                 );
 
     }

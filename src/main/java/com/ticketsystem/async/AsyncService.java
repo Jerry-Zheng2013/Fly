@@ -7,6 +7,10 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.ticketsystem.model.DemoOrder;
+import com.ticketsystem.net.DemoNet;
+import com.ticketsystem.util.DemoData;
 import com.ticketsystem.workflow.WorkFlowAction;
 
 
@@ -87,6 +91,34 @@ public class AsyncService {
 		System.out.println("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------结束");
 	}
 	
+	@Async("doSomethingExecutor")
+	public void bookAsync(JSONObject bookData, JSONObject bookResultData) {
+		System.out.println("["+Thread.currentThread().getName()+"]----------开始订票");
+		try {
+			while("true".equals(DemoData.OrderBeanMap.get(bookResultData.getJSONObject("data").getString("orderNo")).getStatus())) {
+				/*
+				while(new TimerAction().countDown(threadNo, DemoData.COUNTDOWNMILLIS)) {
+					// 什么也不做，等待倒计时结束
+				}
+				*/
+				Thread.sleep(DemoData.COUNTDOWNMILLIS);
+				//倒计时结束，调用取消订单接口
+				DemoNet demoNet = new DemoNet();
+				demoNet.cancelTicket(bookResultData);
+				//接着调用订票接口
+				JSONObject bookResultData2 = demoNet.bookTicket(bookData);
+				String orderNo = bookResultData2.getJSONObject("data").getString("orderNo");
+				DemoData.OrderBeanMap.remove(bookResultData.getJSONObject("data").getString("orderNo"));
+		    	DemoOrder demoOrder = new DemoOrder(orderNo, "true");
+		    	DemoData.OrderBeanMap.put(orderNo, demoOrder);
+		    	bookResultData = bookResultData2;
+			}
+		} catch (InterruptedException e) {
+			System.out.println("["+Thread.currentThread().getName()+"]----------订票出错");
+			e.printStackTrace();
+		}
+		System.out.println("["+Thread.currentThread().getName()+"]----------结束订票");
+	}
 	
 
 }
