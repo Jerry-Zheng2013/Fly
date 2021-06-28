@@ -13,13 +13,13 @@ import lombok.SneakyThrows;
 public class AsyncController {
 
 	@Autowired
-	private AsyncService asyncService;
+	private AsyncService2 asyncService2;
 
 	@GetMapping("/open/something")
 	public String something() {
 		int count = 10;
 		for (int i = 0; i < count; i++) {
-			asyncService.doSomething("index = " + i);
+			asyncService2.doSomething("index = " + i);
 		}
 		return "success";
 	}
@@ -31,9 +31,9 @@ public class AsyncController {
 		String result = "";
 
 		try {
-			CompletableFuture<String> createOrder = asyncService.doSomething1("create order");
-			CompletableFuture<String> reduceAccount = asyncService.doSomething2("reduce account");
-			CompletableFuture<String> saveLog = asyncService.doSomething3("save log");
+			CompletableFuture<String> createOrder = asyncService2.doSomething1("create order");
+			CompletableFuture<String> reduceAccount = asyncService2.doSomething2("reduce account");
+			CompletableFuture<String> saveLog = asyncService2.doSomething3("save log");
 
 			// 等待所有任务都执行完
 			CompletableFuture.allOf(createOrder, reduceAccount, saveLog).join();

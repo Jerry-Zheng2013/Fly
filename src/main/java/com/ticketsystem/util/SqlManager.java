@@ -25,7 +25,7 @@ public class SqlManager {
 	public ArrayList<JSONObject> getAccountList(JSONObject filterData) {
 		String useTime = filterData.getString("useTime");
 		
-		String sqlStr = "select account_no,name,password,contact_mobile,use_time "
+		String sqlStr = "select account_no,name,contact_mobile,password,use_time "
 				+ " from account_info where (use_time < '"+useTime+"' or use_time is null) ";
 		DBUtil db = new DBUtil();
 		ArrayList<JSONObject> accountList = new ArrayList<JSONObject>();
@@ -34,13 +34,11 @@ public class SqlManager {
 			ResultSet rs = db.executeQuery(sqlStr);
 			while(rs.next()){
 				JSONObject accountData = new JSONObject();
-				accountData.put("customerOrderNo", rs.getString(1));
-				accountData.put("contactName", rs.getString(2));
-				accountData.put("contactMobile", rs.getString(4));
-				accountData.put("flightRangeType", "0");
-				accountData.put("InsuranceCodes", null);
-				accountData.put("isApplyReimbursement", false);
-				accountData.put("callBackUrl", "");
+				accountData.put("accountNo", rs.getString(1));
+				accountData.put("name", rs.getString(2));
+				accountData.put("contactMobile", rs.getString(3));
+				accountData.put("password", rs.getString(4));
+				accountData.put("useTime", rs.getString(5));
 				accountList.add(accountData);
 			}
 		} catch (SQLException e) {
@@ -66,7 +64,7 @@ public class SqlManager {
 	public ArrayList<JSONObject> getCustomerList(JSONObject filterData) {
 		String customerStatus = filterData.getString("customerStatus");
 		
-		String sqlStr = "select customer_id,name,card_type,card_no,mobile,birthday,ticket_type,customer_status "
+		String sqlStr = "select customer_id,name,card_type,card_no,mobile,birthday,ticket_type,customer_status,account_no "
 				+ " from customer_info where (customer_status = '"+customerStatus+"' or customer_status is null) ";
 		DBUtil db = new DBUtil();
 		ArrayList<JSONObject> customerList = new ArrayList<JSONObject>();
@@ -82,6 +80,8 @@ public class SqlManager {
 				customerData.put("mobile", rs.getString(5));
 				customerData.put("birthday", rs.getString(6));
 				customerData.put("ticketType", rs.getString(7));
+				customerData.put("customerStatus", rs.getString(8));
+				customerData.put("accountNo", rs.getString(9));
 				customerList.add(customerData);
 			}
 		} catch (SQLException e) {
@@ -118,14 +118,15 @@ public class SqlManager {
 
 	/**
 	 * 更新乘机客户的状态<br/>
-	 * 传入customerId，customerStatus<br/>
+	 * 传入customerId，customerStatus，orderNo<br/>
 	 * @param orderInfoData
 	 */
 	public void updateCustomerStatus(JSONObject customerData) {
 		String customerId=customerData.getString("customerId");
 		String customerStatus=customerData.getString("customerStatus");
+		String accountNo=customerData.getString("accountNo");
 		String sqlStr = "update customer_info set "
-				+ " customer_status='"+customerStatus+"' "
+				+ " customer_status='"+customerStatus+"',account_no='"+accountNo+"' "
 				+ " where customer_id='"+customerId+"' ";
 		DBUtil db = new DBUtil();
 		try {
@@ -161,7 +162,7 @@ public class SqlManager {
 		String updateTime=orderInfoData.getString("updateTime");
 		String inputUser=orderInfoData.getString("inputUser");
 		//自动生成主键oiId
-		String oiId = System.currentTimeMillis()+"-"+Math.random();
+		String oiId = System.currentTimeMillis()+"X"+Math.round(Math.random()*100000);
 		String sqlStr = "insert into order_info (oi_id,account_no,order_no,trip_code,flight_no,cabin_code,price,standby_count,order_status,round,input_time,update_time,input_user) "
 				+ " values('"+oiId+"','"+accountNo+"','"+orderNo+"','"+tripCode+"','"+flightNo+"','"+cabinCode+"','"+price+"','"+standbyCount+"','"+orderStatus+"','"+round+"','"+inputTime+"','"+updateTime+"','"+inputUser+"' ) "; 
 		DBUtil db = new DBUtil();
@@ -171,6 +172,7 @@ public class SqlManager {
 			int updateCount = db.executeUpdate(sqlStr);
 			System.out.println("更新数量："+updateCount);
 			orderReturnData.put("oiId", oiId);
+			orderReturnData.put("orderNo", orderNo);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -193,10 +195,9 @@ public class SqlManager {
 		String orderStatus=orderDate.getString("orderStatus");
 		String updateTime=orderDate.getString("updateTime");
 		String round=orderDate.getString("round");
-		round = String.valueOf(Integer.valueOf(round)+1);
 		String sqlStr = "update order_info set "
-				+ " accountNo='"+accountNo+"',orderNo='"+orderNo+"',standbyCount='"+standbyCount+"',orderStatus='"+orderStatus+"',updateTime='"+updateTime+"',round='"+round+"' "
-				+ " where oiId='"+oiId+"' ";
+				+ " account_no='"+accountNo+"',order_no='"+orderNo+"',standby_count='"+standbyCount+"',order_status='"+orderStatus+"',update_time='"+updateTime+"',round='"+round+"' "
+				+ " where oi_id='"+oiId+"' ";
 		DBUtil db = new DBUtil();
 		try {
 			db.open();
@@ -212,14 +213,14 @@ public class SqlManager {
 	public JSONObject getOrderInfo(String oiId) {
 		JSONObject orderInfoData = new JSONObject();
 		//字段可自行扩展
-		String sqlStr = "select oi_id,status,round from o where oi_id='"+oiId+"' ";
+		String sqlStr = "select oi_id,order_status,round from order_info where oi_id='"+oiId+"' ";
 		DBUtil db = new DBUtil();
 		try {
 			db.open();
 			ResultSet rs = db.executeQuery(sqlStr);
 			if(rs.next()) {
-				orderInfoData.put("oi_id", rs.getInt(1));
-				orderInfoData.put("status", rs.getString(2));
+				orderInfoData.put("oiId", rs.getString(1));
+				orderInfoData.put("orderStatus", rs.getString(2));
 				orderInfoData.put("round", rs.getString(3));
 				//可扩展
 			}
@@ -229,6 +230,42 @@ public class SqlManager {
 			db.close();
 		}
 		return orderInfoData;
+	}
+	
+	public void updateOrderStatus(JSONObject orderData) {
+		String oiId=orderData.getString("oiId");
+		String orderStatus=orderData.getString("orderStatus");
+		String sqlStr = "update order_info set "
+				+ " order_status='"+orderStatus+"' "
+				+ " where oi_id='"+oiId+"' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+	}
+	
+	public void updateCustomerByOrder(JSONObject cancelData) {
+		String accountNo=cancelData.getString("accountNo");
+		String customerStatus=cancelData.getString("customerStatus");
+		String sqlStr = "update customer_info set "
+				+ " customer_status='"+customerStatus+"' "
+				+ " where account_no='"+accountNo+"' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
 	}
 	
 }

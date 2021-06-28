@@ -10,7 +10,7 @@ import com.ticketsystem.model.DemoOrder;
 
 public class DemoData {
 	// 倒计时时长
-	public static long COUNTDOWNMILLIS = (long) (30 * 1000);
+	public static long COUNTDOWNMILLIS = (long) (30 * 1000 * 5);
 	// 每个人预定多少张
 	public static int PERSONTICKETS = 4;
 	
@@ -26,11 +26,13 @@ public class DemoData {
 	 */
 	public static JSONObject getSysData() {
 		Map<String, Object> sysDataMap1 = new HashMap<String, Object>();
+		
 		sysDataMap1.put("appKey", "f46a96420331ea3be28eaf1036af4252");
 		sysDataMap1.put("secretKey", "4c4d668e890976a42ff5c3e9e76076a7");
 		sysDataMap1.put("queryUrl", "http://api.panhe.net/flight/query");
 		sysDataMap1.put("createUrl", "http://api.panhe.net/flight/createOrder");
 		sysDataMap1.put("cancelUrl", "http://api.panhe.net/flight/cancelOrder");
+		
         JSONObject sysDataJson1 = new JSONObject(sysDataMap1);
 		return sysDataJson1;
 	}
@@ -41,9 +43,9 @@ public class DemoData {
 	 */
 	public static JSONObject getData1() {
 		Map<String, Object> dataMap1 = new HashMap<String, Object>();
-        dataMap1.put("tripStr", "AVH/PKXSZX/20210703/D/KN");
-        dataMap1.put("fightNo", "MU5391");
-        dataMap1.put("cabinCode", "Q");
+        dataMap1.put("tripStr", "AVH/CANPKX/20210629/D/KN");
+        dataMap1.put("fightNo", "KN5900");
+        dataMap1.put("cabinCode", "H");
         JSONObject dataJson1 = new JSONObject(dataMap1);
 		return dataJson1;
 	}
@@ -65,11 +67,13 @@ public class DemoData {
 	 * @return 重启信息
 	 */
 	public static JSONObject getData3() {
-		Map<String, Object> dataMap3 = new HashMap<String, Object>();
-        dataMap3.put("officeNo", "0000000000");
-        dataMap3.put("orderNo", "0000000000");
-        JSONObject dataJson3 = new JSONObject(dataMap3);
-		return dataJson3;
+		Map<String, Object> dataMap1 = new HashMap<String, Object>();
+		dataMap1.put("oiId", "1624912930528X89510");
+        dataMap1.put("tripStr", "AVH/CANPKX/20210629/D/KN");
+        dataMap1.put("fightNo", "KN5900");
+        dataMap1.put("cabinCode", "H");
+        JSONObject dataJson1 = new JSONObject(dataMap1);
+		return dataJson1;
 	}
 	
 	/**
