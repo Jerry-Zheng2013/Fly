@@ -1,6 +1,9 @@
 package com.ticketsystem.service;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +16,7 @@ import com.ticketsystem.async.AsyncService;
 import com.ticketsystem.model.DemoOrder;
 import com.ticketsystem.net.DemoNet;
 import com.ticketsystem.util.DemoData;
+import com.ticketsystem.util.SqlManager;
 
 @Service
 public class DemoService {
@@ -20,33 +24,131 @@ public class DemoService {
 	@Autowired
 	private AsyncService asyncService;
 	
-	
 	/**
-     * 预定
-     *
+     * 预定<br/>
+     * 传入fromCityCode，toCityCode，fromDate，<br/>
+     * fightNo，cabinCode
      * @param 预定信息
      * @return
      */
-    public void add(JSONObject addData) {
-    	String fromCity = addData.getString("tripStr").substring(5, 8);
-    	String toCity = addData.getString("tripStr").substring(8, 11);
-    	String goTime = addData.getString("tripStr").substring(12, 20);
-    	String fightNo = addData.getString("fightNo");
-    	String cabinCode = addData.getString("cabinCode");
+	public void bookTicket(JSONObject addData) {
+		//
+		JSONObject bookResultTicket = this.add(addData);
+    	//获取预定成功后的 订单号
+    	//新增订单信息
+    	SqlManager sqlManager = new SqlManager();
+    	JSONObject orderInfoData = new JSONObject();
+    	orderInfoData.put("accountNo", bookResultTicket.getJSONObject("bookData").getString("customerOrderNo"));
+    	orderInfoData.put("orderNo", bookResultTicket.getJSONObject("resultData").getJSONObject("data").getString("orderNo"));
+    	orderInfoData.put("tripCode", addData.getString("tripCode"));
+    	orderInfoData.put("flightNo", addData.getString("fightNo"));
+    	orderInfoData.put("cabinCode", addData.getString("cabinCode"));
+    	String standbyCount = bookResultTicket.getJSONObject("resultData").getString("standbyCount");
+    	orderInfoData.put("standbyCount", standbyCount);
+    	double totalAmount = bookResultTicket.getJSONObject("resultData").getJSONObject("data").getDoubleValue("orderAmount");
+    	double price = totalAmount/Double.valueOf(standbyCount);
+    	orderInfoData.put("price", String.valueOf(price));
+    	orderInfoData.put("orderStatus", "1");
+    	orderInfoData.put("round", "1");
+    	Date currentTime = new Date();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+    	orderInfoData.put("inputTime", sdf.format(currentTime));
+    	orderInfoData.put("updateTime", sdf.format(currentTime));
+    	orderInfoData.put("inputUser", "user");
+    	sqlManager.insertOrderInfo(orderInfoData);
     	
-    	JSONObject queryData = addData;
-    	//JSONObject standbyData = new DemoNet().queryTicket(queryData);
-    	//int standbyCount = standbyData.getIntValue("standbyCount");
-    	int standbyCount = 1;
-    	ArrayList<Object> customerArr = new ArrayList<Object>();
-    	for (int i=0; i<1; i++) {
-    		JSONObject customerData = DemoData.getCustomerData();
-    		customerArr.add(customerData);
+    	//调用循环逻辑，开始循环预定
+    	this.bookLoop(bookResultTicket);
+	}
+	
+	/**
+     * 预定<br/>
+     * 传入fromCityCode，toCityCode，fromDate，<br/>
+     * fightNo，cabinCode
+     * @param 预定信息
+     * @return
+     */
+    public JSONObject add(JSONObject addData) {
+    	JSONObject bookResultTicket = new JSONObject();
+    	bookResultTicket.put("addData", addData);
+    	//查询
+    	JSONObject standbyData = new DemoNet().queryTicket(addData);
+    	int standbyCount  = standbyData.getIntValue("standbyCount");
+    	
+    	//预定数据组装
+    	//standbyCount = 0;
+    	if (standbyCount>0) {
+    		//向上取整，决定用多少个账号进行预定
+    		double accountCount = Math.ceil(Double.valueOf(
+    				new BigDecimal(String.valueOf(standbyCount))
+    				.divide(
+    						new BigDecimal(String.valueOf(DemoData.PERSONTICKETS))).toPlainString()));
+    		SqlManager sqlManager = new SqlManager();
+    		//获取官网账户信息
+    		JSONObject filterData = new JSONObject();
+    		Date currentDate = new Date();
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    		String currentDateStr = sdf.format(currentDate);
+    		filterData.put("useTime", currentDateStr);
+    		ArrayList<JSONObject> accountList = sqlManager.getAccountList(filterData);
+    		
+    		//获取乘机客户信息
+    		JSONObject filterData2 = new JSONObject();
+    		filterData2.put("customerStatus", "1");
+    		ArrayList<JSONObject> customerList = sqlManager.getCustomerList(filterData2);
+    		
+    		int f=0;
+    		for (int d=0;d<accountCount;d++) {
+    			if (d<accountList.size()) {
+    				//预定信息
+    				JSONObject bookMap = new JSONObject();
+        			JSONObject bookAccountData = accountList.get(d);
+        			//更新账户使用时间
+            		Date currentDate2 = new Date();
+            		String currentDateStr2 = sdf.format(currentDate2);
+        			JSONObject updateTimeData = new JSONObject();
+        			String accountNo = bookAccountData.getString("customerOrderNo");
+        			updateTimeData.put("accountNo", accountNo);
+        			updateTimeData.put("useTime", currentDateStr2);
+        			sqlManager.updateAccountTime(updateTimeData);
+        			
+        			//预定信息-官网账户信息
+        			bookMap=bookAccountData;
+        			bookMap.put("appKey", DemoData.getSysData().getString("appKey"));
+        			//预定信息-航班信息
+        			ArrayList<Object> flightArr = new ArrayList<Object>();
+        			flightArr.add(standbyData);
+        			bookMap.put("flights", flightArr);
+        			//预定信息-客户信息
+            		ArrayList<JSONObject> bookCustomerDataArr = new ArrayList<JSONObject>();
+        			for (;f<DemoData.PERSONTICKETS;f++) {
+        				if(f<customerList.size()) {
+        					JSONObject bookCustomerData = customerList.get(f);
+            				bookCustomerDataArr.add(bookCustomerData);
+                			//更新客户状态-锁定客户
+                    		JSONObject updateStatusData = new JSONObject();
+                    		updateStatusData.put("customerId", bookCustomerData.getString("customerId"));
+                    		updateStatusData.put("customerStatus", "2");
+                			sqlManager.updateCustomerStatus(updateStatusData);
+        				} else {
+        					System.out.println("乘机人信息已不够用了！！！");
+        				}
+        			}
+        			bookMap.put("passengers", bookCustomerDataArr);
+        			JSONObject bookData = new JSONObject(bookMap);
+            		// 预定
+        			bookResultTicket.put("bookData", bookData);
+            		JSONObject resultData = new DemoNet().bookTicket(bookData);
+            		resultData.put("standbyCount", standbyCount);
+        			bookResultTicket.put("resultData", resultData);
+    			} else {
+    				System.out.println("官网账号已不够用了！！！");
+    			}
+    		}
+    	} else {
+    		System.out.println("查询航班没有余票啦！");
     	}
-    	JSONObject bookData = new JSONObject(new HashMap<String, Object>());
-    	
-    	// 预定
-    	this.bookLoop(bookData);
+    	return bookResultTicket;
     }
     
     
@@ -56,67 +158,15 @@ public class DemoService {
      * @param user
      * @return
      */
-    public void bookLoop(JSONObject bookData) {
-    	
-    	Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("appKey", "f46a96420331ea3be28eaf1036af4252");
-        dataMap.put("customerOrderNo", "17656175477");
-        dataMap.put("flightRangeType", "0");
-        dataMap.put("InsuranceCodes", null);
-        dataMap.put("isApplyReimbursement", false);
-        dataMap.put("contactName", "李伟");
-        dataMap.put("contactMobile", "17656175477");
-        dataMap.put("callBackUrl", "");
-        
-        ArrayList<Object> flightArr = new ArrayList<Object>();
-        Map<String, Object> flightMap1 = new HashMap<String, Object>();
-        flightMap1.put("flightNo", "KN5218");
-        flightMap1.put("fromAirportCode", "CTU");
-        flightMap1.put("toAirportCode", "PKX");
-        flightMap1.put("fromDateTime", "2021-07-24 19:20");
-        flightMap1.put("toDateTime", "2021-07-24 23:50");
-        flightMap1.put("fromTerminal", "T2");
-        flightMap1.put("toTerminal", "");
-        flightMap1.put("isShareFlight", false);
-        flightMap1.put("shareFlightNo", null);
-        flightMap1.put("cabinCode", "V");
-        flightMap1.put("cabinBookParms", "BF216356179765BE8FF5064BFCBA9DBD41A5D1357837CA9048AA4D986CF8D868279424D90C3324CBF9BA1FFD2B7923D77C64836E84037DAE203E807BD7BF5184128DA9A74913A9529A8FF9A36E7AFDEE5578C98E2BCFF6E18FD2B86B4AA7F3B0B43EFB7B55D2C0C6C84FDE2B30CB08BBC2AF251E226C7E648E924D5F53C61B8AECC1AD4AE72558BBD013C1FF771E22FE02C5050078023C1E4E015E6BB51FCAB5AECA2DFAF56DEC8ABAE6A9703F3422AC4DC93CE58E1A7B6C67747BA4BAE903148D99DAE3227B461A99D26AEA7C3B38FB4101AE7001EFCED1C7F02A6C94A1741136B469E659636B43177BD890212253F47FDFF3BE6678733F72DD4193F8EE5A023C37587D0E012C73385BD64D12A9E9E4D4F4B5E13492BC344F35BC5FE67DD29AE2F22B358106FED8D533A4BFE612C2D440829C0CE0A8F3CD46C0F21431DE242D11BE70BEFEF0B0F033F980ACBF4AF06EAEEA1FD47C960EB5BB154A5F1B98B5A2EB64BC5C6FEC16E99F347058C0EE80543CFC7357ACD32EE705DEF3DF371EB3AA5BB7AC813D0E7BA9C50DBDEF46E261EAA1BD62D67689892670A7F3DCC244ECBB9ACC2EE72BA192868768EA7C276847BA");
-        flightArr.add(flightMap1);
-        
-        dataMap.put("flights", flightArr);
-
-        ArrayList<Object> customerArr = new ArrayList<Object>();
-        Map<String, Object> customerMap1 = new HashMap<String, Object>();
-        customerMap1.put("name", "石竟革");
-        customerMap1.put("cardType", 1);
-        customerMap1.put("cardNo", "511823198401101378");
-        customerMap1.put("mobile", "17656175477");
-        customerMap1.put("birthday", "1995-10-02");
-        customerMap1.put("ticketType", 1);
-        customerArr.add(customerMap1);
-        
-        dataMap.put("passengers", customerArr);
-
-        JSONObject dataJson = new JSONObject(dataMap);
-    	
-        bookData = dataJson;
-        
-    	// 调用订票接口
-    	JSONObject bookResultTicket = new DemoNet().bookTicket(bookData);
-    	String orderNo = bookResultTicket.getJSONObject("data").getString("orderNo");
-    	DemoOrder demoOrder = new DemoOrder(orderNo, "true");
-    	DemoData.OrderBeanMap.put(orderNo, demoOrder);
-    	
-    	// 预定
+    public void bookLoop(JSONObject bookResultTicket) {
+    	// 预定(循环)
     	try {
     		this.asyncService = ApplicationContextProvider.getBean(AsyncService.class);
-			asyncService.bookAsync(bookData, bookResultTicket);
+			asyncService.bookAsync(bookResultTicket);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-        
     }
     
    

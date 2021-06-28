@@ -97,7 +97,7 @@ $(document).ready(function () {
             alert("密码不能为空！")
         } else {
             $.ajax({
-                url: "/netdemo/cancel",
+                url: "/demo/cancel",
                 data: JSON.stringify(jsonObj),
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -125,7 +125,7 @@ $(document).ready(function () {
             alert("密码不能为空！")
         } else {
             $.ajax({
-                url: "/netdemo/readd",
+                url: "/demo/readd",
                 data: JSON.stringify(jsonObj),
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
