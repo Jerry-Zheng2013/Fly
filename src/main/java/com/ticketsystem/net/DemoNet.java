@@ -110,8 +110,9 @@ public class DemoNet {
      */
     public JSONObject cancelTicket(JSONObject cancelData) {
     	String urlStr = DemoData.getSysData().getString("cancelUrl");
-    	String orderNo  = cancelData.getJSONObject("data").getString("orderNo");
-    	String dataStr = "appKey=f46a96420331ea3be28eaf1036af4252&orderNo="+orderNo;
+    	String appKey = DemoData.getSysData().getString("appKey");
+    	String orderNo  = cancelData.getString("orderNo");
+    	String dataStr = "appKey="+appKey+"&orderNo="+orderNo;
     	urlStr = urlStr+"?"+dataStr;
     	JSONObject cancelResultData = QueryHttpClient.doPostOrGet2(urlStr, "GET", "");
     	return cancelResultData;
