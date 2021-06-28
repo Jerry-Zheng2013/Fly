@@ -11,6 +11,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.model.DemoOrder;
 import com.ticketsystem.net.DemoNet;
 import com.ticketsystem.util.DemoData;
+import com.ticketsystem.util.SqlManager;
+import com.ticketsystem.util.TimerAction;
 import com.ticketsystem.workflow.WorkFlowAction;
 
 
@@ -92,28 +94,59 @@ public class AsyncService {
 	}
 	
 	@Async("doSomethingExecutor")
-	public void bookAsync(JSONObject bookData, JSONObject bookResultData) {
-		System.out.println("["+Thread.currentThread().getName()+"]----------开始订票");
+	public void bookAsync(JSONObject bookResultData) {
+		System.out.println("["+Thread.currentThread().getName()+"]----------开始循环逻辑");
+		//循环开始时间
+		long startTimeMillis = System.currentTimeMillis();
+		//当前
+		long currentTimeMillis = System.currentTimeMillis();
+		
 		try {
-			while("true".equals(DemoData.OrderBeanMap.get(bookResultData.getJSONObject("data").getString("orderNo")).getStatus())) {
-				/*
-				while(new TimerAction().countDown(threadNo, DemoData.COUNTDOWNMILLIS)) {
-					// 什么也不做，等待倒计时结束
-				}
-				*/
-				Thread.sleep(DemoData.COUNTDOWNMILLIS);
-				//倒计时结束，调用取消订单接口
-				DemoNet demoNet = new DemoNet();
-				demoNet.cancelTicket(bookResultData);
-				//接着调用订票接口
-				JSONObject bookResultData2 = demoNet.bookTicket(bookData);
-				String orderNo = bookResultData2.getJSONObject("data").getString("orderNo");
-				DemoData.OrderBeanMap.remove(bookResultData.getJSONObject("data").getString("orderNo"));
-		    	DemoOrder demoOrder = new DemoOrder(orderNo, "true");
-		    	DemoData.OrderBeanMap.put(orderNo, demoOrder);
-		    	bookResultData = bookResultData2;
+			while(currentTimeMillis-startTimeMillis<DemoData.COUNTDOWNMILLIS) {
+					//时刻监控，该订单是否被取消了
+					String oiId = bookResultData.getString("oiId");
+					SqlManager sqlAction = new SqlManager();
+					JSONObject orderData = sqlAction.getOrderInfo(oiId);
+					if(!"true".equals(orderData.getString("status"))) {
+						//如果订单状态不是是true，则直接跳出所有循环，结束循环订票逻辑
+						return;
+					}
 			}
-		} catch (InterruptedException e) {
+			
+			//一轮循环结束后，后续调用取消订单，重新下单
+			//Thread.sleep(DemoData.COUNTDOWNMILLIS);
+			//倒计时结束，调用取消订单接口
+			DemoNet demoNet = new DemoNet();
+			JSONObject cancelData = new JSONObject();
+			cancelData.put("orderNo", bookResultData.getString("orderNo"));
+			demoNet.cancelTicket(cancelData);
+			//接着调用订票接口
+			/**
+			JSONObject bookResultData2 = demoNet.bookTicket(bookData);
+			//调用订票接口成功后，更新订单状态及下单时间
+			Date currentDate = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+			String currentDateStr = sdf.format(currentDate);
+
+			JSONObject updateData = new JSONObject();
+			updateData.put("oiId", bookResultData.getString("oiId"));
+			updateData.put("accountNo", bookResultData2.getString("accountNo"));
+			updateData.put("orderNo", bookResultData2.getString("accountNo"));
+			//updateData.put("standbyCount", aaa);
+			//updateData.put("status", aaa);
+			//updateData.put("updateTime", aaa);
+			//updateData.put("round", aaa);
+			
+			
+			JSONObject bookResultData3 = demoNet.bookTicket(bookData);
+			String orderNo = bookResultData2.getJSONObject("data").getString("orderNo");
+			DemoData.OrderBeanMap.remove(bookResultData.getJSONObject("data").getString("orderNo"));
+	    	DemoOrder demoOrder = new DemoOrder(orderNo, "true");
+	    	DemoData.OrderBeanMap.put(orderNo, demoOrder);
+	    	bookResultData = bookResultData2;
+	    	*/
+
+		} catch (Exception e) {
 			System.out.println("["+Thread.currentThread().getName()+"]----------订票出错");
 			e.printStackTrace();
 		}

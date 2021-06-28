@@ -123,7 +123,7 @@ public class NetDomeController {
         user.setUserPassword(password);
         System.out.println(username);
         System.out.println(password);
-        String urlStr = "http://api.panhe.net/flight/cancelOrder?appKey=f46a96420331ea3be28eaf1036af4252&orderNo="+orderNo;
+        String urlStr = "http://api.panhe.net/flight/cancelOrder?appKey=f46a96420331ea3be28eaf1036af4252&orderNo=FO2106271719267";
         String requestType = "GET";
         String dataStr = "";
         QueryHttpClient.doPostOrGet(urlStr, requestType, dataStr);

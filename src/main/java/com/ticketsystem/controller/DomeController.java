@@ -15,6 +15,7 @@ import com.ticketsystem.model.User;
 import com.ticketsystem.net.query.QueryHttpClient;
 import com.ticketsystem.service.DemoService;
 import com.ticketsystem.util.DemoData;
+import com.ticketsystem.util.SqlManager;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,8 +37,27 @@ public class DomeController {
         user.setUserPassword(password);
         System.out.println(username);
         System.out.println(password);
-        JSONObject addData = DemoData.getData1();
-        new DemoService().add(addData);
+        
+    	//默认已从前端获取到了数据
+        JSONObject inputData = DemoData.getData1();
+        JSONObject addData = new JSONObject();
+        addData.put("fromCityCode", inputData.getString("tripStr").substring(4, 7));
+        addData.put("toCityCode", inputData.getString("tripStr").substring(7, 10));
+        String fromDate = inputData.getString("tripStr").substring(11, 19);
+    	StringBuffer fromTimeSB = new StringBuffer(fromDate);
+    	fromTimeSB.insert(4, "-");
+    	fromTimeSB.insert(7, "-");
+    	fromDate = fromTimeSB.toString();
+        addData.put("fromDate", fromDate);
+        addData.put("fightNo", inputData.getString("fightNo"));
+        addData.put("cabinCode", inputData.getString("cabinCode"));
+        addData.put("tripCode", inputData.getString("tripStr"));
+        /*
+        JSONObject filterData = new JSONObject();
+        filterData.put("customerStatus", "1");
+        new SqlAction().getCustomerList(filterData);
+        */
+        new DemoService().bookTicket(addData);
         return "success";
     }
 	
@@ -52,7 +72,7 @@ public class DomeController {
         user.setUserPassword(password);
         System.out.println(username);
         System.out.println(password);
-        QueryHttpClient.doPostOrGet("http://api.panhe.net/flight/cancelOrder?appKey=f46a96420331ea3be28eaf1036af4252&orderNo=FO2106240156206", "GET", "");
+        QueryHttpClient.doPostOrGet("http://api.panhe.net/flight/cancelOrder?appKey=f46a96420331ea3be28eaf1036af4252&orderNo=FO2106280249466", "GET", "");
         
         return "success";
     }

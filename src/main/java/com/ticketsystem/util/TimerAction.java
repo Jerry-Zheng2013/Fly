@@ -18,8 +18,7 @@ public class TimerAction {
 		long leftCountdownMillis = countdownMillis;
 		long startTimeMillis = System.currentTimeMillis();
 		System.out.println("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时开始");
-		while ("true".equals(WorkFlowAction.ThreadNoMap.get(threadNo))
-				&& leftCountdownMillis > 0) {
+		while (leftCountdownMillis > 0) {
 			//倒计时
 			leftCountdownMillis=leftCountdownMillis-(System.currentTimeMillis()-startTimeMillis);
 			System.out.println("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时还剩【"+leftCountdownMillis+"】毫秒");
@@ -28,8 +27,6 @@ public class TimerAction {
 		System.out.println("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时结束");
 		return result;
 	}
-	
-	
 
 	/*
 	public static void main(String[] args) {

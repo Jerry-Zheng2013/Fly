@@ -90,6 +90,12 @@ public class QueryHttpClient {
 	 * @param pathUrl
 	 */
 	public static JSONObject doPostOrGet2(String urlStr, String requestType, String dataStr) {
+		System.out.println("请求地址");
+		System.out.println(urlStr);
+		System.out.println("请求方式");
+		System.out.println(requestType);
+		System.out.println("请求数据");
+		System.out.println(dataStr);
 		OutputStreamWriter out = null;
 		BufferedReader br = null;
 		String result = "";
