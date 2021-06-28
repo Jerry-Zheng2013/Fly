@@ -2,9 +2,12 @@ package com.ticketsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.model.Flight;
+import com.ticketsystem.model.User;
 import com.ticketsystem.model.OrderInfo;
+import com.ticketsystem.service.DemoService;
 import com.ticketsystem.service.FlightService;
 import com.ticketsystem.service.OrderInfoService;
+import com.ticketsystem.util.DemoData;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,8 +19,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Api(value = "航班操作", tags = "航班操作信息接口")
 @Controller
@@ -69,10 +79,27 @@ public class FlightController {
         flightService.delFlight(id);
     }
 
-    @ApiOperation(value = "增加航班", notes = "管理员权限接口，管理员权限下的航班增加功能")
-    @RequestMapping("add")
-    public void addFlight(@RequestBody JSONObject jsonObject) {
-        Flight flight = JSONObject.parseObject(jsonObject.toJSONString(), Flight.class);
-        flightService.addFlight(flight);
+	/*
+	 * @ApiOperation(value = "增加航班", notes = "管理员权限接口，管理员权限下的航班增加功能")
+	 * 
+	 * @RequestMapping("add") public void addFlight(@RequestBody JSONObject
+	 * jsonObject) { Flight flight =
+	 * JSONObject.parseObject(jsonObject.toJSONString(), Flight.class);
+	 * flightService.addFlight(flight); }
+	 */
+    
+    @ApiOperation(value = "预定", notes = "新增订单")
+    @RequestMapping("/addFlight")
+    @ResponseBody
+    public Object add(@RequestParam(value = "tripStr",required = true) String tripStr,
+                      @RequestParam(value = "flghtNo",required = true) String flghtNo,
+                      @RequestParam(value = "cabinCode",required = true) String cabinCode) {
+    	Map<String, Object> dataMap1 = new HashMap<String, Object>();
+        dataMap1.put("tripStr", tripStr);//AVH/PKXCTU/20210723/D/KN
+        dataMap1.put("flghtNo", flghtNo);//KN0000
+        dataMap1.put("cabinCode", cabinCode);//C
+        JSONObject dataJson1 = new JSONObject(dataMap1);
+        new DemoService().add(dataJson1);
+        return "success";
     }
 }

@@ -27,8 +27,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ticket?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
-    username: qfly
-    password: qfly
+    username: root
+    password: 123
 
 mybatis:
   type-aliases-package: com.ticketsystem.entity
