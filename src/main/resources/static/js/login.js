@@ -19,29 +19,10 @@ $(document).ready(function () {
                 // dataType:"json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data, staus) {
-
-                    /*if (data.check == "true") {
-                        $.cookie("username", name);
-                        if (data.isManager == 1)
-                            window.location = "managerFlight.html";
-                        else if (data.isVip == 1) {
-                            window.location = "showFlight.html";
-                            alert("尊敬的会员，您可以享受八折优惠");
-                        } else {
-                            window.location = "showFlight.html";
-                        }
-                    } else {
-                        alert("用户名或者密码错误！")
-                    }*/
                     alert("登录成功");
-                    $.cookie("username", name);
-                    if (data.isManager == 1)
-                        window.location = "managerFlight.html";
-                    else if (data.isVip == 1) {
-                        window.location = "showFlight.html";
-                        alert("尊敬的会员，您可以享受八折优惠");
-                    } else {
-                        window.location = "showFlight.html";
+                    if (data.isManager = "1") {
+                    	//window.location = "dashboard.html";
+                    	location.href="/flight/dashboard";
                     }
                 },
                 error: function () {

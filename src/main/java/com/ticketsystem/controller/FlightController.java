@@ -2,31 +2,44 @@ package com.ticketsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.model.Flight;
+import com.ticketsystem.model.OrderInfo;
 import com.ticketsystem.service.FlightService;
+import com.ticketsystem.service.OrderInfoService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
 
 @Api(value = "航班操作", tags = "航班操作信息接口")
-@RestController
+@Controller
 @RequestMapping("/flight")
 public class FlightController {
 
     @Autowired
     private FlightService flightService;
+    @Autowired
+    private OrderInfoService orderInfoService;
 
-    @ApiOperation(value = "获取所有航班", notes = "")
-    //@RequestMapping(value = "all", method = RequestMethod.POST)
-    @RequestMapping("all")
-    public List<Flight> getAllFlight() {
-        return flightService.getAllFlight();
+    @RequestMapping(value = "/dashboard",method = RequestMethod.GET)
+    public String page(ModelMap modelMap){
+        return "dashboard";
+    }
+    
+    @ApiOperation(value = "获取所有订单信息", notes = "")
+    @RequestMapping(value = "/allFlightList",method = RequestMethod.GET)
+    public String getAllFlight(ModelMap modelMap) {
+    	List<OrderInfo> orderInfoList = orderInfoService.getOrderInfoList();
+    	modelMap.put("orderInfoList", orderInfoList);
+        return "flightTicket";
     }
 
     @ApiOperation(value = "获取航班ID", notes = "")

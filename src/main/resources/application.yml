@@ -6,6 +6,11 @@ spring:
     restart:
       enabled: true
       additional-paths: src/main/java
+  thymeleaf:
+          prefix: classpath:/static/
+          suffix: .html
+          cache: false 
+  
   redis:
     host: 127.0.0.1
     port: 6379
@@ -22,8 +27,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/ticket?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
-    username: qfly
-    password: qfly
+    username: root
+    password: 123
 
 mybatis:
   type-aliases-package: com.ticketsystem.entity
