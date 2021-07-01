@@ -28,10 +28,12 @@ import io.swagger.annotations.ApiOperation;
 public class DomeController {
 	
 	@ApiOperation(value = "预定", notes = "新增订单")
+
     @RequestMapping(value="/add", method = RequestMethod.POST)
     public String  add(@RequestParam(value = "trip_no",required = true) String tripStr,
                       @RequestParam(value = "flght_no",required = true) String flghtNo,
                       @RequestParam(value = "cabin_code",required = true) String cabinCode) throws Exception {
+
         JSONObject addData = new JSONObject();
         addData.put("fromCityCode", tripStr.substring(4, 7));
         addData.put("toCityCode", tripStr.substring(7, 10));
@@ -45,6 +47,7 @@ public class DomeController {
         addData.put("tripCode", tripStr);
         
         new DemoService().addTicket(addData);
+
         return "forward:/flight/allFlightList";
     }
 	
