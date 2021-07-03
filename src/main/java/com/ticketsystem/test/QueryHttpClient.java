@@ -22,21 +22,24 @@ public class QueryHttpClient {
 	
 	public static void main(String[] args) {
 		
+		String ss = "aaa 234";
+		System.out.println(ss);
+		System.out.println(ss.trim().replaceAll(" ", ""));
+		
 		String urlStr = "https://higo.flycua.com/ffp/member/login";
 		String requestType = "POST";
-		String dataStr = "NrcZ9YVVM/N5PuZaHJfqltN6wPGOIfrHwwFNJ4DTKCHb/yyON/GL4rvJVQxNcX1J9Ui22MPCTWHxcaNCrUiOmdhfbhpKhRZPxIegcZRKs7OCN1CCNH1QMiZZxgP5bdFD";
+		String dataStr = "NrcZ9YVVM/N5PuZaHJfqltN6wPGOIfrHwwFNJ4DTKCEm3SxfgMZ8I/hpPPwEJ24WdF9Wp6yYfyth9eqBA1jHECZxFcebg/Xx2cJyLaqj9Y30aCrOS9m2n/hdiBsuhyBx";
 		JSONObject logInPost = QueryHttpClient.logInPost(urlStr, requestType, dataStr);
 		
 		// { mode: "memberLogin", memberId: $("#memberId").val(), password: $("#password").val(), openId: o }
-		String urlStr2 = "http://www.flycua.com/app/booking/book?_=1625059747302";
+		String urlStr2 = "http://www.flycua.com/app/booking/book?_=1625292330229";
 		String requestType2 = "POST";
-		String bookCookie = Test2.getBookCookieData("42423423", logInPost.getString("session"), logInPost.getString("tokenId"), logInPost.getString("tokenUUID"));
-
-		
-		
-		String dataStr2 = Test2.getBookPostData(logInPost.getString("tokenUUID"));
-		
-		QueryHttpClient.bookPost(urlStr2, requestType2, dataStr2, bookCookie);
+		String bookPostData = Test2.getBookPostData(logInPost.getString("tokenUUID"));
+		System.out.println(bookPostData);
+		JSONObject jj = new JSONObject().parseObject(bookPostData);
+		System.out.println(jj);
+		String bookCookie = Test2.getBookCookieData("1625291979", logInPost.getString("session"), logInPost.getString("tokenId"), logInPost.getString("tokenUUID"));
+		QueryHttpClient.bookPost(urlStr2, requestType2, bookPostData, bookCookie);
 		
 	}
 	
@@ -75,8 +78,6 @@ public class QueryHttpClient {
 			conn.setRequestProperty("connection", "close");
 			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
 			conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-			
-			
 			
 			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
 			conn.setDoOutput(true);
@@ -121,8 +122,6 @@ public class QueryHttpClient {
 			resultJson.put("tokenUUID", uuid);
 			resultJson.put("session", session);
 			resultJson.put("tokenId", tokenId);
-			
-			
 			return resultJson;
 			
 		} catch (Exception e) {
