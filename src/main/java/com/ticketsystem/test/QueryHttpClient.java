@@ -1,4 +1,4 @@
-package com.ticketsystem.net.query;
+package com.ticketsystem.test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -16,179 +19,29 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class QueryHttpClient {
-
-	/**
-	 * 以post或get方式调用对方接口方法，
-	 * 
-	 * @param pathUrl
-	 */
-	public static void doPostOrGet(String urlStr, String requestType, String data) {
-		OutputStreamWriter out = null;
-		BufferedReader br = null;
-		String result = "";
-		try {
-			URL url = new URL(urlStr);
-			// 打开和url之间的连接
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			// 请求方式
-			// conn.setRequestMethod("POST");
-			// conn.setRequestMethod("GET");
-			conn.setRequestMethod(requestType);
-
-			// 设置通用的请求属性
-			conn.setRequestProperty("accept", "*/*");
-			conn.setRequestProperty("connection", "Keep-Alive");
-			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
-			conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-
-			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
-			conn.setDoOutput(true);
-			conn.setDoInput(true);
-
-			/**
-			 * 下面的三句代码，就是调用第三方http接口
-			 */
-			// 获取URLConnection对象对应的输出流
-			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-			// 发送请求参数即数据
-			out.write(data);
-			// flush输出流的缓冲
-			out.flush();
-
-			/**
-			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
-			 */
-			// 获取URLConnection对象对应的输入流
-			InputStream is = conn.getInputStream();
-			// 构造一个字符流缓存
-			br = new BufferedReader(new InputStreamReader(is));
-			String str = "";
-			while ((str = br.readLine()) != null) {
-				result += str;
-			}
-			System.out.println(result);
-			// 关闭流
-			is.close();
-			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
-			conn.disconnect();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-				if (br != null) {
-					br.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * 以post或get方式调用对方接口方法，
-	 * 
-	 * @param pathUrl
-	 */
-	public static JSONObject doPostOrGet2(String urlStr, String requestType, String dataStr) {
-		System.out.println("请求地址");
-		System.out.println(urlStr);
-		System.out.println("请求方式");
-		System.out.println(requestType);
-		System.out.println("请求数据");
-		System.out.println(dataStr);
-		OutputStreamWriter out = null;
-		BufferedReader br = null;
-		String result = "";
-		try {
-			URL url = new URL(urlStr);
-			// 打开和url之间的连接
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			// 请求方式
-			// conn.setRequestMethod("POST");
-			// conn.setRequestMethod("GET");
-			conn.setRequestMethod(requestType);
-
-			// 设置通用的请求属性
-			conn.setRequestProperty("accept", "*/*");
-			conn.setRequestProperty("connection", "Keep-Alive");
-			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
-			conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-
-			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
-			conn.setDoOutput(true);
-			conn.setDoInput(true);
-
-			/**
-			 * 下面的三句代码，就是调用第三方http接口
-			 */
-			// 获取URLConnection对象对应的输出流
-			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-			// 发送请求参数即数据
-			out.write(dataStr);
-			// flush输出流的缓冲
-			out.flush();
-
-			/**
-			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
-			 */
-			// 获取URLConnection对象对应的输入流
-			InputStream is = conn.getInputStream();
-			// 构造一个字符流缓存
-			br = new BufferedReader(new InputStreamReader(is));
-			String str = "";
-			while ((str = br.readLine()) != null) {
-				result += str;
-			}
-			System.out.println(result);
-			// 关闭流
-			is.close();
-			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
-			conn.disconnect();
-			
-			return JSON.parseObject(result);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-				if (br != null) {
-					br.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return JSON.parseObject(result);
-	}
 	
 	public static void main(String[] args) {
-		/**
-		 * 手机信息查询接口：http://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=手机号
-		 * http://api.showji.com/Locating/www.showji.com.aspx?m=手机号&output=json&callback=querycallback
-		 */
-		doPostOrGet("https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=13026194071", "GET", "");
+		
+		String ss = "aaa 234";
+		System.out.println(ss);
+		System.out.println(ss.trim().replaceAll(" ", ""));
+		
+		String urlStr = "https://higo.flycua.com/ffp/member/login";
+		String requestType = "POST";
+		String dataStr = "NrcZ9YVVM/N5PuZaHJfqltN6wPGOIfrHwwFNJ4DTKCEm3SxfgMZ8I/hpPPwEJ24WdF9Wp6yYfyth9eqBA1jHECZxFcebg/Xx2cJyLaqj9Y30aCrOS9m2n/hdiBsuhyBx";
+		JSONObject logInPost = QueryHttpClient.logInPost(urlStr, requestType, dataStr);
+		
+		// { mode: "memberLogin", memberId: $("#memberId").val(), password: $("#password").val(), openId: o }
+		String urlStr2 = "http://www.flycua.com/app/booking/book?_=1625292330229";
+		String requestType2 = "POST";
+		String bookPostData = Test2.getBookPostData(logInPost.getString("tokenUUID"));
+		System.out.println(bookPostData);
+		JSONObject jj = new JSONObject().parseObject(bookPostData);
+		System.out.println(jj);
+		String bookCookie = Test2.getBookCookieData("1625291979", logInPost.getString("session"), logInPost.getString("tokenId"), logInPost.getString("tokenUUID"));
+		QueryHttpClient.bookPost(urlStr2, requestType2, bookPostData, bookCookie);
+		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 	/**
@@ -197,6 +50,7 @@ public class QueryHttpClient {
 	 * @param pathUrl
 	 */
 	public static JSONObject logInPost(String urlStr, String requestType, String dataStr) {
+		JSONObject resultJson = new JSONObject();
 		System.out.println("请求地址");
 		System.out.println(urlStr);
 		System.out.println("请求方式");
@@ -224,7 +78,7 @@ public class QueryHttpClient {
 			conn.setRequestProperty("connection", "close");
 			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
 			conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-
+			
 			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
@@ -251,12 +105,24 @@ public class QueryHttpClient {
 				result += str;
 			}
 			System.out.println(result);
+			
+			//获取
+			Map<String, List<String>> headerFields = conn.getHeaderFields();
+			String originStr = headerFields.toString();
+			String uuid = originStr.substring(originStr.indexOf("tokenUUID=")+10, originStr.indexOf("; Domain=.flycua.com; Path=/, tokenId="));
+			String session = originStr.substring(originStr.indexOf("JSESSIONID=")+11, originStr.indexOf("; Path=/; HttpOnly"));
+			String tokenId = originStr.substring(originStr.indexOf("tokenId=")+8, originStr.indexOf("Domain=.flycua.com; Path=/, JSESSIONID"));
+			
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
 			conn.disconnect();
 			
-			return JSON.parseObject(result);
+			resultJson.put("body", JSON.parseObject(result));
+			resultJson.put("tokenUUID", uuid);
+			resultJson.put("session", session);
+			resultJson.put("tokenId", tokenId);
+			return resultJson;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -272,7 +138,99 @@ public class QueryHttpClient {
 				e.printStackTrace();
 			}
 		}
-		return JSON.parseObject(result);
+		return resultJson;
+	}
+	
+	public static JSONObject bookPost(String urlStr, String requestType, String dataStr, String bookCookie) {
+		JSONObject resultJson = new JSONObject();
+		System.out.println("请求地址");
+		System.out.println(urlStr);
+		System.out.println("请求方式");
+		System.out.println(requestType);
+		System.out.println("请求数据");
+		System.out.println(dataStr);
+		OutputStreamWriter out = null;
+		BufferedReader br = null;
+		String result = "";
+		try {
+			URL url = new URL(urlStr);
+			// 打开和url之间的连接
+			
+			trustAllHttpsCertificates();
+			HttpsURLConnection.setDefaultHostnameVerifier(new QueryHttpClient().hv);
+			
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			// 请求方式
+			// conn.setRequestMethod("POST");
+			// conn.setRequestMethod("GET");
+			conn.setRequestMethod(requestType);
+
+			// 设置通用的请求属性
+			conn.setRequestProperty("accept", "*/*");
+			conn.setRequestProperty("connection", "close");
+			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
+			conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+			conn.setRequestProperty("Cookie Data", bookCookie);
+			
+			
+			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+
+			/**
+			 * 下面的三句代码，就是调用第三方http接口
+			 */
+			// 获取URLConnection对象对应的输出流
+			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+			// 发送请求参数即数据
+			out.write(dataStr);
+			// flush输出流的缓冲
+			out.flush();
+
+			/**
+			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
+			 */
+			// 获取URLConnection对象对应的输入流
+			InputStream is = conn.getInputStream();
+			// 构造一个字符流缓存
+			br = new BufferedReader(new InputStreamReader(is));
+			String str = "";
+			while ((str = br.readLine()) != null) {
+				result += str;
+			}
+			System.out.println(result);
+			
+			//获取
+			Map<String, List<String>> headerFields = conn.getHeaderFields();
+			String originStr = headerFields.toString();
+			String uuid = originStr.substring(originStr.indexOf("tokenUUID=")+10, originStr.indexOf("; Domain"));
+			
+			// 关闭流
+			is.close();
+			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
+			conn.disconnect();
+			
+			resultJson.put("body", JSON.parseObject(result));
+			resultJson.put("tokenUUID", uuid);
+			
+			
+			return resultJson;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+				if (br != null) {
+					br.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultJson;
 	}
 	
 	
