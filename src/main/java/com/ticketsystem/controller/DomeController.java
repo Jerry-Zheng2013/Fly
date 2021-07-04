@@ -3,6 +3,7 @@ package com.ticketsystem.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,14 +28,13 @@ import io.swagger.annotations.ApiOperation;
 @MapperScan("com.ticketsystem.dao")
 @RequestMapping("/demo")
 public class DomeController {
-	
+
 	@ApiOperation(value = "预定", notes = "新增订单")
 
     @RequestMapping(value="/add", method = RequestMethod.POST)
-    public String  add(@RequestParam(value = "trip_no",required = true) String tripStr,
+    public void add(@RequestParam(value = "trip_no",required = true) String tripStr,
                       @RequestParam(value = "flght_no",required = true) String flghtNo,
-                      @RequestParam(value = "cabin_code",required = true) String cabinCode) throws Exception {
-
+                      @RequestParam(value = "cabin_code",required = true) String cabinCode, HttpServletResponse response) throws Exception {
         JSONObject addData = new JSONObject();
         addData.put("fromCityCode", tripStr.substring(4, 7));
         addData.put("toCityCode", tripStr.substring(7, 10));
@@ -49,7 +49,9 @@ public class DomeController {
         //new DemoService().addTicket(addData);
         new FlightService2().addTicket(addData);
         
-        return "forward:/flight/allFlightList";
+        new DemoService().addTicket(addData);
+
+        response.sendRedirect("/flight/allFlightList");
     }
 	
 	@ApiOperation(value = "取消", notes = "取消订单")
