@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -22,24 +21,36 @@ public class QueryHttpClient {
 	
 	public static void main(String[] args) {
 		
-		String ss = "aaa 234";
-		System.out.println(ss);
-		System.out.println(ss.trim().replaceAll(" ", ""));
-		
+		//登录
 		String urlStr = "https://higo.flycua.com/ffp/member/login";
 		String requestType = "POST";
-		String dataStr = "NrcZ9YVVM/N5PuZaHJfqltN6wPGOIfrHwwFNJ4DTKCEm3SxfgMZ8I/hpPPwEJ24WdF9Wp6yYfyth9eqBA1jHECZxFcebg/Xx2cJyLaqj9Y30aCrOS9m2n/hdiBsuhyBx";
+		String dataStr = "NrcZ9YVVM/N5PuZaHJfqltN6wPGOIfrHwwFNJ4DTKCHb/yyON/GL4rvJVQxNcX1J9Ui22MPCTWHxcaNCrUiOmdhfbhpKhRZPxIegcZRKs7OCN1CCNH1QMiZZxgP5bdFD";
 		JSONObject logInPost = QueryHttpClient.logInPost(urlStr, requestType, dataStr);
+		//登录成功后，获取tokenId和tokenUUID
+		String tokenId = logInPost.getString("tokenId");
+		String tokenUUID = logInPost.getString("tokenUUID");
 		
-		// { mode: "memberLogin", memberId: $("#memberId").val(), password: $("#password").val(), openId: o }
-		String urlStr2 = "http://www.flycua.com/app/booking/book?_=1625292330229";
-		String requestType2 = "POST";
+		
+		//检查账户状态
+		String urlStr2 = "http://www.flycua.com/app/login/queryUserStatus?_=0.6013036610715838";
+		String requestType2 = "GET";
+		String dataStr2 = "";
+		String accountCheckCookie = Test2.getAccountCheckCookie(tokenId, tokenUUID);
+		JSONObject userStatusPost = QueryHttpClient.queryUserStatusPost(urlStr2, requestType2, dataStr2, accountCheckCookie);
+		//查询账户状态成功之后，获取到session
+		String session = userStatusPost.getString("session");
+		System.out.println(session);
+		
+		
+		//预定
+		String urlStr3 = "http://www.flycua.com/app/booking/book?_=1625384445626";
+		String requestType3 = "POST";
 		String bookPostData = Test2.getBookPostData(logInPost.getString("tokenUUID"));
 		System.out.println(bookPostData);
-		JSONObject jj = new JSONObject().parseObject(bookPostData);
+		JSONObject jj = JSONObject.parseObject(bookPostData);
 		System.out.println(jj);
-		String bookCookie = Test2.getBookCookieData("1625291979", logInPost.getString("session"), logInPost.getString("tokenId"), logInPost.getString("tokenUUID"));
-		QueryHttpClient.bookPost(urlStr2, requestType2, bookPostData, bookCookie);
+		String bookCookie = Test2.getBookCookieData(session, tokenId, tokenUUID);
+		QueryHttpClient.bookPost(urlStr3, requestType3, bookPostData, bookCookie);
 		
 	}
 	
@@ -62,11 +73,10 @@ public class QueryHttpClient {
 		String result = "";
 		try {
 			URL url = new URL(urlStr);
-			// 打开和url之间的连接
-			
 			trustAllHttpsCertificates();
 			HttpsURLConnection.setDefaultHostnameVerifier(new QueryHttpClient().hv);
 			
+			// 打开和url之间的连接
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			// 请求方式
 			// conn.setRequestMethod("POST");
@@ -141,6 +151,100 @@ public class QueryHttpClient {
 		return resultJson;
 	}
 	
+	//查询账户状态
+	private static JSONObject queryUserStatusPost(String urlStr2, String requestType2, String dataStr2,
+			String accountCheckCookie) {
+		JSONObject resultJson = new JSONObject();
+		System.out.println("请求地址");
+		System.out.println(urlStr2);
+		System.out.println("请求方式");
+		System.out.println(requestType2);
+		System.out.println("请求数据");
+		System.out.println(dataStr2);
+		OutputStreamWriter out = null;
+		BufferedReader br = null;
+		String result = "";
+		try {
+			URL url = new URL(urlStr2);
+			//trustAllHttpsCertificates();
+			//HttpsURLConnection.setDefaultHostnameVerifier(new QueryHttpClient().hv);
+			
+			// 打开和url之间的连接
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			// 请求方式
+			// conn.setRequestMethod("POST");
+			// conn.setRequestMethod("GET");
+			conn.setRequestMethod(requestType2);
+			
+			// 设置通用的请求属性
+			conn.setRequestProperty("accept", "application/json, text/javascript, */*; q=0.01");
+			conn.setRequestProperty("connection", "close");
+			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
+			conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+			conn.addRequestProperty("Cookie", "asdf");
+			//conn.addRequestProperty(key, value);
+			
+			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			
+			/**
+			 * 下面的三句代码，就是调用第三方http接口
+			 */
+			// 获取URLConnection对象对应的输出流
+			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+			// 发送请求参数即数据
+			out.write(dataStr2);
+			// flush输出流的缓冲
+			out.flush();
+			
+			/**
+			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
+			 */
+			// 获取URLConnection对象对应的输入流
+			InputStream is = conn.getInputStream();
+			// 构造一个字符流缓存
+			br = new BufferedReader(new InputStreamReader(is));
+			String str = "";
+			while ((str = br.readLine()) != null) {
+				result += str;
+			}
+			System.out.println(result);
+			
+			//获取
+			Map<String, List<String>> headerFields = conn.getHeaderFields();
+			String originStr = headerFields.toString();
+			String session = originStr.substring(originStr.indexOf("session=")+8, originStr.indexOf("; Path=/; Expires=Sun,"));
+			
+			// 关闭流
+			is.close();
+			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
+			conn.disconnect();
+			
+			resultJson.put("body", JSON.parseObject(result));
+			resultJson.put("session", session);
+			
+			return resultJson;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+				if (br != null) {
+					br.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultJson;
+	}
+	
+	
+	//预定
 	public static JSONObject bookPost(String urlStr, String requestType, String dataStr, String bookCookie) {
 		JSONObject resultJson = new JSONObject();
 		System.out.println("请求地址");
@@ -154,11 +258,10 @@ public class QueryHttpClient {
 		String result = "";
 		try {
 			URL url = new URL(urlStr);
+			//trustAllHttpsCertificates();
+			//HttpsURLConnection.setDefaultHostnameVerifier(new QueryHttpClient().hv);
+			
 			// 打开和url之间的连接
-			
-			trustAllHttpsCertificates();
-			HttpsURLConnection.setDefaultHostnameVerifier(new QueryHttpClient().hv);
-			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			// 请求方式
 			// conn.setRequestMethod("POST");
@@ -213,7 +316,6 @@ public class QueryHttpClient {
 			resultJson.put("body", JSON.parseObject(result));
 			resultJson.put("tokenUUID", uuid);
 			
-			
 			return resultJson;
 			
 		} catch (Exception e) {
@@ -232,6 +334,8 @@ public class QueryHttpClient {
 		}
 		return resultJson;
 	}
+	
+	
 	
 	
 	HostnameVerifier hv = new HostnameVerifier() {

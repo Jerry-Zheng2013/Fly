@@ -187,17 +187,18 @@ public class Test2 {
 		System.out.println("ssss");
 		return bookPostData.trim().replaceAll(" ", "");
 	}
-	public static String getBookCookieData(String hm_lpvt, String session, String tokenId, String tokenUUID) {
+	public static String getBookCookieData(String session, String tokenId, String tokenUUID) {
 		String bookCookieData = 
 				"X-LB=2.727.65daae9e.50;" + 
 				"_ga=GA1.2.1942100065.1625058587;" + 
-				"_gid=GA1.2.2104287381.1625058587;" + 
+				"_gid=GA1.2.180656689.1625290602;" + 
 				"flycua_user_cookie=true;" + 
 				"Hm_lvt_e9561bcd959a298bc80237056e060dc7=1625058634;" + 
-				"Hm_lpvt_e9561bcd959a298bc80237056e060dc7="+hm_lpvt+"; " + 
+				"Hm_lpvt_e9561bcd959a298bc80237056e060dc7=1625381282;" + 
 				"session="+"s~d1fc5d69-90ad-4ddc-9389-8a6ce4919a1e.2ae7c905d258a7f838277696fa2ae1c7"+";" + 
 				"tokenId="+tokenId+";" + 
-				"tokenUUID="+tokenUUID+"";
+				"tokenUUID="+tokenUUID+";" +
+				"_gat=1";
 		return bookCookieData;
 	}
 	
@@ -222,6 +223,17 @@ public class Test2 {
 				"tokenUUID="+tokenUUID+"; " + 
 				"_gat=";
 		return cancelCookieData;
+	}
+	public static String getAccountCheckCookie(String tokenId, String tokenUUID) {
+		String accountCheckCookie = 
+				"_ga=GA1.2.1942100065.1625058587;" + 
+				"_gid=GA1.2.2104287381.1625058587;" + 
+				"flycua_user_cookie=true;" + 
+				"Hm_lvt_e9561bcd959a298bc80237056e060dc7=1625058634;" + 
+				"Hm_lpvt_e9561bcd959a298bc80237056e060dc7=1625381282;" + 
+				"tokenId="+tokenId+";" + 
+				"tokenUUID="+tokenUUID+"";
+		return accountCheckCookie;
 	}
 	
 	
