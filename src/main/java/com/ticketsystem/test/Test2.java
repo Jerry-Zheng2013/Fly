@@ -195,7 +195,7 @@ public class Test2 {
 				"flycua_user_cookie=true;" + 
 				"Hm_lvt_e9561bcd959a298bc80237056e060dc7=1625058634;" + 
 				"Hm_lpvt_e9561bcd959a298bc80237056e060dc7=1625381282;" + 
-				"session="+"s~d1fc5d69-90ad-4ddc-9389-8a6ce4919a1e.2ae7c905d258a7f838277696fa2ae1c7"+";" + 
+				"session="+session+";" + 
 				"tokenId="+tokenId+";" + 
 				"tokenUUID="+tokenUUID+";" +
 				"_gat=1";
