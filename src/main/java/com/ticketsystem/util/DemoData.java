@@ -20,6 +20,21 @@ public class DemoData {
 	
 	public static TreeMap<String, DemoOrder> OrderBeanMap = new TreeMap<String, DemoOrder>();
 	
+	public static String hotCityUrl = "http://www.flycua.com/app/hierarchy/hotCity";
+	public static String queryUrl = "http://ws.51pid.com/VIBE.ASMX/AVH";
+	public static String queryUrl2 = "http://www.flycua.com/app/searchFlights/queryFlight";
+	public static String loginUrl = "https://higo.flycua.com/ffp/member/login";
+	public static String checkUrl = "http://www.flycua.com/app/login/queryUserStatus";
+	public static String pointsInfoUrl = "http://www.flycua.com/app/searchFlights/queryPointsInfo";
+	public static String chooseUrl = "http://www.flycua.com/app/searchFlights/chooseFlight";
+	public static String add2CartUrl = "http://www.flycua.com/app/booking/addToCart";
+	public static String bookUrl = "http://www.flycua.com/app/booking/book";
+	public static String paymentDetailUrl = "http://www.flycua.com/app/booking/paymentDetails";
+	public static String orderDetailUrl = "http://www.flycua.com/app/order/detail";
+	public static String cancelUrl = "http://www.flycua.com/app/cancel";
+	
+	public static String sHashCode = "VIBE_6c8512026e194d939046d17983b6e426";
+	
 	/**
 	 * 系统信息
 	 * @return 系统信息

@@ -372,7 +372,7 @@ class GetPostTest2 {
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
 			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
-			conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+			conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 			conn.setRequestProperty("Cookie", bookCookie);
 			
             //post设置如下两行
@@ -423,6 +423,8 @@ class GetPostTest2 {
                 result +="\n" + line;
             }
             System.out.println(result);
+            String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
+            resultJson.put("uuid", uuidStr2);
 
 			//获取头信息
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
@@ -443,6 +445,178 @@ class GetPostTest2 {
 				}
 			}
 			
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resultJson;
+	}
+
+	public static JSONObject chooseFlightPost(String url, String param, String cookieStr) {
+		JSONObject resultJson = new JSONObject();
+        String result = "";
+        try {
+            URL realUrl = new URL(url);
+            
+            URLConnection conn = realUrl.openConnection();
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.setRequestProperty("Cookie", cookieStr);
+			
+            //post设置如下两行
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            
+            PrintWriter out = new PrintWriter(conn.getOutputStream());
+            out.print(param);
+            out.flush();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"));
+            String line;
+            while((line = in.readLine()) != null){
+                result +="\n" + line;
+            }
+            //{"resultType":"1001","resultMsg":"success","uuid":"d75c96df-08a8-4116-b399-fa9f85be653d"}
+            System.out.println(result);
+            String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
+            resultJson.put("uuid", uuidStr2);
+
+			//获取头信息
+			Map<String, List<String>> headerFields = conn.getHeaderFields();
+			System.out.println("headerFields:"+headerFields.toString());
+			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
+				System.out.println(entry.getKey());
+				System.out.println(entry.getValue());	
+				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
+					for (String entryValue: entry.getValue()) {
+						if (entryValue != null) {
+							if (entryValue.toLowerCase().contains("uuid")) {
+								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
+								System.out.println("uuid="+xlbValue);
+								resultJson.put("uuid", xlbValue);
+							}
+						}
+					}
+				}
+			}
+			
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resultJson;
+	}
+
+	public static JSONObject queryFlightPost(String url, String param, String cookieStr) {
+		JSONObject resultJson = new JSONObject();
+        String result = "";
+        try {
+            URL realUrl = new URL(url);
+            
+            URLConnection conn = realUrl.openConnection();
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.setRequestProperty("Cookie", cookieStr);
+			
+            //post设置如下两行
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            
+            PrintWriter out = new PrintWriter(conn.getOutputStream());
+            out.print(param);
+            out.flush();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"));
+            String line;
+            while((line = in.readLine()) != null){
+                result +="\n" + line;
+            }
+            //{"resultType":"1001","resultMsg":"success","uuid":"d75c96df-08a8-4116-b399-fa9f85be653d"}
+            System.out.println(result);
+            //String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
+            //resultJson.put("uuid", uuidStr2);
+
+			//获取头信息
+			Map<String, List<String>> headerFields = conn.getHeaderFields();
+			System.out.println("headerFields:"+headerFields.toString());
+			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
+				System.out.println(entry.getKey());
+				System.out.println(entry.getValue());	
+				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
+					for (String entryValue: entry.getValue()) {
+						if (entryValue != null) {
+							if (entryValue.toLowerCase().contains("uuid")) {
+								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
+								System.out.println("uuid="+xlbValue);
+								resultJson.put("uuid", xlbValue);
+							}
+						}
+					}
+				}
+			}
+			
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resultJson;
+	}
+
+	public static JSONObject queryGet(String url, String param) {
+		JSONObject resultJson = new JSONObject();
+        String result = "";
+        String urlName = url + "?" + param;
+        try {
+            URL realURL = new URL(urlName);
+            
+            URLConnection conn = realURL.openConnection();
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36");
+            
+            conn.connect();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += "\n" + line;
+            }
+            System.out.println("result====="+result);
+            resultJson.put("flightData", result);
+
+			//获取头信息
+			Map<String, List<String>> headerFields = conn.getHeaderFields();
+			System.out.println("headerFields:"+headerFields.toString());
+			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
+				System.out.println(entry.getKey());
+				System.out.println(entry.getValue());	
+				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
+					for (String entryValue: entry.getValue()) {
+						if (entryValue != null) {
+							if (entryValue.toLowerCase().contains("jsessionid")) {
+								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
+								System.out.println("JSESSIONID="+xlbValue);
+								resultJson.put("JSESSIONID", xlbValue);
+							} else if (entryValue.toLowerCase().contains("session")) {
+								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
+								System.out.println("sessionValue="+sessionValue);
+								resultJson.put("session", sessionValue);
+							} else if (entryValue.toLowerCase().contains("x-lb")) {
+								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
+								System.out.println("xlb="+xlbValue);
+								resultJson.put("xlb", xlbValue);
+							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
+								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
+								System.out.println("tokenUUID="+sessionValue);
+								resultJson.put("tokenUUID", sessionValue);
+							}else if (entryValue.toLowerCase().contains("tokenid")) {
+								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
+								System.out.println("tokenId="+xlbValue);
+								resultJson.put("tokenId", xlbValue);
+							}
+						}
+					}
+				}
+			}
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
