@@ -48,10 +48,8 @@ public class AsyncService {
 		
 		//每轮循环结束后，后续调用取消订单，重新下单
 		//调用取消订单接口
-		JSONObject cancelData = new JSONObject();
-		cancelData.put("orderNo", loopData.getJSONObject("orderInfoData").getJSONObject("data").getString("orderNo"));
     	//TODO 调用接口----------取消订单接口
-		new DemoNet().cancelTicket(cancelData);
+		new DemoNet().cancelTicket(loopData.getJSONObject("orderInfoData").getJSONObject("data").getString("orderNo"));
 		
 		//解锁客户
 		JSONArray customerArrData = loopData.getJSONArray("customerArrData");

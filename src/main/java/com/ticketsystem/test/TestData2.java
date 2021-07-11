@@ -275,7 +275,7 @@ public class TestData2 {
 		return checkCookie;
 	}
 	
-	public static String getBookPostData2(String tokenUUID2) {
+	public static String getBookPostData3(String uuid, String flightNo) {
 		String bookPostData = 
 				"{" + 
 				"    \"passengers\": [" + 
@@ -436,7 +436,174 @@ public class TestData2 {
 				"            \"Currency\": \"￥\"" + 
 				"        }" + 
 				"    }," + 
-				"    \"uuid\": \"" + tokenUUID2 + "\"" +
+				"    \"uuid\": \"" + uuid + "\"" +
+				"}";
+		return bookPostData.trim().replaceAll(" ", "");
+	}
+	
+	
+	public static String getBookPostData2(String uuid) {
+		String bookPostData = 
+				"{" + 
+				"    \"passengers\": [" + 
+				"        {" + 
+				"            \"index\": 1," + 
+				"            \"type\": \"ADT\"," + 
+				"            \"personName\": {" + 
+				"                \"surname\": \"滕飞白\"," + 
+				"                \"Surname\": \"滕\"," + 
+				"                \"givenName\": \"飞白\"," + 
+				"                \"namePrefix\": \"Mr\"" + 
+				"            }," + 
+				"            \"passport\": {" + 
+				"                \"docType\": 5," + 
+				"                \"docId\": \"654323196702022216\"" + 
+				"            }," + 
+				"            \"AddiDoc\": {" + 
+				"                \"PTCSubType\": \"\"" + 
+				"            }," + 
+				"            \"save4Freq\": false," + 
+				"            \"birthday\": \"\"," + 
+				"            \"phoneNumber\": \"17351122661\"," + 
+				"            \"insurance\": [" + 
+				"                {" + 
+				"                    \"data\": [[{\"FlightSegmentRPH\":\"1\",\"OriginDestinationRPH\":\"1\",\"InsuranceRPH\":\"1\"}]]," + 
+				"                    \"num\": 0" + 
+				"                }" + 
+				"            ]" + 
+				"        }" + 
+				"    ]," + 
+				"    \"customer\": {" + 
+				"        \"personName\": {" + 
+				"            \"givenName\": \"郑继青\"," + 
+				"            \"surname\": \"郑继青\"," + 
+				"            \"name\": \"郑继青\"" + 
+				"        }," + 
+				"        \"email\": \"\"," + 
+				"        \"telephone\": {" + 
+				"            \"phoneNumber\": \"17656175477\"," + 
+				"            \"phoneType\": \"\"," + 
+				"            \"areaCityCode\": \"\"," + 
+				"            \"fixedPhoneNumber\": \"\"" + 
+				"        }" + 
+				"    }," + 
+				"    \"hasFrequentPassenger\": false," + 
+				"    \"productNum\": 1000," + 
+				"    \"ref\": 1000," + 
+				"    \"flightDate\": \"2021-07-30\"," + 
+				"    \"tripInfo\": [" + 
+				"        {" + 
+				"            \"Departure\": {" + 
+				"                \"IATA\": \"PKX\"," + 
+				"                \"Airport\": \"北京大兴国际\"," + 
+				"                \"TS_CityCode\": \"PKX\"," + 
+				"                \"Terminal\": \"--\"," + 
+				"                \"DateTime\": \"2021-07-30T07:15:00\"," + 
+				"                \"Date\": \"2021-07-30\"," + 
+				"                \"Time\": \"07:15:00\"" + 
+				"            }," + 
+				"            \"Arrival\": {" + 
+				"                \"IATA\": \"SHA\"," + 
+				"                \"Airport\": \"上海虹桥\"," + 
+				"                \"TS_CityCode\": \"SHA\"," + 
+				"                \"Terminal\": \"T2\"," + 
+				"                \"DateTime\": \"2021-07-30T09:25:00\"," + 
+				"                \"Date\": \"2021-07-30\"," + 
+				"                \"Time\": \"09:25:00\"" + 
+				"            }," + 
+				"            \"MarketingAirline\": \"KN\"," + 
+				"            \"OperatingAirline\": \"KN\"," + 
+				"            \"FlightNumber\": \"5737\"," + 
+				"            \"AirEquipType\": \"33L\"," + 
+				"            \"Duration\": \"2:10\"," + 
+				"            \"checkInBaggageRule\": {" + 
+				"                \"J\": \"2\"," + 
+				"                \"C\": \"2\"," + 
+				"                \"W\": \"1\"," + 
+				"                \"Y\": \"1\"," + 
+				"                \"M\": \"1\"," + 
+				"                \"E\": \"1\"," + 
+				"                \"H\": \"1\"," + 
+				"                \"K\": \"1\"," + 
+				"                \"L\": \"1\"," + 
+				"                \"N\": \"1\"," + 
+				"                \"R\": \"0\"," + 
+				"                \"S\": \"0\"," + 
+				"                \"V\": \"0\"," + 
+				"                \"D\": \"0\"," + 
+				"                \"T\": \"0\"," + 
+				"                \"I\": \"0\"," + 
+				"                \"Z\": \"0\"," + 
+				"                \"U\": \"0\"" + 
+				"            }," + 
+				"            \"handBaggageRule\": {" + 
+				"                \"J\": \"1\"," + 
+				"                \"C\": \"1\"," + 
+				"                \"W\": \"1\"," + 
+				"                \"Y\": \"1\"," + 
+				"                \"M\": \"1\"," + 
+				"                \"E\": \"1\"," + 
+				"                \"H\": \"1\"," + 
+				"                \"K\": \"1\"," + 
+				"                \"L\": \"1\"," + 
+				"                \"N\": \"1\"," + 
+				"                \"R\": \"1\"," + 
+				"                \"S\": \"1\"," + 
+				"                \"V\": \"1\"," + 
+				"                \"D\": \"1\"," + 
+				"                \"T\": \"1\"," + 
+				"                \"I\": \"0\"," + 
+				"                \"Z\": \"0\"," + 
+				"                \"U\": \"0\"" + 
+				"            }," + 
+				"            \"checkInBaggage\": false," + 
+				"            \"StopOver\": false," + 
+				"            \"redPackets\": \"\"," + 
+				"            \"FareFamilyCode\": \"HLQ\"," + 
+				"            \"FareFamilyName\": \"欢乐抢\"," + 
+				"            \"CabinClass\": \"T\"" + 
+				"        }" + 
+				"    ]," + 
+				"    \"Passengers\": {" + 
+				"        \"PassengerInfo\": [" + 
+				"            {" + 
+				"                \"Type\": \"ADT\"," + 
+				"                \"Index\": 1," + 
+				"                \"lastDate\": \"2021-07-02\"," + 
+				"                \"FareBreakdown\": {" + 
+				"                    \"BaseFare\": {" + 
+				"                        \"Amount\": 568," + 
+				"                        \"Currency\": \"￥\"," + 
+				"                        \"AmountOld\": 568" + 
+				"                    }," + 
+				"                    \"TotalFare\": {" + 
+				"                        \"Adjusted\": 618," + 
+				"                        \"Amount\": 618," + 
+				"                        \"Currency\": \"￥\"" + 
+				"                    }," + 
+				"                    \"Taxes\": {" + 
+				"                        \"CN\": 50," + 
+				"                        \"YQ\": 0," + 
+				"                        \"Currency\": \"￥\"" + 
+				"                    }," + 
+				"                    \"Type\": \"ADT\"," + 
+				"                    \"Quantity\": 1," + 
+				"                    \"PTCSubType\": \"\"" + 
+				"                }," + 
+				"                \"age\": \"≥12岁\"," + 
+				"                \"Typetext\": \"成人\"," + 
+				"                \"plusType\": \"COMMON\"," + 
+				"                \"priceType\": \"COMMON\"," + 
+				"                \"flightDate\": \"2021-07-02\"," + 
+				"                \"name\": \"滕飞白\"" + 
+				"            }" + 
+				"        ]," + 
+				"        \"Total\": {" + 
+				"            \"Amount\": 618," + 
+				"            \"Currency\": \"￥\"" + 
+				"        }" + 
+				"    }," + 
+				"    \"uuid\": \"" + uuid + "\"" +
 				"}";
 		return bookPostData.trim().replaceAll(" ", "");
 	}
@@ -465,6 +632,21 @@ public class TestData2 {
 	public static String getConfirmCookie(String tokenId2, String tokenUUID2, String session) {
 		return "_ga=GA1.2.1942100065.1625058587; flycua_user_cookie=true; _gid=GA1.2.180656689.1625290602; Hm_lvt_e9561bcd959a298bc80237056e060dc7=1625058634,1625617382; session="+session+
 				"; X-LB=2.729.6fd82452.50; Hm_lpvt_e9561bcd959a298bc80237056e060dc7=1625680272; tokenId=BE1127D539D81720DE551A329BD0EB920F53CEF1B83B90A238E9F93B378F94E13C04EF0E6A3D6689DFEFAE8B619E0F77CF22DD22BAE1863013F4674EFEA524E3; tokenUUID=8bca6d13a3f24268b6732f629c86479c; _gat=1";
+	}
+	public static String getChooseFlightCookie(String tokenId, String tokenUUID, String session) {
+		String accountCheckCookie = 
+				"_ga=GA1.2.1942100065.1625058587; " + 
+				"_gid=GA1.2.180656689.1625290602; " + 
+				"flycua_user_cookie=true; " + 
+				"Hm_lvt_e9561bcd959a298bc80237056e060dc7=1625058634,1625617382; " + 
+				"Hm_lpvt_e9561bcd959a298bc80237056e060dc7=1625754024; " + 
+				"tokenId="+tokenId+"; " + 
+				"tokenUUID="+tokenUUID+"; " +
+				"session="+session+"; " + 
+				"X-LB=2.729.6fd82452.50; " + 
+				"_gat=1; " + 
+				" ";
+		return accountCheckCookie;
 	}
 	
 	

@@ -12,12 +12,17 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.async.ApplicationContextProvider;
 import com.ticketsystem.async.AsyncService;
-import com.ticketsystem.net.DemoNet;
+import com.ticketsystem.comp.BookComp;
+import com.ticketsystem.comp.CancelComp;
+import com.ticketsystem.comp.LoginComp;
+import com.ticketsystem.comp.QueryComp;
+import com.ticketsystem.model.BookData;
+import com.ticketsystem.net.CookieUtil;
 import com.ticketsystem.util.DemoData;
 import com.ticketsystem.util.SqlManager;
 
 @Service
-public class DemoService {
+public class FlightService2 {
 
 	@Autowired
 	private AsyncService asyncService;
@@ -37,8 +42,6 @@ public class DemoService {
 		int standbyCount = bigData.getIntValue("standbyCount");
 		if (standbyCount > 0) {
 			this.bookLoop(bigData);
-			
-			
 		}
 	}
 	
@@ -57,11 +60,17 @@ public class DemoService {
     public JSONObject booking(JSONObject addData) {
     	JSONObject bigData = new JSONObject();
     	bigData.put("addData", addData);
+    	
     	ArrayList<JSONObject> packageArrData = new ArrayList<JSONObject>();
+    	
+    	String oiId = addData.getString("oiId");
+    	String fromDate = addData.getString("fromDate");
+    	String fightNo = addData.getString("fightNo");
+    	String cabinCode = addData.getString("cabinCode");
 
-    	//TODO 调用接口----------查询订单接口
-    	JSONObject standbyData = new DemoNet().queryTicket(addData);    	
-    	int standbyCount  = standbyData.getIntValue("standbyCount");
+    	//TODO 调用接口----------查询航班余票信息
+    	String standbyCountStr = new QueryComp().queryTicket(addData);
+    	int standbyCount  = Integer.valueOf(standbyCountStr);
     	
     	//standbyCount = 0;
     	
@@ -94,15 +103,13 @@ public class DemoService {
     			JSONObject accountData = new JSONObject();
     	    	ArrayList<JSONObject> customerArrData = new ArrayList<JSONObject>();
     			JSONObject bookData = new JSONObject();
-    			JSONObject orderData = new JSONObject();
     			
     			if (d<accountList.size()) {
     				//预定信息
-    				JSONObject bookMap = new JSONObject();
+    				BookData bookDataBiz = new BookData();
     				
-    				//获取一条官网账户信息
+    				//从数据库获取一条官网账户信息
         			accountData = accountList.get(d);
-        			
         			//更新账户使用时间
             		Date currentDate2 = new Date();
             		String currentDateStr2 = sdf.format(currentDate2);
@@ -112,21 +119,30 @@ public class DemoService {
         			updateTimeData.put("useTime", currentDateStr2);
         			sqlManager.updateAccountTime(updateTimeData);
         			
-        			//预定信息-官网账户信息
-        			JSONObject bookAccountData = new JSONObject();
-        			bookAccountData.put("customerOrderNo", accountData.getString("accountNo"));
-        			bookAccountData.put("contactName", accountData.getString("name"));
-        			bookAccountData.put("contactMobile", accountData.getString("contactMobile"));
-        			bookAccountData.put("flightRangeType", "0");
-        			bookAccountData.put("InsuranceCodes", null);
-        			bookAccountData.put("isApplyReimbursement", false);
-        			bookAccountData.put("callBackUrl", "");
-        			bookMap=bookAccountData;
-    				bookMap.put("appKey", DemoData.getSysData().getString("appKey"));
+        			//填充bookDataBiz
+        			bookDataBiz.setFlightDate(fromDate);
+        			bookDataBiz.setCustomer(accountData.getString("name"), accountData.getString("contactMobile"));
+        			
+        			//TODO 调用接口----------查询航班具体信息
+        			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
+        			//填充bookDataBiz
+        			String flightStr = queryPost2.getString("responseBody");
+        			JSONObject flightData = JSONObject.parseObject(flightStr);
+        			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
+        			bookDataBiz.addTripInfo(processTripParam);
+        			
+        			//TODO 调用接口----------账户登录
+        			String encryptStr = accountData.getString("encryptStr");
+        			String session = accountData.getString("session");
+        			JSONObject loginResult = new LoginComp().accountLogin3(addData, encryptStr, session, processTripParam);
+        			String JSESSIONID = loginResult.getString("JSESSIONID");
+        			String tokenUUID = loginResult.getString("tokenUUID");
+        			String tokenId = loginResult.getString("tokenId");
+        			String uuid = loginResult.getString("uuid");
         			
         			//预定信息-客户信息
-            		ArrayList<JSONObject> bookCustomerDataArr = new ArrayList<JSONObject>();
             		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
+            		String eachAmount = "";
         			for (;f<DemoData.PERSONTICKETS*(d+1);f++) {
         				if (f<standbyCount) {
             				if(f<customerList.size()) {
@@ -134,51 +150,49 @@ public class DemoService {
             					JSONObject customerData = customerList.get(f);
             					customerDataArr.add(customerData);
             					
-            					//组装需要发送的乘客信息
-            					JSONObject bookCustomerData = new JSONObject();
-            					bookCustomerData.put("name", customerData.getString("name"));
-            					bookCustomerData.put("cardType", customerData.getString("cardType"));
-            					bookCustomerData.put("cardNo", customerData.getString("cardNo"));
-            					bookCustomerData.put("mobile", customerData.getString("mobile"));
-            					bookCustomerData.put("birthday", customerData.getString("birthday"));
-            					bookCustomerData.put("ticketType", customerData.getString("ticketType"));
-            					bookCustomerDataArr.add(bookCustomerData);
-            					
             					//更新客户状态-锁定客户
             					JSONObject updateStatusData = new JSONObject();
             					updateStatusData.put("customerId", customerData.getString("customerId"));
             					updateStatusData.put("customerStatus", "2");
             					updateStatusData.put("accountNo", accountData.getString("accountNo"));
             					sqlManager.updateCustomerStatus(updateStatusData);
+            					
+            					//填充bookDataBiz
+            					bookDataBiz.addPassenger(customerData.getString("name"), customerData.getString("cardNo"), customerData.getString("mobile"));
+            					JSONObject passInfo = new JSONObject();
+            					passInfo.put("flightDate", fromDate);
+            					passInfo.put("amountOld", processTripParam.getString("baseFare"));
+            					passInfo.put("amount", processTripParam.getString("amount"));
+            					eachAmount = processTripParam.getString("amount");
+            					passInfo.put("name", customerData.getString("name"));
+            					bookDataBiz.addPassengersInfo2(passInfo);
+            					
+            					bookDataBiz.addTotal(processTripParam.getString("amount"));
+            					
             				} else {
             					System.out.println("乘机人信息已不够用了！！！");
             				}
             			}
             		}
-        			customerArrData.addAll(customerArrData.size(), customerDataArr);
-        			bookMap.put("passengers", bookCustomerDataArr);
+        			//bookDataBiz最后的组装
+        			bookDataBiz.initPassengers2();
+        			bookDataBiz.setUuid(uuid);
         			
-        			//预定信息-航班信息
-        			ArrayList<Object> flightArr = new ArrayList<Object>();
-        			flightArr.add(standbyData);
-        			bookMap.put("flights", flightArr);
-        			
-        			bookData = new JSONObject(bookMap);
-            		// 预定
-        	    	//TODO 调用接口----------订票订单接口
-            		orderData = new DemoNet().bookTicket(bookData);
+        	    	//TODO 调用接口----------机票预定接口
+        			String bookDataStr = bookDataBiz.toString();
+        			bookData = JSONObject.parseObject(bookDataStr);
+        			String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
+        			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
             		
             		//新增或者更新订单信息
             		JSONObject orderInfoData = new JSONObject();
             		orderInfoData.put("accountNo", accountData.getString("accountNo"));
-            		orderInfoData.put("orderNo", orderData.getJSONObject("data").getString("orderNo"));
+            		orderInfoData.put("orderNo", bookResult.getString("orderNo"));
             		orderInfoData.put("tripCode", addData.getString("tripCode"));
             		orderInfoData.put("flightNo", addData.getString("fightNo"));
             		orderInfoData.put("cabinCode", addData.getString("cabinCode"));
             		orderInfoData.put("standbyCount", standbyCount);
-            		double totalAmount = orderData.getJSONObject("data").getDoubleValue("orderAmount");
-            		double price = totalAmount/Double.valueOf(standbyCount);
-            		orderInfoData.put("price", String.valueOf(price));
+            		orderInfoData.put("price", eachAmount);
             		orderInfoData.put("orderStatus", "1");
             		orderInfoData.put("round", "1");
             		Date currentTime = new Date();
@@ -187,12 +201,10 @@ public class DemoService {
             		orderInfoData.put("updateTime", sdf2.format(currentTime));
             		orderInfoData.put("inputUser", "user");
 
-            		String oiId = addData.getString("oiId");
             		if (oiId == null || oiId.length()<1) {
             			//新增订单信息
             			JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
-            			orderData.put("oiId", insertOrderInfo.getString("oiId"));
-            			
+            			addData.put("oiId", insertOrderInfo.getString("oiId"));
             		} else {
             			//更新订单信息
             			JSONObject orderInfo2 = sqlManager.getOrderInfo(oiId);
@@ -200,14 +212,13 @@ public class DemoService {
             			orderInfoData.put("oiId", oiId);
             			orderInfoData.put("round", String.valueOf(Integer.valueOf(round2)+1));
             			sqlManager.updateOrder(orderInfoData);
-            			orderData.put("oiId", oiId);
+            			addData.put("oiId", oiId);
             		}
-            		
             		
         			packageData.put("accountData", accountData);
         			packageData.put("customerArrData", customerArrData);
         			packageData.put("bookData", bookData);
-        			packageData.put("orderData", orderData);
+        			packageData.put("orderData", bookResult);
         			packageData.put("standbyCount", standbyCount);
         			packageArrData.add(packageData);
     			} else {
@@ -240,7 +251,7 @@ public class DemoService {
     	//更新订单信息
     	sqlManager.updateOrderStatus(oiId, "2");
     	//TODO 调用接口----------取消订单接口
-    	new DemoNet().cancelTicket(orderNo);
+    	new CancelComp().cancelTicket(orderNo, accountNo);
     	
     	//更新客户信息
     	sqlManager.updateCustomerByOrder(accountNo, "1");

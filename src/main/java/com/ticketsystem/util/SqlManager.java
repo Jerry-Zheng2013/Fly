@@ -13,8 +13,30 @@ public class SqlManager {
 	 * 传入accountNo<br/>
 	 * @param orderInfoData
 	 */
-	public void getAccount(JSONObject accountData) {
+	public JSONObject getAccount(String accountNo) {
 		// TODO 获取账户详情 
+		String sqlStr = "select account_no,name,contact_mobile,password,use_time,encryptStr,session "
+				+ " from account_info where account_no='"+accountNo+"' ";
+		DBUtil db = new DBUtil();
+		JSONObject accountInfo = new JSONObject();
+		try {
+			db.open();
+			ResultSet rs = db.executeQuery(sqlStr);
+			if(rs.next()){
+				accountInfo.put("accountNo", rs.getString(1));
+				accountInfo.put("name", rs.getString(2));
+				accountInfo.put("contactMobile", rs.getString(3));
+				accountInfo.put("password", rs.getString(4));
+				accountInfo.put("useTime", rs.getString(5));
+				accountInfo.put("encryptStr", rs.getString(6));
+				accountInfo.put("session", rs.getString(7));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return accountInfo;
 	}
 	
 	/**
@@ -25,7 +47,7 @@ public class SqlManager {
 	public ArrayList<JSONObject> getAccountList(JSONObject filterData) {
 		String useTime = filterData.getString("useTime");
 		
-		String sqlStr = "select account_no,name,contact_mobile,password,use_time "
+		String sqlStr = "select account_no,name,contact_mobile,password,use_time,encryptStr,session "
 				+ " from account_info where (use_time < '"+useTime+"' or use_time is null) ";
 		DBUtil db = new DBUtil();
 		ArrayList<JSONObject> accountList = new ArrayList<JSONObject>();
@@ -39,6 +61,8 @@ public class SqlManager {
 				accountData.put("contactMobile", rs.getString(3));
 				accountData.put("password", rs.getString(4));
 				accountData.put("useTime", rs.getString(5));
+				accountData.put("encryptStr", rs.getString(6));
+				accountData.put("session", rs.getString(7));
 				accountList.add(accountData);
 			}
 		} catch (SQLException e) {
@@ -232,9 +256,7 @@ public class SqlManager {
 		return orderInfoData;
 	}
 	
-	public void updateOrderStatus(JSONObject orderData) {
-		String oiId=orderData.getString("oiId");
-		String orderStatus=orderData.getString("orderStatus");
+	public void updateOrderStatus(String oiId, String orderStatus) {
 		String sqlStr = "update order_info set "
 				+ " order_status='"+orderStatus+"' "
 				+ " where oi_id='"+oiId+"' ";
@@ -250,9 +272,7 @@ public class SqlManager {
 		}
 	}
 	
-	public void updateCustomerByOrder(JSONObject cancelData) {
-		String accountNo=cancelData.getString("accountNo");
-		String customerStatus=cancelData.getString("customerStatus");
+	public void updateCustomerByOrder(String accountNo, String customerStatus) {
 		String sqlStr = "update customer_info set "
 				+ " customer_status='"+customerStatus+"' "
 				+ " where account_no='"+accountNo+"' ";
