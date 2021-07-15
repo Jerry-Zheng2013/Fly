@@ -30,7 +30,6 @@ import io.swagger.annotations.ApiOperation;
 public class DomeController {
 
 	@ApiOperation(value = "预定", notes = "新增订单")
-
     @RequestMapping(value="/add", method = RequestMethod.POST)
     public void add(@RequestParam(value = "trip_no",required = true) String tripStr,
                       @RequestParam(value = "flght_no",required = true) String flghtNo,
@@ -48,8 +47,6 @@ public class DomeController {
         addData.put("tripCode", tripStr);
         //new DemoService().addTicket(addData);
         new FlightService2().addTicket(addData);
-        
-        new DemoService().addTicket(addData);
 
         response.sendRedirect("/flight/allFlightList");
     }
