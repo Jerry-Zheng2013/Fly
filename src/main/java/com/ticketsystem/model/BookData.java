@@ -13,7 +13,7 @@ public class BookData {
 	public String flightDate = "";
 	public JSONObject customer = new JSONObject();
 	public JSONArray tripInfo = new JSONArray();
-	public JSONArray passengers = new JSONArray();
+	public String passengers = "";
 	public JSONObject Passengers2 = new JSONObject();
 	public JSONArray PassengersInfo2 = new JSONArray();
 	public JSONObject Total = new JSONObject();
@@ -22,29 +22,31 @@ public class BookData {
 	
 	//需要传入的字段
 	
-	public JSONArray getPassengers() {
+	public String getPassengers() {
 		return passengers;
 	}
-	public void setPassengers(JSONArray passengers) {
+	public void setPassengers(String passengers) {
 		this.passengers = passengers;
 	}
+	private int addPassenger = 1;
 	public void addPassenger(String name, String docId, String phoneNumber) {
 		String name1 = name.substring(0,1);
 		String name2 = name.substring(1,name.length());
 		List<String> qw = new ArrayList<String>() {
 			private static final long serialVersionUID = 1L;
 		{
-		    add("1");
-		    add("3");
-		    add("5");
-		    add("7");
-		    add("9");
+		    add("0");
+		    add("2");
+		    add("4");
+		    add("6");
+		    add("8");
 		}};
 		String nameP = "Mr";
 		if (qw.contains(docId.substring(docId.length()-2, docId.length()-1))) {
 			nameP = "Mrs";
 		};
-		String pass = "{"
+		String ss = "{"
+				+ "\"index\":\""+addPassenger+"\","
 				+ " \"type\":\"ADT\","
 				+ "\"personName\":{"
 				+ "\"surname\":\""+name+"\","
@@ -66,14 +68,18 @@ public class BookData {
 				+ "\"data\":\"[[{\\\"FlightSegmentRPH\\\":\\\"1\\\",\\\"OriginDestinationRPH\\\":\\\"1\\\",\\\"InsuranceRPH\\\":\\\"1\\\"}]]\","
 				+ "\"num\":0"
 				+ "}]}";
-		JSONObject passJson = JSONObject.parseObject(pass);
-		this.passengers.add(passJson);
+		if (this.passengers.length()<=0) {
+			this.passengers = ss;
+		} else {
+			this.passengers = this.passengers + "," + ss;
+		}
+		addPassenger++;
 	}
 	public JSONObject getCustomer() {
 		return customer;
 	}
 	public void setCustomer(String customerName, String cusPhone) {
-		String cus = "\"customer\":{"
+		String cus = "{"
 				+ "\"personName\":{"
 				+ "\"givenName\":\""+customerName+"\","
 				+ "\"surname\":\""+customerName+"\","
@@ -180,7 +186,7 @@ public class BookData {
 				+ "\"Airport\":\""+tripParam.getString("d_airport")+"\","
 				+ "\"TS_CityCode\":\""+tripParam.getString("d_ts_citycode")+"\","
 				+ "\"Terminal\":\""+tripParam.getString("d_terminal")+"\","
-				+ "\"DateTime\":\""+tripParam.getString("d_datetime").substring(0, 10)+"T"+tripParam.getString("d_datetime").substring(10, tripParam.getString("d_datetime").length())+":00"+"\","
+				+ "\"DateTime\":\""+tripParam.getString("d_datetime").substring(0, 10)+"T "+tripParam.getString("d_datetime").substring(10, tripParam.getString("d_datetime").length())+":00"+"\","
 				+ "\"Date\":\""+tripParam.getString("d_date")+"\","
 				+ "\"Time\":\""+tripParam.getString("d_time")+":00"+"\"},"
 				+ "\"Arrival\":{"
@@ -188,7 +194,7 @@ public class BookData {
 				+ "\"Airport\":\""+tripParam.getString("a_airport")+"\","
 				+ "\"TS_CityCode\":\""+tripParam.getString("a_ts_citycode")+"\","
 				+ "\"Terminal\":\""+tripParam.getString("a_terminal")+"\","
-				+ "\"DateTime\":\""+tripParam.getString("a_datetime").substring(0, 10)+"T"+tripParam.getString("a_DateTime").substring(10, tripParam.getString("a_DateTime").length())+":00"+"\","
+				+ "\"DateTime\":\""+tripParam.getString("a_datetime").substring(0, 10)+"T"+tripParam.getString("a_datetime").substring(10, tripParam.getString("a_datetime").length())+":00"+"\","
 				+ "\"Date\":\""+tripParam.getString("a_date")+"\","
 				+ "\"Time\":\""+tripParam.getString("a_time")+":00"+"\""
 				+ "},"
@@ -203,7 +209,7 @@ public class BookData {
 				+ "\"handBaggageRule\":{"
 				+ "\"J\":1,\"C\":1,\"W\":1,\"Y\":1,\"M\":1,\"E\":1,\"H\":1,\"K\":1,\"L\":1,\"N\":1,\"R\":1,\"S\":1,\"V\":1,\"D\":1,\"T\":1,\"I\":0,\"Z\":0,\"U\":0"
 				+ "},"
-				+ "\"checkInBaggage\":false,"
+				+ "\"checkInBaggage\":true,"
 				+ "\"StopOver\":false,"
 				+ "\"redPackets\":\"\","
 				+ "\"FareFamilyCode\":\"HLQ\","
@@ -286,86 +292,42 @@ public class BookData {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
-		sb.append("\"passengers\": [");
-		for (int i=0;i<passengers.size();i++) {
-			JSONObject passenger = passengers.getJSONObject(i);
+		sb.append("\"passengers\":[");
+		sb.append(this.passengers);
+		sb.append("],");
+		
+		sb.append("\"customer\":{");
+		JSONObject personName = customer.getJSONObject("personName");
+		sb.append("\"personName\":{");
+		sb.append("\"givenName\":");  sb.append("\""+personName.getString("givenName")+"\","); 
+		sb.append("\"surname\":");  sb.append("\""+personName.getString("surname")+"\","); 
+		sb.append("\"name\":");  sb.append("\""+personName.getString("name")+"\""); 
+		sb.append("},");
+		sb.append("\"email\":");  sb.append("\""+customer.getString("email")+"\","); 
+		JSONObject telephone = customer.getJSONObject("telephone");
+		sb.append("\"telephone\":{");
+		sb.append("\"phoneNumber\":");  sb.append("\""+telephone.getString("phoneNumber")+"\","); 
+		sb.append("\"phoneType\":");  sb.append("\""+telephone.getString("phoneType")+"\","); 
+		sb.append("\"areaCityCode\":");  sb.append("\""+telephone.getString("areaCityCode")+"\","); 
+		sb.append("\"fixedPhoneNumber\":");  sb.append("\""+telephone.getString("fixedPhoneNumber")+"\""); 
+		sb.append("}");
+		sb.append("},");
+
+		sb.append("\"hasFrequentPassenger\":");  sb.append("\""+hasFrequentPassenger+"\","); 
+		sb.append("\"productNum\":");  sb.append("\""+productNum+"\","); 
+		sb.append("\"ref\":");  sb.append("\""+ref+"\","); 
+		sb.append("\"flightDate\":");  sb.append("\""+flightDate+"\","); 
+
+		sb.append("\"tripInfo\":[");
+		for (int i=0;i<tripInfo.size();i++) {
+			JSONObject trip = tripInfo.getJSONObject(i);
 			if (i==0) {
 				sb.append("{");
 			} else {
 				sb.append(",{");
 			}
-			int in = i+1;
-			sb.append("\"index\":"); sb.append("\""+in+"\",");
-			sb.append("\"type\":"); sb.append("\"ADT\",");
-			JSONObject personName = passenger.getJSONObject("personName");
-			sb.append("\"personName\": {");
-			sb.append("\"surname\":"); sb.append("\""+personName.getString("surname")+"\",");
-			sb.append("\"Surname\":"); sb.append("\""+personName.getString("Surname")+"\",");
-			sb.append("\"givenName\":"); sb.append("\""+personName.getString("givenName")+"\",");
-			sb.append("\"namePrefix\":"); sb.append("\""+personName.getString("namePrefix")+"\"");
-			sb.append("},");
-			JSONObject passport = passenger.getJSONObject("passport");
-			sb.append("\"passport\": {");
-			sb.append("\"docType\":"); sb.append("\""+passport.getString("docType")+"\",");
-			sb.append("\"docId\":"); sb.append("\""+passport.getString("docId")+"\"");
-			sb.append("},");
-			JSONObject AddiDoc = passenger.getJSONObject("AddiDoc");
-			sb.append("\"AddiDoc\": {");
-			sb.append("\"PTCSubType\""); sb.append("\""+AddiDoc.getString("PTCSubType")+"\"");
-			sb.append("},");
-			sb.append("\"save4Freq\":"); sb.append("\""+passenger.getString("save4Freq")+"\",");
-			sb.append("\"birthday\":"); sb.append("\""+passenger.getString("birthday")+"\",");
-			sb.append("\"phoneNumber\":"); sb.append("\""+passenger.getString("phoneNumber")+"\",");
-			sb.append("\"insurance\": [");
-			JSONArray insurance = passenger.getJSONArray("insurance");
-			for (int j=0;j<insurance.size();j++) {
-				JSONObject ins = insurance.getJSONObject(j);
-				if (j==1) {
-					sb.append("{");
-				} else {
-					sb.append(",{");
-				}
-				sb.append("\"data\":"); sb.append("\""+ins.getString("data")+"\",");
-				sb.append("\"num\":"); sb.append(""+j+"");
-				sb.append("}");
-			}
-			sb.append("]");
-			sb.append("}");
-		}
-		sb.append("],");
-		
-		sb.append("\"customer\": {");
-		JSONObject personName = customer.getJSONObject("personName");
-		sb.append("\"personName\": {");
-		sb.append("\"givenName\":");  sb.append("\""+personName.getString("givenName")+"\","); 
-		sb.append("\"surname\": ");  sb.append("\""+personName.getString("surname")+"\","); 
-		sb.append("\"name\": ");  sb.append("\""+personName.getString("name")+"\""); 
-		sb.append("},");
-		sb.append("\"email\": ");  sb.append("\""+customer.getString("email")+"\","); 
-		JSONObject telephone = customer.getJSONObject("telephone");
-		sb.append("\"telephone\": {");
-		sb.append("\"phoneNumber\": ");  sb.append("\""+telephone.getString("phoneNumber")+"\","); 
-		sb.append("\"phoneType\": ");  sb.append("\""+telephone.getString("phoneType")+"\","); 
-		sb.append("\"areaCityCode\": ");  sb.append("\""+telephone.getString("areaCityCode")+"\","); 
-		sb.append("\"fixedPhoneNumber\": ");  sb.append("\""+telephone.getString("fixedPhoneNumber")+"\""); 
-		sb.append("}");
-		sb.append("},");
-
-		sb.append("\"hasFrequentPassenger\": ");  sb.append("\""+hasFrequentPassenger+"\","); 
-		sb.append("\"productNum\": ");  sb.append("\""+productNum+"\","); 
-		sb.append("\"ref\": ");  sb.append("\""+ref+"\","); 
-		sb.append("\"flightDate\": ");  sb.append("\""+flightDate+"\","); 
-
-		sb.append("\"tripInfo\": [");
-		for (int i=0;i<tripInfo.size();i++) {
-			JSONObject trip = tripInfo.getJSONObject(i);
-			if (i==1) {
-				sb.append("{");
-			} else {
-				sb.append(",{");
-			}
 			JSONObject Departure = trip.getJSONObject("Departure");
-			sb.append("\"Departure\": {");
+			sb.append("\"Departure\":{");
 			sb.append("\"IATA\":");  sb.append("\""+Departure.getString("IATA")+"\",");
 			sb.append("\"Airport\":");  sb.append("\""+Departure.getString("Airport")+"\",");
 			sb.append("\"TS_CityCode\":");  sb.append("\""+Departure.getString("TS_CityCode")+"\",");
@@ -375,7 +337,7 @@ public class BookData {
 			sb.append("\"Time\":");  sb.append("\""+Departure.getString("Time")+"\"");
 			sb.append("},");
 			JSONObject Arrival = trip.getJSONObject("Arrival");
-			sb.append("\"Arrival\": {");
+			sb.append("\"Arrival\":{");
 			sb.append("\"IATA\":");  sb.append("\""+Arrival.getString("IATA")+"\",");
 			sb.append("\"Airport\":");  sb.append("\""+Arrival.getString("Airport")+"\",");
 			sb.append("\"TS_CityCode\":");  sb.append("\""+Arrival.getString("TS_CityCode")+"\",");
@@ -390,7 +352,7 @@ public class BookData {
 			sb.append("\"AirEquipType\":");  sb.append("\""+trip.getString("AirEquipType")+"\",");
 			sb.append("\"Duration\":");  sb.append("\""+trip.getString("Duration")+"\",");
 			JSONObject checkInBaggageRule = trip.getJSONObject("checkInBaggageRule");
-			sb.append("\"checkInBaggageRule\": {");
+			sb.append("\"checkInBaggageRule\":{");
 			sb.append("\"J\":");  sb.append(""+checkInBaggageRule.getString("J")+",");
 			sb.append("\"C\":");  sb.append(""+checkInBaggageRule.getString("C")+",");
 			sb.append("\"W\":");  sb.append(""+checkInBaggageRule.getString("W")+",");
@@ -411,7 +373,7 @@ public class BookData {
 			sb.append("\"U\":");  sb.append(""+checkInBaggageRule.getString("U")+"");
 			sb.append("},");
 			JSONObject handBaggageRule = trip.getJSONObject("handBaggageRule");
-			sb.append("\"checkInBaggageRule\": {");
+			sb.append("\"handBaggageRule\":{");
 			sb.append("\"J\":");  sb.append(""+handBaggageRule.getString("J")+",");
 			sb.append("\"C\":");  sb.append(""+handBaggageRule.getString("C")+",");
 			sb.append("\"W\":");  sb.append(""+handBaggageRule.getString("W")+",");
@@ -441,9 +403,9 @@ public class BookData {
 		}
 		sb.append("],");
 
-		sb.append("\"Passengers\": {");
-		JSONArray PassengerInfo = Passengers2.getJSONArray("PassengerInfo");
-		sb.append("\"PassengerInfo\": [");
+		sb.append("\"Passengers\":{");
+		JSONArray PassengerInfo = Passengers2.getJSONArray("PassengersInfo");
+		sb.append("\"PassengerInfo\":[");
 		for (int i=0;i<PassengerInfo.size();i++) {
 			if (i==0) {
 				sb.append("{");
@@ -456,21 +418,21 @@ public class BookData {
 			sb.append("\"Index\":");  sb.append("\""+in+"\",");
 			sb.append("\"lastDate\":");  sb.append("\""+pass.getString("lastDate")+"\",");
 			JSONObject FareBreakdown = pass.getJSONObject("FareBreakdown");
-			sb.append("\"FareBreakdown\": {");
+			sb.append("\"FareBreakdown\":{");
 			JSONObject BaseFare = FareBreakdown.getJSONObject("BaseFare");
-			sb.append("\"BaseFare\": {");
+			sb.append("\"BaseFare\":{");
 			sb.append("\"Amount\":");  sb.append("\""+BaseFare.getString("Amount")+"\",");
 			sb.append("\"Currency\":");  sb.append("\""+BaseFare.getString("Currency")+"\",");
 			sb.append("\"AmountOld\":");  sb.append("\""+BaseFare.getString("AmountOld")+"\"");
 			sb.append("},");
 			JSONObject TotalFare = FareBreakdown.getJSONObject("TotalFare");
-			sb.append("\"TotalFare\": {");
+			sb.append("\"TotalFare\":{");
 			sb.append("\"Adjusted\":");  sb.append("\""+TotalFare.getString("Adjusted")+"\",");
 			sb.append("\"Amount\":");  sb.append("\""+TotalFare.getString("Amount")+"\",");
 			sb.append("\"Currency\":");  sb.append("\""+TotalFare.getString("Currency")+"\"");
 			sb.append("},");
 			JSONObject Taxes = FareBreakdown.getJSONObject("Taxes");
-			sb.append("\"TotalFare\": {");
+			sb.append("\"Taxes\":{");
 			sb.append("\"CN\":");  sb.append(""+Taxes.getString("CN")+",");
 			sb.append("\"YQ\":");  sb.append(""+Taxes.getString("YQ")+",");
 			sb.append("\"Currency\":");  sb.append("\""+Taxes.getString("Currency")+"\"");
@@ -490,13 +452,13 @@ public class BookData {
 		sb.append("],");
 		
 		JSONObject Total = Passengers2.getJSONObject("Total");
-		sb.append("\"Total\": {");
+		sb.append("\"Total\":{");
 		sb.append("\"Amount\":");  sb.append(""+Total.getString("Amount")+",");
 		sb.append("\"Currency\":");  sb.append("\""+Total.getString("Currency")+"\"");
 		sb.append("}");
 		sb.append("},");
 
-		sb.append("\"uuid\": ");  sb.append("\""+uuid+"\","); 
+		sb.append("\"uuid\":");  sb.append("\""+uuid+"\"");
 		sb.append("}"); 
 		return sb.toString();
 	}

@@ -3,6 +3,7 @@ package com.ticketsystem.util;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.net.GetSender;
+import com.ticketsystem.test.GetPostTest2;
 import com.ticketsystem.util.DemoData;
 
 public class HotCityUtil {
@@ -14,7 +15,9 @@ public class HotCityUtil {
 		String cityCode = "";
 		if (hotCityArr.size()<=0) {
 			String hotCityUrl = DemoData.hotCityUrl;
-			JSONObject hotCityJson = new GetSender().sendHttpGet(hotCityUrl, String.valueOf(Math.random()).substring(2, 15));
+			String param = "_="+String.valueOf(Math.random()).substring(2, 15);
+			String cookieStr = "session=s~b6028870-9cb9-4d8c-904c-ff8153f8c2c7.7753f68224abe5cee1455135f509f360; " ;
+			JSONObject hotCityJson = new GetSender().hotCityGet(hotCityUrl, param, cookieStr);
 			if(hotCityJson.size()>0) {
 				String cityStr = hotCityJson.getString("responseBody");
 				if (cityStr.length() >0) {
@@ -59,8 +62,16 @@ public class HotCityUtil {
 	public static String getCityCodeByName(String cityName) {
 		String cityCode = "";
 		if (hotCityArr.size()<=0) {
+			
+			JSONObject queryPost = GetPostTest2.queryGet(
+	        		"http://www.flycua.com/app/searchFlights/queryFlight",
+	        		"_="+String.valueOf(Math.random()).substring(2, 15)+"&org=CITY_BJS_CN&des=CitCnSHANGHA364&type=oneway&depd=2021-07-31&cals=false&adt=1&chd=0&gm=0&jc=0"
+	        		);
+			
 			String hotCityUrl = DemoData.hotCityUrl;
-			JSONObject hotCityJson = new GetSender().sendHttpGet(hotCityUrl, String.valueOf(Math.random()).substring(2, 15));
+			String param = "_="+String.valueOf(Math.random()).substring(2, 15);
+			String cookieStr = "X-LB=2.728.fc1ba9b5.50; session=s~4d102c1b-c461-480a-a89a-58d6c1f315cd.87845c1efe5675145fbda63041c56404; " ;
+			JSONObject hotCityJson = new GetSender().hotCityGet(hotCityUrl, param, cookieStr);
 			if(hotCityJson.size()>0) {
 				String cityStr = hotCityJson.getString("responseBody");
 				if (cityStr.length() >0) {

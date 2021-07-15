@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.async.ApplicationContextProvider;
-import com.ticketsystem.async.AsyncService;
-import com.ticketsystem.comp.BookComp;
+import com.ticketsystem.async.AsyncService3;
 import com.ticketsystem.comp.CancelComp;
 import com.ticketsystem.comp.LoginComp;
 import com.ticketsystem.comp.QueryComp;
@@ -25,7 +24,7 @@ import com.ticketsystem.util.SqlManager;
 public class FlightService2 {
 
 	@Autowired
-	private AsyncService asyncService;
+	private AsyncService3 asyncService3;
 	
 	/**
      * 预定<br/>
@@ -101,8 +100,6 @@ public class FlightService2 {
     		for (int d=0;d<accountCount;d++) {
     			JSONObject packageData = new JSONObject();
     			JSONObject accountData = new JSONObject();
-    	    	ArrayList<JSONObject> customerArrData = new ArrayList<JSONObject>();
-    			JSONObject bookData = new JSONObject();
     			
     			if (d<accountList.size()) {
     				//预定信息
@@ -179,11 +176,13 @@ public class FlightService2 {
         			bookDataBiz.setUuid(uuid);
         			
         	    	//TODO 调用接口----------机票预定接口
-        			String bookDataStr = bookDataBiz.toString();
-        			bookData = JSONObject.parseObject(bookDataStr);
+        			String bookDataStr = bookDataBiz.toString().replace(" ", "");
         			String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
-        			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
-            		
+        			//JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
+        			
+        			JSONObject bookResult = new JSONObject();
+        			bookResult.put("orderNo", "temp"+String.valueOf(Math.random()).substring(2, 15)); //临时代码，假装上一行代码预定成功
+        			
             		//新增或者更新订单信息
             		JSONObject orderInfoData = new JSONObject();
             		orderInfoData.put("accountNo", accountData.getString("accountNo"));
@@ -205,6 +204,8 @@ public class FlightService2 {
             			//新增订单信息
             			JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
             			addData.put("oiId", insertOrderInfo.getString("oiId"));
+            			bookResult.put("oiId", insertOrderInfo.getString("oiId"));
+            			bookResult.put("accountNo", accountNo);
             		} else {
             			//更新订单信息
             			JSONObject orderInfo2 = sqlManager.getOrderInfo(oiId);
@@ -213,11 +214,13 @@ public class FlightService2 {
             			orderInfoData.put("round", String.valueOf(Integer.valueOf(round2)+1));
             			sqlManager.updateOrder(orderInfoData);
             			addData.put("oiId", oiId);
+            			bookResult.put("oiId", oiId);
+            			bookResult.put("accountNo", accountNo);
             		}
             		
         			packageData.put("accountData", accountData);
-        			packageData.put("customerArrData", customerArrData);
-        			packageData.put("bookData", bookData);
+        			packageData.put("customerArrData", customerDataArr);
+        			packageData.put("bookDataStr", bookDataStr);
         			packageData.put("orderData", bookResult);
         			packageData.put("standbyCount", standbyCount);
         			packageArrData.add(packageData);
@@ -249,12 +252,12 @@ public class FlightService2 {
     	String accountNo = cancelData.getString("accountNo");
     	
     	//更新订单信息
-    	sqlManager.updateOrderStatus(oiId, "2");
+    	sqlManager.updateOrderStatus2(oiId, "2");
     	//TODO 调用接口----------取消订单接口
     	new CancelComp().cancelTicket(orderNo, accountNo);
     	
     	//更新客户信息
-    	sqlManager.updateCustomerByOrder(accountNo, "1");
+    	sqlManager.updateCustomerByOrder2(accountNo, "1");
     }
     
     
@@ -274,9 +277,9 @@ public class FlightService2 {
     			loopData.put("customerArrData", jsonArray.getJSONObject(i).getJSONArray("customerArrData"));
     			loopData.put("orderInfoData", jsonArray.getJSONObject(i).getJSONObject("orderData"));
     			//获取线程池服务
-    			this.asyncService = ApplicationContextProvider.getBean(AsyncService.class);
+    			this.asyncService3 = ApplicationContextProvider.getBean(AsyncService3.class);
     			//启动线程
-    			asyncService.bookLoop(loopData);
+    			asyncService3.bookLoop(loopData);
     		}
 		} catch (Exception e) {
 			e.printStackTrace();

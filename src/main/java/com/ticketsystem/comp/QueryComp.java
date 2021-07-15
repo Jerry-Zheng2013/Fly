@@ -11,17 +11,13 @@ import com.ticketsystem.util.Xml2JsonUtil;
 public class QueryComp {
 
 	public String queryTicket(JSONObject queryData) {
-		String standbyCount = "1";
+		String standbyCount = "1"; //临时代码，临时等于1
     	String fromCity = queryData.getString("fromCityCode");
     	String toCity = queryData.getString("toCityCode");
     	String fromDate = queryData.getString("fromDate");
     	String fightNo = queryData.getString("fightNo");
     	String cabinCode = queryData.getString("cabinCode");
     	
-    	String fromCityCode = HotCityUtil.getCityCodeByAVH(fromCity);
-    	System.out.println(fromCityCode);
-    	String toCityCode = HotCityUtil.getCityCodeByAVH(toCity);
-    	System.out.println(toCityCode);
     	String queryUrl = DemoData.queryUrl;
     	String sHashCode = DemoData.sHashCode;
     	String postDataStr = 
@@ -31,7 +27,7 @@ public class QueryComp {
     			+ "&FlightDate="+fromDate
     			+ "&Airline=ALL&direct=true&eticket=true&limittime=0000&outstyle=0";
     	
-    	JSONObject queryPost = new PostSender().sendHttpPost(queryUrl, postDataStr);
+    	JSONObject queryPost = new PostSender().queryPost(queryUrl, postDataStr);
     	if (queryPost.size()>0) {
     		String queryBody = queryPost.getString("responseBody");
     		String AVResult = queryBody.substring(queryBody.indexOf("<AVResult>"), queryBody.indexOf("</AVResult>")+11);
@@ -73,13 +69,15 @@ public class QueryComp {
     	String fromCity = queryData.getString("fromCityCode");
     	String toCity = queryData.getString("toCityCode");
     	String fromDate = queryData.getString("fromDate");
-    	String fromCityCode = HotCityUtil.getCityCodeByAVH(fromCity);
-    	String toCityCode = HotCityUtil.getCityCodeByAVH(toCity);
+    	//String fromCityCode = HotCityUtil.getCityCodeByAVH(fromCity);
+    	//String toCityCode = HotCityUtil.getCityCodeByAVH(toCity);
+    	String fromCityCode = "CITY_BJS_CN"; //临时代码，本应该从数据库中获取数据
+    	String toCityCode = "CitCnSHANGHA364"; //临时代码，本应该从数据库中获取数据
     	
     	String queryUrl = DemoData.queryUrl2;
     	String param = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt=1&chd=0&gm=0&jc=0";
     	
-    	JSONObject queryPost = new GetSender().sendHttpGet(queryUrl, param);
+    	JSONObject queryPost = new GetSender().queryGet2(queryUrl, param);
 		return queryPost;
 	}
 
