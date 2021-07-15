@@ -20,7 +20,7 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * Hello world!
  */
-class GetPostTest2 {
+public class GetPostTest2 {
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {

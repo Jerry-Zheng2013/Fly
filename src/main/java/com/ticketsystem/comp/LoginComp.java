@@ -222,11 +222,11 @@ public class LoginComp {
 			
 			//选择航班
 			String chooseUrl = DemoData.chooseUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
-			String chooseDataStr = "farefamilycode="+tripParam.getJSONObject("fareFamily")
-				+"&seqNum="+tripParam.getJSONObject("priceInfoSeq")
+			String chooseDataStr = "farefamilycode="+tripParam.getString("fareFamily")
+				+"&seqNum="+tripParam.getString("priceInfoSeq")
 				+"&type=1"
-				+"&airline="+tripParam.getJSONObject("airline")
-				+"&validate="+tripParam.getJSONObject("priceInfoSeq")+"#"+tripParam.getJSONObject("priceInfoSeq2")+"#"+tripParam.getJSONObject("airline")+"#1#"+tripParam.getJSONObject("fareFamily")+"#"+cabinCode+"#"+tripParam.getJSONObject("flightNumber")+"#ONE_WAY#"+tripParam.getJSONObject("baseFare")
+				+"&airline="+tripParam.getString("airline")
+				+"&validate="+tripParam.getString("priceInfoSeq")+"#"+tripParam.getString("priceInfoSeq2")+"#"+tripParam.getString("airline")+"#1#"+tripParam.getString("fareFamily")+"#"+cabinCode+"#"+tripParam.getString("flightNumber")+"#ONE_WAY#"+tripParam.getString("baseFare")
 				+"&memberType=COMMON&pricetype=COMMON";
 			JSONObject choosePost = postSender.choosePost(chooseUrl, chooseDataStr, bookCookie);
 			if (choosePost.size()>0) {

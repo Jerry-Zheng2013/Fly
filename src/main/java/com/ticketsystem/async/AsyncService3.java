@@ -5,14 +5,13 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ticketsystem.net.DemoNet;
-import com.ticketsystem.service.DemoService;
+import com.ticketsystem.service.FlightService2;
 import com.ticketsystem.util.DemoData;
 import com.ticketsystem.util.SqlManager;
 
 
 @Service
-public class AsyncService {
+public class AsyncService3 {
 	
 	/**
 	 * 开启新线程<br>
@@ -24,7 +23,7 @@ public class AsyncService {
 		System.out.println("["+Thread.currentThread().getName()+"]----------开始循环逻辑");
 
 		SqlManager sqlManager = new SqlManager();
-		DemoService demoService = new DemoService();
+		FlightService2 flightService2 = new FlightService2();
 		//循环开始时间
 		long startTimeMillis = System.currentTimeMillis();
 		//当前时间
@@ -48,10 +47,12 @@ public class AsyncService {
 		
 		//每轮循环结束后，后续调用取消订单，重新下单
 		//调用取消订单接口
-		JSONObject cancelData = new JSONObject();
-		cancelData.put("orderNo", loopData.getJSONObject("orderInfoData").getJSONObject("data").getString("orderNo"));
     	//TODO 调用接口----------取消订单接口
-		new DemoNet().cancelTicket(cancelData);
+		JSONObject cancelJson = new JSONObject();
+		cancelJson.put("oiId", loopData.getJSONObject("orderInfoData").getString("oiId"));
+		cancelJson.put("orderNo", loopData.getJSONObject("orderInfoData").getString("orderNo"));
+		cancelJson.put("accountNo", loopData.getJSONObject("orderInfoData").getString("accountNo"));
+		new FlightService2().cancelTicket(cancelJson);
 		
 		//解锁客户
 		JSONArray customerArrData = loopData.getJSONArray("customerArrData");
@@ -65,7 +66,7 @@ public class AsyncService {
 		//接着调用订票接口
 		JSONObject addData2 = loopData.getJSONObject("addData");
 		addData2.put("oiId", loopData.getJSONObject("orderInfoData").getString("oiId"));
-		JSONObject bigData2 = demoService.booking(addData2);
+		JSONObject bigData2 = flightService2.booking(addData2);
 		
 		//调用自身，递归，进行下一轮循环订票
 		//组装新一轮的packageData
@@ -76,9 +77,9 @@ public class AsyncService {
 			loopData2.put("customerArrData", jsonArray2.getJSONObject(i).getJSONArray("customerArrData"));
 			loopData2.put("orderInfoData", jsonArray2.getJSONObject(i).getJSONObject("orderData"));
 			//获取线程池服务
-			AsyncService2 asyncService2 = ApplicationContextProvider.getBean(AsyncService2.class);
+			AsyncService4 asyncService4 = ApplicationContextProvider.getBean(AsyncService4.class);
 			//启动线程
-			asyncService2.bookLoop(loopData2);
+			asyncService4.bookLoop(loopData2);
 		}
 		
 		System.out.println("["+Thread.currentThread().getName()+"]----------线程正常结束");

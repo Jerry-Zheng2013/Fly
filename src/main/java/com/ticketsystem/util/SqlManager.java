@@ -48,7 +48,7 @@ public class SqlManager {
 		String useTime = filterData.getString("useTime");
 		
 		String sqlStr = "select account_no,name,contact_mobile,password,use_time,encryptStr,session "
-				+ " from account_info where (use_time < '"+useTime+"' or use_time is null) ";
+				+ " from account_info where (use_time < '"+useTime+"' or use_time is null) order by account_no asc ";
 		DBUtil db = new DBUtil();
 		ArrayList<JSONObject> accountList = new ArrayList<JSONObject>();
 		try {
@@ -256,7 +256,9 @@ public class SqlManager {
 		return orderInfoData;
 	}
 	
-	public void updateOrderStatus(String oiId, String orderStatus) {
+	public void updateOrderStatus(JSONObject orderData) {
+		String oiId=orderData.getString("oiId");
+		String orderStatus=orderData.getString("orderStatus");
 		String sqlStr = "update order_info set "
 				+ " order_status='"+orderStatus+"' "
 				+ " where oi_id='"+oiId+"' ";
@@ -272,7 +274,41 @@ public class SqlManager {
 		}
 	}
 	
-	public void updateCustomerByOrder(String accountNo, String customerStatus) {
+	public void updateOrderStatus2(String oiId, String orderStatus) {
+		String sqlStr = "update order_info set "
+				+ " order_status='"+orderStatus+"' "
+				+ " where oi_id='"+oiId+"' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+	}
+	
+	public void updateCustomerByOrder(JSONObject cancelData) {
+		String accountNo=cancelData.getString("accountNo");
+		String customerStatus=cancelData.getString("customerStatus");
+		String sqlStr = "update customer_info set "
+				+ " customer_status='"+customerStatus+"' "
+				+ " where account_no='"+accountNo+"' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+	}
+	
+	public void updateCustomerByOrder2(String accountNo, String customerStatus) {
 		String sqlStr = "update customer_info set "
 				+ " customer_status='"+customerStatus+"' "
 				+ " where account_no='"+accountNo+"' ";

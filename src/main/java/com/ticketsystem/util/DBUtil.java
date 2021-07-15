@@ -39,7 +39,7 @@ public class DBUtil {
 	public void open() {
 		try{
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/ticket?useSSL=false&serverTimezone=UTC","root","123");
+			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/ticket?useSSL=false&serverTimezone=UTC","qfly","qfly");
 			stmt=conn.createStatement();
 			System.out.println("打开数据库连接");
 		} catch (Exception ex) {

@@ -37,8 +37,6 @@ public class DemoService {
 		int standbyCount = bigData.getIntValue("standbyCount");
 		if (standbyCount > 0) {
 			this.bookLoop(bigData);
-			
-			
 		}
 	}
 	
@@ -233,17 +231,17 @@ public class DemoService {
      */
     public void cancelTicket(JSONObject cancelData) {
     	SqlManager sqlManager = new SqlManager();
-    	String oiId = cancelData.getString("oiId");
-    	String orderNo = cancelData.getString("orderNo");
-    	String accountNo = cancelData.getString("accountNo");
-    	
     	//更新订单信息
-    	sqlManager.updateOrderStatus(oiId, "2");
+    	JSONObject orderData = new JSONObject();
+    	orderData.put("oiId", cancelData.getString("oiId"));
+    	orderData.put("orderStatus", "2");
+    	sqlManager.updateOrderStatus(orderData);
     	//TODO 调用接口----------取消订单接口
-    	new DemoNet().cancelTicket(orderNo);
+    	new DemoNet().cancelTicket(cancelData);
     	
     	//更新客户信息
-    	sqlManager.updateCustomerByOrder(accountNo, "1");
+    	cancelData.put("customerStatus", "2");
+    	sqlManager.updateCustomerByOrder(cancelData);
     }
     
     

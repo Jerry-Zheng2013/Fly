@@ -18,7 +18,7 @@ public class BookComp {
 		String paymentResultBody = paymentResult.getString("responseBody");
 		if (paymentResultBody.length() > 0) {
 			JSONObject paymentResultJson = JSONObject.parseObject(paymentResultBody);
-			String pnrId = paymentResultJson.getJSONObject("res").getJSONObject("Booking").getString("SuperPNR_ID");
+			String pnrId = paymentResultJson.getJSONObject("res").getJSONObject("PaymentDetails").getJSONObject("Booking").getString("SuperPNR_ID");
 			bookResult.put("orderNo", pnrId);
 		}
 		return bookResult;
