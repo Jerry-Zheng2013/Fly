@@ -59,6 +59,10 @@ public class FlightService2 {
      * 		}<br/>
      */
     public JSONObject booking(JSONObject addData) {
+    	Date intoDate = new Date();
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	System.out.println("当前时间：==="+format.format(intoDate));
+    	
     	JSONObject bigData = new JSONObject();
     	bigData.put("addData", addData);
     	
@@ -72,8 +76,9 @@ public class FlightService2 {
     	//TODO 调用接口----------查询航班余票信息
     	String standbyCountStr = new QueryComp().queryTicket(addData);
     	int standbyCount  = Integer.valueOf(standbyCountStr);
+    	int tempStandBy = standbyCount;
     	
-    	//standbyCount = 0;
+    	//standbyCount = 3;
     	
     	bigData.put("standbyCount", standbyCount);
     	
@@ -100,6 +105,7 @@ public class FlightService2 {
     		
     		int f=0;
     		for (int d=0;d<accountCount;d++) {
+    			int currStandBy = tempStandBy>DemoData.PERSONTICKETS?4:tempStandBy;
     			JSONObject packageData = new JSONObject();
     			JSONObject accountData = new JSONObject();
     			
@@ -123,6 +129,7 @@ public class FlightService2 {
         			bookDataBiz.setCustomer(accountData.getString("name"), accountData.getString("contactMobile"));
         			
         			//TODO 调用接口----------查询航班具体信息
+        			addData.put("currStandBy", currStandBy);
         			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
         			//填充bookDataBiz
         			String flightStr = queryPost2.getString("responseBody");
@@ -130,6 +137,8 @@ public class FlightService2 {
         			JSONObject flightData = JSONObject.parseObject(flightStr);
         			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
         			bookDataBiz.addTripInfo(processTripParam);
+        			
+        			tempStandBy = tempStandBy-currStandBy;
         			
         			//TODO 调用接口----------账户登录
         			String encryptStr = accountData.getString("encryptStr");
@@ -166,6 +175,7 @@ public class FlightService2 {
             					passInfo.put("amount", processTripParam.getString("amount"));
             					eachAmount = processTripParam.getString("amount");
             					passInfo.put("name", customerData.getString("name"));
+            					passInfo.put("quantity", currStandBy);
             					bookDataBiz.addPassengersInfo2(passInfo);
             					
             					bookDataBiz.addTotal(processTripParam.getString("amount"));
@@ -181,7 +191,8 @@ public class FlightService2 {
         			
         	    	//TODO 调用接口----------机票预定接口
         			String bookDataStr = bookDataBiz.toString().replace(" ", "");
-        			String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
+        			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
+        			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
         			
         			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
         			if(bookResult.getString("orderNo").length()<7) {return null;}

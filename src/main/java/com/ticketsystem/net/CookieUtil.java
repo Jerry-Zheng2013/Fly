@@ -39,4 +39,15 @@ public class CookieUtil {
 				" ";
 		return orderCookie;
 	}
+
+	public static String getBookCookie2(String tokenId, String tokenUUID, String session) {
+		String accountCheckCookie = 
+				"X-LB=2.728.fc1ba9b5.50; " + 
+				"session="+session+"; " + 
+				"flycua_user_cookie=true; " + 
+				"tokenId="+tokenId+"; " + 
+				"tokenUUID="+tokenUUID+"; " +
+				" ";
+		return accountCheckCookie;
+	}
 }

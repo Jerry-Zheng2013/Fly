@@ -13,8 +13,9 @@ public class BookComp {
 		PostSender.bookPost(bookUrl, bookDataStr, bookCookie);
 		
 		//获取支付详情
-		String paymentDetailUrl = DemoData.paymentDetailUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
-		JSONObject paymentResult = new GetSender().sendHttpGet(paymentDetailUrl, "", bookCookie);
+		String paymentDetailUrl = DemoData.paymentDetailUrl;
+		String param ="_="+String.valueOf(Math.random()).substring(2, 15);
+		JSONObject paymentResult = new GetSender().sendHttpGet(paymentDetailUrl, param, bookCookie);
 		String paymentResultBody = paymentResult.getString("responseBody");
 		if (paymentResultBody.length() > 0) {
 			JSONObject paymentResultJson = JSONObject.parseObject(paymentResultBody);
