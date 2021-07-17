@@ -137,10 +137,14 @@ public class GetSender {
             
         } catch (IOException e) {
             e.printStackTrace();
-            if (this.queryGet2<10) {
+            //if (this.queryGet2<2) {
+            	try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+				}
 				this.queryGet2++;
             	return queryGet2(url, param);
-            }
+            //}
         }
         resultJson.put("responseBody", responseBody);
         resultJson.put("responseHead", responseHead);
@@ -180,10 +184,6 @@ public class GetSender {
             
         } catch (IOException e) {
             e.printStackTrace();
-            if (this.getCount<10) {
-				this.getCount++;
-            	return sendHttpGet(url, param, cookieStr);
-            }
         }
         resultJson.put("responseBody", responseBody);
         resultJson.put("responseHead", responseHead);

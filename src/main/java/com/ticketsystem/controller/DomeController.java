@@ -35,13 +35,13 @@ public class DomeController {
                       @RequestParam(value = "flght_no",required = true) String flghtNo,
                       @RequestParam(value = "cabin_code",required = true) String cabinCode, HttpServletResponse response) throws Exception {
         JSONObject addData = new JSONObject();
+        //AVH/PKXSHA/21JUL/D/KN
         addData.put("fromCityCode", tripStr.substring(4, 7));
         addData.put("toCityCode", tripStr.substring(7, 10));
-        String fromDate = tripStr.substring(11, 19);
-        if (fromDate != null && fromDate != "") {
-        	fromDate = CommUtils.stringDateFormate(fromDate);
-        }
-        addData.put("fromDate", fromDate);
+        String fromDate = tripStr.substring(11, 16);
+        String desDate = DemoData.CURR_YEAR + DemoData.CALENDAR_MAP.get(fromDate.substring(2, 5)) + fromDate.substring(0, 2);
+        String desDate2 = CommUtils.stringDateFormate(desDate);
+        addData.put("fromDate", desDate2);
         addData.put("fightNo", flghtNo);
         addData.put("cabinCode", cabinCode);
         addData.put("tripCode", tripStr);

@@ -324,4 +324,32 @@ public class SqlManager {
 		}
 	}
 	
+
+	/**
+	 * 获取单个账户详情<br/>
+	 * 传入accountNo<br/>
+	 * @param orderInfoData
+	 */
+	public JSONObject getCityInfo(String cityNo) {
+		//根据ID获取城市详情
+		String sqlStr = "select city_no,city_name,city_code,remark "
+				+ " from city_info where city_no='"+cityNo+"' ";
+		DBUtil db = new DBUtil();
+		JSONObject cityInfo = new JSONObject();
+		try {
+			db.open();
+			ResultSet rs = db.executeQuery(sqlStr);
+			if(rs.next()){
+				cityInfo.put("cityNo", rs.getString(1));
+				cityInfo.put("cityName", rs.getString(2));
+				cityInfo.put("cityCode", rs.getString(3));
+				cityInfo.put("remark", rs.getString(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return cityInfo;
+	}
 }

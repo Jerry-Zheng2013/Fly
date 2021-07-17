@@ -214,6 +214,7 @@ public class GetPostTest2 {
         }
         return resultJson;
 	}
+	
 
 	public static JSONObject secondLoginPost(String url, String param, String loginCookie2) throws Exception {
 		JSONObject resultJson = new JSONObject();

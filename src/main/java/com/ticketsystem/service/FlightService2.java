@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.async.ApplicationContextProvider;
 import com.ticketsystem.async.AsyncService3;
+import com.ticketsystem.comp.BookComp;
 import com.ticketsystem.comp.CancelComp;
 import com.ticketsystem.comp.LoginComp;
 import com.ticketsystem.comp.QueryComp;
@@ -36,7 +37,8 @@ public class FlightService2 {
 	public void addTicket(JSONObject addData) {
 		//开始新增订票逻辑
 		JSONObject bigData = this.booking(addData);
-    	
+    	if(bigData==null) {return;}
+		
     	//调用循环逻辑，开始循环预定
 		int standbyCount = bigData.getIntValue("standbyCount");
 		if (standbyCount > 0) {
@@ -124,6 +126,7 @@ public class FlightService2 {
         			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
         			//填充bookDataBiz
         			String flightStr = queryPost2.getString("responseBody");
+        			if (flightStr.length()<10) {return null;}
         			JSONObject flightData = JSONObject.parseObject(flightStr);
         			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
         			bookDataBiz.addTripInfo(processTripParam);
@@ -132,6 +135,7 @@ public class FlightService2 {
         			String encryptStr = accountData.getString("encryptStr");
         			String session = accountData.getString("session");
         			JSONObject loginResult = new LoginComp().accountLogin3(addData, encryptStr, session, processTripParam);
+        			if(loginResult==null) {return null;}
         			String JSESSIONID = loginResult.getString("JSESSIONID");
         			String tokenUUID = loginResult.getString("tokenUUID");
         			String tokenId = loginResult.getString("tokenId");
@@ -178,10 +182,12 @@ public class FlightService2 {
         	    	//TODO 调用接口----------机票预定接口
         			String bookDataStr = bookDataBiz.toString().replace(" ", "");
         			String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
-        			//JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
         			
-        			JSONObject bookResult = new JSONObject();
-        			bookResult.put("orderNo", "temp"+String.valueOf(Math.random()).substring(2, 15)); //临时代码，假装上一行代码预定成功
+        			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
+        			if(bookResult.getString("orderNo").length()<7) {return null;}
+        			
+        			//JSONObject bookResult = new JSONObject();
+        			//bookResult.put("orderNo", "temp"+String.valueOf(Math.random()).substring(2, 15)); //临时代码，假装上一行代码预定成功
         			
             		//新增或者更新订单信息
             		JSONObject orderInfoData = new JSONObject();
