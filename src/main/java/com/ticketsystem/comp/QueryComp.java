@@ -6,6 +6,7 @@ import com.ticketsystem.net.GetSender;
 import com.ticketsystem.net.PostSender;
 import com.ticketsystem.util.DemoData;
 import com.ticketsystem.util.HotCityUtil;
+import com.ticketsystem.util.SqlManager;
 import com.ticketsystem.util.Xml2JsonUtil;
 
 public class QueryComp {
@@ -69,10 +70,9 @@ public class QueryComp {
     	String fromCity = queryData.getString("fromCityCode");
     	String toCity = queryData.getString("toCityCode");
     	String fromDate = queryData.getString("fromDate");
-    	//String fromCityCode = HotCityUtil.getCityCodeByAVH(fromCity);
-    	//String toCityCode = HotCityUtil.getCityCodeByAVH(toCity);
-    	String fromCityCode = "CITY_BJS_CN"; //临时代码，本应该从数据库中获取数据
-    	String toCityCode = "CitCnSHANGHA364"; //临时代码，本应该从数据库中获取数据
+    	SqlManager sqlmanager = new SqlManager();
+    	String fromCityCode = sqlmanager.getCityInfo(fromCity).getString("cityCode");
+    	String toCityCode = sqlmanager.getCityInfo(toCity).getString("cityCode");
     	
     	String queryUrl = DemoData.queryUrl2;
     	String param = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt=1&chd=0&gm=0&jc=0";

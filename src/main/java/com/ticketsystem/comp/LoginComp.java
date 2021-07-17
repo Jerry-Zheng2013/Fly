@@ -214,10 +214,7 @@ public class LoginComp {
 			JSONObject pointsPost = postSender.pointsPost(pointsUrl, pointsDataStr, bookCookie);
 			if (pointsPost.size()>0) {
 				String chooseBody = pointsPost.getString("responseBody");
-				if (chooseBody.contains("uuid")) {
-					String uuidStr1 = chooseBody.substring(chooseBody.indexOf("\"uuid\":\"")+8, chooseBody.indexOf("\"}"));
-					System.out.println(uuidStr1);					
-				}
+				System.out.println(chooseBody);
 			}
 			
 			//选择航班
@@ -226,11 +223,13 @@ public class LoginComp {
 				+"&seqNum="+tripParam.getString("priceInfoSeq")
 				+"&type=1"
 				+"&airline="+tripParam.getString("airline")
-				+"&validate="+tripParam.getString("priceInfoSeq")+"#"+tripParam.getString("priceInfoSeq2")+"#"+tripParam.getString("airline")+"#1#"+tripParam.getString("fareFamily")+"#"+cabinCode+"#"+tripParam.getString("flightNumber")+"#ONE_WAY#"+tripParam.getString("baseFare")
-				+"&memberType=COMMON&pricetype=COMMON";
+				+"&validate="+tripParam.getString("priceInfoSeq")+"%23"+tripParam.getString("priceInfoSeq2")+"%23"+tripParam.getString("airline")+"%231%23"+tripParam.getString("fareFamily")+"%23"+cabinCode+"%23"+tripParam.getString("flightNumber")+"%23ONE_WAY%23"+tripParam.getString("baseFare")
+				+"&memberType=COMMON&pricetype=COMMON&suppliercode=";
+			
 			JSONObject choosePost = postSender.choosePost(chooseUrl, chooseDataStr, bookCookie);
 			if (choosePost.size()>0) {
 				String chooseBody = choosePost.getString("responseBody");
+				if (chooseBody.length()<7) {return null;}
 				if (chooseBody.contains("uuid")) {
 					String uuidStr1 = chooseBody.substring(chooseBody.indexOf("\"uuid\":\"")+8, chooseBody.indexOf("\"}"));
 					System.out.println(uuidStr1);

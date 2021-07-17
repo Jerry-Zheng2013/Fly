@@ -31,9 +31,27 @@ public class DemoData {
 	public static String bookUrl = "http://www.flycua.com/app/booking/book";
 	public static String paymentDetailUrl = "http://www.flycua.com/app/booking/paymentDetails";
 	public static String orderDetailUrl = "http://www.flycua.com/app/order/detail";
-	public static String cancelUrl = "http://www.flycua.com/app/cancel";
+	public static String cancelUrl = "http://www.flycua.com/app/order/cancelOrder";
 	
 	public static String sHashCode = "VIBE_6c8512026e194d939046d17983b6e426";
+	
+	public static String CURR_YEAR = "2021";
+	public static HashMap<String, String> CALENDAR_MAP = new HashMap<String, String>(){
+		private static final long serialVersionUID = 1L;
+	{
+		put("JAN","01");
+		put("FEB","02");
+		put("MAR","03");
+		put("APR","04");
+		put("MAY","05");
+		put("JUN","06");
+		put("JUL","07");
+		put("AUG","08");
+		put("SEP","09");
+		put("OCT","10");
+		put("NOV","11");
+		put("DEC","12");
+	}};
 	
 	/**
 	 * 系统信息

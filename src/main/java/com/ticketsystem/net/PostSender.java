@@ -194,8 +194,12 @@ public class PostSender {
             }
             responseBody.append(result);
 			System.out.println("responseBody:"+result);
-			if (!result.contains("uuid") && this.chooseCount <10) {
+			if (!result.contains("uuid") && this.chooseCount <3) {
 				this.chooseCount++;
+	        	try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+				}
 				choosePost(url, postDataStr, cookieStr);
 			}
 
@@ -205,6 +209,14 @@ public class PostSender {
 			
         } catch (IOException e) {
             e.printStackTrace();
+            if (!result.contains("uuid") && this.chooseCount <3) {
+				this.chooseCount++;
+            	try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+				}
+				choosePost(url, postDataStr, cookieStr);
+			}
         }
         resultJson.put("responseBody", responseBody);
         resultJson.put("responseHead", responseHead);

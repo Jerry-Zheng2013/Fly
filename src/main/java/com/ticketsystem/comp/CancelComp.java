@@ -14,9 +14,9 @@ public class CancelComp {
 		JSONObject account = sqlManager.getAccount(accountNo);
 		String session = account.getString("session");
 		
-		String orderDetailUrl = DemoData.orderDetailUrl +"?_="+String.valueOf(Math.random()).substring(2, 15) 
+		String orderDetailUrl = DemoData.orderDetailUrl ;
+		String paramStr = "_="+String.valueOf(Math.random()).substring(2, 15) 
 				+ "&orderId="+orderNo;
-		String paramStr = "";
 		String orderInfoCookie = CookieUtil.getOrderInfoCookie(session);
 		JSONObject orderInfoResult = new GetSender().sendHttpGet(orderDetailUrl, paramStr, orderInfoCookie);
 		
