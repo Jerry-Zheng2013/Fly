@@ -22,7 +22,8 @@ public class DemoData {
 	
 	public static String hotCityUrl = "http://www.flycua.com/app/hierarchy/hotCity";
 	public static String queryUrl = "http://ws.51pid.com/VIBE.ASMX/AVH";
-	public static String queryUrl2 = "http://www.flycua.com/app/searchFlights/queryFlight";
+	public static String queryUrl2 = "http://www.flycua.com/booking/search.html";
+	public static String queryUrl3 = "http://www.flycua.com/app/searchFlights/queryFlight";
 	public static String loginUrl = "https://higo.flycua.com/ffp/member/login";
 	public static String checkUrl = "http://www.flycua.com/app/login/queryUserStatus";
 	public static String pointsInfoUrl = "http://www.flycua.com/app/searchFlights/queryPointsInfo";

@@ -70,14 +70,20 @@ public class QueryComp {
     	String fromCity = queryData.getString("fromCityCode");
     	String toCity = queryData.getString("toCityCode");
     	String fromDate = queryData.getString("fromDate");
+    	String currStandBy = queryData.getString("currStandBy");
     	SqlManager sqlmanager = new SqlManager();
     	String fromCityCode = sqlmanager.getCityInfo(fromCity).getString("cityCode");
     	String toCityCode = sqlmanager.getCityInfo(toCity).getString("cityCode");
     	
     	String queryUrl = DemoData.queryUrl2;
-    	String param = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt=1&chd=0&gm=0&jc=0";
+    	//flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-21&adults=1&children=0&militaryDisability=0&policeRemnants=0
+    	String param = "flightType=oneway&Origin="+fromCityCode+"&Destination="+toCityCode+"&departDate="+fromDate+"&adults="+currStandBy+"&children=0&militaryDisability=0&policeRemnants=0";
+    	new GetSender().queryGet2(queryUrl, param);
     	
-    	JSONObject queryPost = new GetSender().queryGet2(queryUrl, param);
+    	String queryUrl3 = DemoData.queryUrl3;
+    	String param3 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
+    	
+    	JSONObject queryPost = new GetSender().queryGet2(queryUrl3, param3);
 		return queryPost;
 	}
 

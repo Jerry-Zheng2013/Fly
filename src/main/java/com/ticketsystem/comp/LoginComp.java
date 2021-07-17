@@ -207,7 +207,8 @@ public class LoginComp {
 			
 			//确认航班
 			String pointsUrl = DemoData.pointsInfoUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
-			String pointsDataStr = "number="+fightNo.substring(2, fightNo.length())+"&cabin="+cabinCode+"&org="+fromCity+"&dst="+toCity
+			String pointsDataStr = "number="+fightNo.substring(2, fightNo.length())
+					+"&cabin="+cabinCode+"&org="+fromCity+"&dst="+toCity
 					+"&basecabinfareamount="+tripParam.getString("baseFare")
 					+ "&flightdate="+fromDate+"T23%3A15%3A00.000%2B0000"
 					+ "&segment="+fromCity+"%7C"+toCity+"%2C1%2CCNY%2C1630";
@@ -229,11 +230,7 @@ public class LoginComp {
 			JSONObject choosePost = postSender.choosePost(chooseUrl, chooseDataStr, bookCookie);
 			if (choosePost.size()>0) {
 				String chooseBody = choosePost.getString("responseBody");
-				if (chooseBody.length()<7) {return null;}
-				if (chooseBody.contains("uuid")) {
-					String uuidStr1 = chooseBody.substring(chooseBody.indexOf("\"uuid\":\"")+8, chooseBody.indexOf("\"}"));
-					System.out.println(uuidStr1);
-				}
+				System.out.println(chooseBody);
 			}
 			
 			//加入购物车
@@ -243,8 +240,12 @@ public class LoginComp {
 			String uuid2 = "";
 			if (choosePost.size()>0) {
 				String addBody = addToCartPost.getString("responseBody");
-				uuid2 = addBody.substring(addBody.indexOf("\"uuid\":\"")+8, addBody.indexOf("\"}"));
-				System.out.println(uuid2);
+				if(addBody.contains("\"uuid\":\"")) {
+					uuid2 = addBody.substring(addBody.indexOf("\"uuid\":\"")+8, addBody.indexOf("\"}"));
+					System.out.println(uuid2);
+				} else {
+					return null;
+				}
 			}
 			logInResult.put("uuid", uuid2);
 			
