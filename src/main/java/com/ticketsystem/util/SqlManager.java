@@ -352,4 +352,62 @@ public class SqlManager {
 		}
 		return cityInfo;
 	}
+	
+	/**
+	 * 新增KN账号<br/>
+	 * 传入accountNo,orderNo,tripCcode,flightNo,cabinCode,price,<br/>
+	 * standbyCount,orderStatus,round,inputTime,updateTime,inputUser<br/>
+	 * @param orderInfoData
+	 * @return 订单ID
+	 */
+	public JSONObject insertKN(JSONObject addAccounttKN) {
+		String accountNo=addAccounttKN.getString("accountNo");
+		String name=addAccounttKN.getString("name");
+		String password=addAccounttKN.getString("password");
+		String mobile=addAccounttKN.getString("mobile");
+		String useTime=addAccounttKN.getString("useTime");
+		String encryptStr=addAccounttKN.getString("encryptStr");
+		String session=addAccounttKN.getString("session");
+		//自动生成主键oiId
+		String sqlStr = "insert into account_kn (account_no,name,password,contact_mobile,use_time,encryptStr,session) "
+				+ " values('"+accountNo+"','"+name+"','"+password+"','"+mobile+"','"+useTime+"','"+encryptStr+"','"+session+"' ) "; 
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return addAccounttKN;
+	}
+	
+	/**
+	 * 获取联航账号信息<br/>
+	 * 传入accountNo<br/>
+	 * @param accountNo
+	 */
+	public JSONObject getKnAccount(String accountNo) {
+		//根据ID获取联航账号信息
+		String sqlStr = "select account_no,name,password,contact_mobile,use_time,encryptStr,session "
+				+ " from account_kn where account_no='"+accountNo+"' ";
+		DBUtil db = new DBUtil();
+		JSONObject knAccountInfo = new JSONObject();
+		try {
+			db.open();
+			ResultSet rs = db.executeQuery(sqlStr);
+			if(rs.next()){
+				knAccountInfo.put("accountNo", rs.getString(1));
+				knAccountInfo.put("name", rs.getString(2));
+				knAccountInfo.put("password", rs.getString(3));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return knAccountInfo;
+	}
 }
