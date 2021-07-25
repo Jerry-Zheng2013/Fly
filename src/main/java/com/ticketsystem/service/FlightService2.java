@@ -19,7 +19,7 @@ import com.ticketsystem.comp.QueryComp;
 import com.ticketsystem.model.BookData;
 import com.ticketsystem.net.CookieUtil;
 import com.ticketsystem.util.DemoData;
-import com.ticketsystem.util.SqlManager;
+import com.ticketsystem.util.KnSqlManager;
 
 @Service
 public class FlightService2 {
@@ -58,10 +58,11 @@ public class FlightService2 {
      * 			otherData
      * 		}<br/>
      */
-    public JSONObject booking(JSONObject addData) {
+    public synchronized JSONObject booking(JSONObject addData) {
     	Date intoDate = new Date();
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	System.out.println("当前时间：==="+format.format(intoDate));
+		System.out.println("["+Thread.currentThread().getName()+"]----------线程进入预定阶段");
     	
     	JSONObject bigData = new JSONObject();
     	bigData.put("addData", addData);
@@ -76,7 +77,7 @@ public class FlightService2 {
     	//TODO 调用接口----------查询航班余票信息
     	String standbyCountStr = new QueryComp().queryTicket(addData);
     	int standbyCount  = Integer.valueOf(standbyCountStr);
-    	int tempStandBy = standbyCount;
+    	int nextStandBy = standbyCount;
     	
     	//standbyCount = 3;
     	
@@ -85,11 +86,12 @@ public class FlightService2 {
     	//预定数据组装
     	if (standbyCount>0) {
     		//向上取整，决定用多少个账号进行预定
-    		double accountCount = Math.ceil(Double.valueOf(
-    				new BigDecimal(String.valueOf(standbyCount))
-    				.divide(
-    				new BigDecimal(String.valueOf(DemoData.PERSONTICKETS))).toPlainString()));
-    		SqlManager sqlManager = new SqlManager();
+    		BigDecimal standbyBig = new BigDecimal(String.valueOf(standbyCount));
+    		BigDecimal personBig = new BigDecimal(String.valueOf(DemoData.PERSONTICKETS));
+    		BigDecimal divideBig = standbyBig.divide(personBig, 2, 2);
+    		Double divideDouble = Double.valueOf(divideBig.toPlainString());
+    		double accountCount = Math.ceil(divideDouble);
+    		KnSqlManager sqlManager = new KnSqlManager();
     		//获取官网账户信息
     		JSONObject filterData = new JSONObject();
     		Date currentDate = new Date();
@@ -103,9 +105,11 @@ public class FlightService2 {
     		filterData2.put("customerStatus", "1");
     		ArrayList<JSONObject> customerList = sqlManager.getCustomerList(filterData2);
     		
+    		// d表示第几个账号
+    		// f表示整个预定请求中的第几个乘客
     		int f=0;
     		for (int d=0;d<accountCount;d++) {
-    			int currStandBy = tempStandBy>DemoData.PERSONTICKETS?4:tempStandBy;
+    			int currStandBy = nextStandBy>DemoData.PERSONTICKETS?4:nextStandBy;
     			JSONObject packageData = new JSONObject();
     			JSONObject accountData = new JSONObject();
     			
@@ -115,21 +119,39 @@ public class FlightService2 {
     				
     				//从数据库获取一条官网账户信息
         			accountData = accountList.get(d);
-        			//更新账户使用时间
-            		Date currentDate2 = new Date();
-            		String currentDateStr2 = sdf.format(currentDate2);
-        			JSONObject updateTimeData = new JSONObject();
         			String accountNo = accountData.getString("accountNo");
-        			updateTimeData.put("accountNo", accountNo);
-        			updateTimeData.put("useTime", currentDateStr2);
-        			sqlManager.updateAccountTime(updateTimeData);
+        			String accountPas = accountData.getString("accountPas");
         			
         			//填充bookDataBiz
         			bookDataBiz.setFlightDate(fromDate);
         			bookDataBiz.setCustomer(accountData.getString("name"), accountData.getString("contactMobile"));
         			
+        			// TODO 调用接口----------登录
+        			JSONObject logInResult = new JSONObject();
+        			for (int i=0;i<10;i++) {
+        				JSONObject loginRes = new LoginComp().loginLoop(accountNo, accountPas);
+        				if(loginRes!=null) {
+        					String loginSession = loginRes.getString("session");
+        					String loginTokenId = loginRes.getString("tokenId");
+        					String loginTokenUUID = loginRes.getString("tokenUUID");
+        					if(loginSession!=null && loginSession.length()>0
+        							&&loginTokenId!=null && loginTokenId.length()>0
+        							&&loginTokenUUID!=null && loginTokenUUID.length()>0) {
+        						logInResult.put("session", loginSession);
+        						logInResult.put("tokenId", loginTokenId);
+        						logInResult.put("tokenUUID", loginTokenUUID);
+        						break;
+        					}
+        				}
+        			}
+        			String tokenUUID = logInResult.getString("tokenUUID");
+        			String tokenId = logInResult.getString("tokenId");
+        			String session = logInResult.getString("session");
+        			//String JSESSIONID = loginResult.getString("JSESSIONID");
+        			
         			//TODO 调用接口----------查询航班具体信息
         			addData.put("currStandBy", currStandBy);
+        			addData.put("session", session);
         			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
         			//填充bookDataBiz
         			String flightStr = queryPost2.getString("responseBody");
@@ -138,22 +160,30 @@ public class FlightService2 {
         			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
         			bookDataBiz.addTripInfo(processTripParam);
         			
-        			tempStandBy = tempStandBy-currStandBy;
+        			nextStandBy = nextStandBy-currStandBy;
         			
-        			//TODO 调用接口----------账户登录
+        			//TODO 调用接口----------账户订单确认
         			String encryptStr = accountData.getString("encryptStr");
-        			String session = accountData.getString("session");
-        			JSONObject loginResult = new LoginComp().accountLogin3(addData, encryptStr, session, processTripParam);
+        			//String session = accountData.getString("session");
+        			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, logInResult);
         			if(loginResult==null) {return null;}
-        			String JSESSIONID = loginResult.getString("JSESSIONID");
-        			String tokenUUID = loginResult.getString("tokenUUID");
-        			String tokenId = loginResult.getString("tokenId");
         			String uuid = loginResult.getString("uuid");
+        			
+        			//更新账户使用时间
+            		Date currentDate2 = new Date();
+            		String currentDateStr2 = sdf.format(currentDate2);
+        			JSONObject updateTimeData = new JSONObject();
+        			updateTimeData.put("accountNo", accountNo);
+        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("session", session);
+        			sqlManager.updateAccountTime(updateTimeData);
         			
         			//预定信息-客户信息
             		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
             		String eachAmount = "";
+            		//判断乘机人人数是否已经超过当前轮次上线
         			for (;f<DemoData.PERSONTICKETS*(d+1);f++) {
+        				//判断乘机人人数是否超过总余票
         				if (f<standbyCount) {
             				if(f<customerList.size()) {
             					//获取一条乘客信息
@@ -207,7 +237,7 @@ public class FlightService2 {
             		orderInfoData.put("tripCode", addData.getString("tripCode"));
             		orderInfoData.put("flightNo", addData.getString("fightNo"));
             		orderInfoData.put("cabinCode", addData.getString("cabinCode"));
-            		orderInfoData.put("standbyCount", standbyCount);
+            		orderInfoData.put("standbyCount", currStandBy);
             		orderInfoData.put("price", eachAmount);
             		orderInfoData.put("orderStatus", "1");
             		orderInfoData.put("round", "1");
@@ -262,8 +292,8 @@ public class FlightService2 {
      * @param cancelData{oiId, accountNo}<br/>
      * @return void<br/>
      */
-    public void cancelTicket(JSONObject cancelData) {
-    	SqlManager sqlManager = new SqlManager();
+    public synchronized void cancelTicket(JSONObject cancelData) {
+    	KnSqlManager sqlManager = new KnSqlManager();
     	String oiId = cancelData.getString("oiId");
     	String orderNo = cancelData.getString("orderNo");
     	String accountNo = cancelData.getString("accountNo");

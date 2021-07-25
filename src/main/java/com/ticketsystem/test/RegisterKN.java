@@ -13,7 +13,8 @@ public class RegisterKN {
 	
 	private String sendStatus = "";
 	private String projectId = "84153";
-	private String phonePas = "ASDF1234";
+	private String operator = "4";
+	private String accountPas = "ASDF1234";
 	private String jieMaToken = "vmNn1KiIdhms9f5fSw7SFOlADOG+TggeT7rVuYvTTH4Yoij/X6JNNwjbt5gMY6/DBFtLsEoTaSfkXQ4tz71lzAdfckz77OU/x4LtXnl0x9nDPu0eyLUpnKgoF80wcuVkXj0mK/4lLFMFDcJfR/NmRXlrPjeb+KeFpZdu/Mf0z88=";
 	private int getValiateCount = 0;
 	public static StringBuffer sb = new StringBuffer();
@@ -68,7 +69,7 @@ public class RegisterKN {
 		//获取手机号
 		System.out.println("==========获取手机号==========");
 		String getMobileUrl = "http://api.do889.com:81/api/get_mobile"; 
-		String mobileParam = "token="+jieMaToken+"&project_id="+this.projectId+"";
+		String mobileParam = "token="+jieMaToken+"&project_id="+this.projectId+"&operator="+this.operator+"";
 		//TODO 调用接口
 		JSONObject mobileRes = RegisterGetPost.getMobile(getMobileUrl, mobileParam);
 		String phoneNo = "";
@@ -106,7 +107,7 @@ public class RegisterKN {
 		String lastName = "三";
 		try {
 			firstName = URLEncoder.encode(ssName, "UTF-8");
-			lastName = URLEncoder.encode(ssName+ssName, "UTF-8");
+			lastName = URLEncoder.encode(ssName2+ssName3, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
@@ -320,7 +321,7 @@ public class RegisterKN {
 				+ "&mobile="+phoneNo+""
 				+ "&lastName="+lastName+""
 				+ "&firstName="+firstName+""
-				+ "&password="+phonePas+""
+				+ "&password="+accountPas+""
 				+ "&verifCode="+massgeCode+""
 				+ "";
 		String addCookie = "session="+sessionStr;
@@ -342,7 +343,7 @@ public class RegisterKN {
 		JSONObject addKnJson = new JSONObject();
 		addKnJson.put("accountNo", phoneNo);
 		addKnJson.put("name", String.valueOf(ssName)+String.valueOf(ssName2)+String.valueOf(ssName3));
-		addKnJson.put("password", phonePas);
+		addKnJson.put("accountPas", accountPas);
 		addKnJson.put("mobile", phoneNo);
 		addKnJson.put("useTime", "");
 		addKnJson.put("encryptStr", "");

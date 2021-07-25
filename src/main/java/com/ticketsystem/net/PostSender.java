@@ -172,10 +172,17 @@ public class PostSender {
             URL realUrl = new URL(url);
             
             URLConnection conn = realUrl.openConnection();
-            conn.setRequestProperty("accept", "*/*");
-            conn.setRequestProperty("connection", "Keep-Alive");
-			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
-			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            //conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+            //conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+            //conn.setRequestProperty("Connection", "keep-alive");
+            //conn.setRequestProperty("Content-Length", "151");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            //conn.setRequestProperty("Host", "www.flycua.com");
+            //conn.setRequestProperty("Origin", "http://www.flycua.com");
+            //conn.setRequestProperty("Referer", "http://www.flycua.com/booking/search.html?flightType=oneway&radio-1-set=on&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-28&adults=4&children=0&militaryDisability=0&policeRemnants=0");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36");
+            //conn.setRequestProperty("X-Referrer", "http://www.flycua.com/");
+            //conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
 			if (!"null".equalsIgnoreCase(cookieStr)) {
 				conn.setRequestProperty("Cookie", cookieStr);
 			}

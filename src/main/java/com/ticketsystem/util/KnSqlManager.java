@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class SqlManager {
+public class KnSqlManager {
 	
 	/**
 	 * 获取单个账户详情<br/>
@@ -121,11 +121,12 @@ public class SqlManager {
 	 * 传入accountNo，useTime<br/>
 	 * @param orderInfoData
 	 */
-	public void updateAccountTime(JSONObject accountData) {
+	public synchronized void updateAccountTime(JSONObject accountData) {
 		String accountNo=accountData.getString("accountNo");
 		String useTime=accountData.getString("useTime");
+		String session=accountData.getString("session");
 		String sqlStr = "update account_kn set "
-				+ " use_time='"+useTime+"' "
+				+ " use_time='"+useTime+"',session='"+session+"' "
 				+ " where account_no='"+accountNo+"' ";
 		DBUtil db = new DBUtil();
 		try {
@@ -145,7 +146,7 @@ public class SqlManager {
 	 * 传入customerId，customerStatus，orderNo<br/>
 	 * @param orderInfoData
 	 */
-	public void updateCustomerStatus(JSONObject customerData) {
+	public synchronized void updateCustomerStatus(JSONObject customerData) {
 		String customerId=customerData.getString("customerId");
 		String customerStatus=customerData.getString("customerStatus");
 		String accountNo=customerData.getString("accountNo");
@@ -187,7 +188,7 @@ public class SqlManager {
 		String inputUser=orderInfoData.getString("inputUser");
 		//自动生成主键oiId
 		String oiId = System.currentTimeMillis()+"X"+Math.round(Math.random()*100000);
-		String sqlStr = "insert into account_kn (oi_id,account_no,order_no,trip_code,flight_no,cabin_code,price,standby_count,order_status,round,input_time,update_time,input_user) "
+		String sqlStr = "insert into order_info (oi_id,account_no,order_no,trip_code,flight_no,cabin_code,price,standby_count,order_status,round,input_time,update_time,input_user) "
 				+ " values('"+oiId+"','"+accountNo+"','"+orderNo+"','"+tripCode+"','"+flightNo+"','"+cabinCode+"','"+price+"','"+standbyCount+"','"+orderStatus+"','"+round+"','"+inputTime+"','"+updateTime+"','"+inputUser+"' ) "; 
 		DBUtil db = new DBUtil();
 		JSONObject orderReturnData = new JSONObject();
@@ -234,7 +235,7 @@ public class SqlManager {
 		}
 	}
 	
-	public JSONObject getOrderInfo(String oiId) {
+	public synchronized JSONObject getOrderInfo(String oiId) {
 		JSONObject orderInfoData = new JSONObject();
 		//字段可自行扩展
 		String sqlStr = "select oi_id,order_status,round from order_info where oi_id='"+oiId+"' ";

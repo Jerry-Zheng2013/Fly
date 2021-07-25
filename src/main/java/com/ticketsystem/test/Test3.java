@@ -167,7 +167,7 @@ public class Test3 {
 		JSONObject addKnJson = new JSONObject();
 		addKnJson.put("accountNo", phoneNo);
 		addKnJson.put("name", String.valueOf(ssName)+String.valueOf(ssName2)+String.valueOf(ssName3));
-		addKnJson.put("password", "ASDF1234");
+		addKnJson.put("accountPas", "ASDF1234");
 		addKnJson.put("mobile", phoneNo);
 		addKnJson.put("useTime", "");
 		addKnJson.put("encryptStr", "");

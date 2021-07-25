@@ -198,19 +198,19 @@ public class GetPostTest5 {
         try {
             URL realUrl = new URL(userLoginUrl1);
             URLConnection conn = realUrl.openConnection();
-            conn.setRequestProperty("Connection", "keep-alive");
-            conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+            //conn.setRequestProperty("Connection", "keep-alive");
+            //conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
             //conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
-            conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
-			conn.setRequestProperty("Content-Length", "49");
+            //conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+			//conn.setRequestProperty("Content-Length", "49");
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 			conn.setRequestProperty("Cookie", userLoginCookie);
-			conn.setRequestProperty("Host", "www.flycua.com");
-			conn.setRequestProperty("Origin", "http://www.flycua.com");
+			//conn.setRequestProperty("Host", "www.flycua.com");
+			//conn.setRequestProperty("Origin", "http://www.flycua.com");
 			conn.setRequestProperty("Referer", "http://www.flycua.com/login/");
-			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
-			conn.setRequestProperty("X-Referrer", "http://www.flycua.com/");
-			conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+			//conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
+			//conn.setRequestProperty("X-Referrer", "http://www.flycua.com/");
+			//conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
 
             //post设置如下两行
             conn.setDoOutput(true);
@@ -261,6 +261,7 @@ public class GetPostTest5 {
                 result += "\n" + line;
             }
             System.out.println("result:"+result);
+			resultJson.put("result", result);
 
 			//获取头信息
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
