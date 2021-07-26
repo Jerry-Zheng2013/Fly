@@ -239,13 +239,13 @@ public class RegisterKN {
 		if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
 			System.out.println("获取手机验证码失败！");
 			if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
-				System.out.println("短信还未到达,第二次等待20秒，继续获取！");
+				System.out.println("短信还未到达,第二次等待10秒，继续获取！");
 				//等待手机接收验证码
 				try {
-					System.out.println("第二次等待20秒，等待手机接收到验证码！");
+					System.out.println("第二次等待10秒，等待手机接收到验证码！");
 					int sleepTime = 0;
 					while(true) {
-						if(sleepTime==20) {break;}
+						if(sleepTime==10) {break;}
 						System.out.println(sleepTime+"s");
 						Thread.sleep(1000);
 						sleepTime++;
@@ -253,7 +253,7 @@ public class RegisterKN {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				System.out.println("==========获取手机验证码==========");
+				System.out.println("==========获取手机验证码["+phoneNo+"]==========");
 				String getMessageUrl22 = "http://api.do889.com:81/api/get_message";
 				String messageParam22 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
 				//TODO 调用接口
@@ -265,13 +265,13 @@ public class RegisterKN {
 				if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
 					System.out.println("获取手机验证码失败！");
 					if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
-						System.out.println("短信还未到达,第三次等待20秒，继续获取！");
+						System.out.println("短信还未到达,第三次等待10秒，继续获取！");
 						//等待手机接收验证码
 						try {
-							System.out.println("第三次等待20秒，等待手机接收到验证码！");
+							System.out.println("第三次等待10秒，等待手机接收到验证码！");
 							int sleepTime = 0;
 							while(true) {
-								if(sleepTime==20) {break;}
+								if(sleepTime==10) {break;}
 								System.out.println(sleepTime+"s");
 								Thread.sleep(1000);
 								sleepTime++;
@@ -279,29 +279,190 @@ public class RegisterKN {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						System.out.println("==========获取手机验证码==========");
+						System.out.println("==========获取手机验证码["+phoneNo+"]==========");
 						String getMessageUrl222 = "http://api.do889.com:81/api/get_message";
 						String messageParam222 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
 						//TODO 调用接口
-						JSONObject queryPost666 = RegisterGetPost.getTokenGet(getMessageUrl222, messageParam222);
-						String massageStr222 = queryPost666.getString("result");
+						JSONObject queryPost222 = RegisterGetPost.getTokenGet(getMessageUrl222, messageParam222);
+						String massageStr222 = queryPost222.getString("result");
 						messageJson = JSONObject.parseObject(massageStr222);
 						massgeStatus = messageJson.getString("message");
 						massgeCode = "";
 						if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
 							System.out.println("获取手机验证码失败！");
-							return;
+							if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
+								System.out.println("短信还未到达,第四次等待10秒，继续获取！");
+								//等待手机接收验证码
+								try {
+									System.out.println("第四次等待10秒，等待手机接收到验证码！");
+									int sleepTime = 0;
+									while(true) {
+										if(sleepTime==10) {break;}
+										System.out.println(sleepTime+"s");
+										Thread.sleep(1000);
+										sleepTime++;
+									}
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								System.out.println("==========获取手机验证码["+phoneNo+"]==========");
+								String getMessageUrl2222 = "http://api.do889.com:81/api/get_message";
+								String messageParam2222 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
+								//TODO 调用接口
+								JSONObject queryPost2222 = RegisterGetPost.getTokenGet(getMessageUrl2222, messageParam2222);
+								String massageStr2222 = queryPost2222.getString("result");
+								messageJson = JSONObject.parseObject(massageStr2222);
+								massgeStatus = messageJson.getString("message");
+								massgeCode = "";
+								if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
+									System.out.println("获取手机验证码失败！");
+									if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
+										System.out.println("短信还未到达,第五次等待10秒，继续获取！");
+										//等待手机接收验证码
+										try {
+											System.out.println("第五次等待10秒，等待手机接收到验证码！");
+											int sleepTime = 0;
+											while(true) {
+												if(sleepTime==10) {break;}
+												System.out.println(sleepTime+"s");
+												Thread.sleep(1000);
+												sleepTime++;
+											}
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+										System.out.println("==========获取手机验证码["+phoneNo+"]==========");
+										String getMessageUrl22222 = "http://api.do889.com:81/api/get_message";
+										String messageParam22222 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
+										//TODO 调用接口
+										JSONObject queryPost22222 = RegisterGetPost.getTokenGet(getMessageUrl22222, messageParam22222);
+										String massageStr22222 = queryPost22222.getString("result");
+										messageJson = JSONObject.parseObject(massageStr22222);
+										massgeStatus = messageJson.getString("message");
+										massgeCode = "";
+										if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
+											System.out.println("获取手机验证码失败！");
+											if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
+												System.out.println("短信还未到达,第六次等待10秒，继续获取！");
+												//等待手机接收验证码
+												try {
+													System.out.println("第六次等待10秒，等待手机接收到验证码！");
+													int sleepTime = 0;
+													while(true) {
+														if(sleepTime==10) {break;}
+														System.out.println(sleepTime+"s");
+														Thread.sleep(1000);
+														sleepTime++;
+													}
+												} catch (InterruptedException e) {
+													e.printStackTrace();
+												}
+												System.out.println("==========获取手机验证码["+phoneNo+"]==========");
+												String getMessageUrl222222 = "http://api.do889.com:81/api/get_message";
+												String messageParam222222 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
+												//TODO 调用接口
+												JSONObject queryPost222222 = RegisterGetPost.getTokenGet(getMessageUrl222222, messageParam222222);
+												String massageStr222222 = queryPost222222.getString("result");
+												messageJson = JSONObject.parseObject(massageStr222222);
+												massgeStatus = messageJson.getString("message");
+												massgeCode = "";
+												if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
+													System.out.println("获取手机验证码失败！");
+													if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
+														System.out.println("短信还未到达,第七次等待10秒，继续获取！");
+														//等待手机接收验证码
+														try {
+															System.out.println("第七次等待10秒，等待手机接收到验证码！");
+															int sleepTime = 0;
+															while(true) {
+																if(sleepTime==10) {break;}
+																System.out.println(sleepTime+"s");
+																Thread.sleep(1000);
+																sleepTime++;
+															}
+														} catch (InterruptedException e) {
+															e.printStackTrace();
+														}
+														System.out.println("==========获取手机验证码["+phoneNo+"]==========");
+														String getMessageUrl61 = "http://api.do889.com:81/api/get_message";
+														String messageParam61 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
+														//TODO 调用接口
+														JSONObject queryPost61 = RegisterGetPost.getTokenGet(getMessageUrl61, messageParam61);
+														String massageStr61 = queryPost61.getString("result");
+														messageJson = JSONObject.parseObject(massageStr61);
+														massgeStatus = messageJson.getString("message");
+														massgeCode = "";
+														if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
+															System.out.println("获取手机验证码失败！");
+															if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
+																System.out.println("短信还未到达,第八次等待10秒，继续获取！");
+																//等待手机接收验证码
+																try {
+																	System.out.println("第八次等待10秒，等待手机接收到验证码！");
+																	int sleepTime = 0;
+																	while(true) {
+																		if(sleepTime==10) {break;}
+																		System.out.println(sleepTime+"s");
+																		Thread.sleep(1000);
+																		sleepTime++;
+																	}
+																} catch (InterruptedException e) {
+																	e.printStackTrace();
+																}
+																System.out.println("==========获取手机验证码["+phoneNo+"]==========");
+																String getMessageUrl62 = "http://api.do889.com:81/api/get_message";
+																String messageParam62 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
+																//TODO 调用接口
+																JSONObject queryPost62 = RegisterGetPost.getTokenGet(getMessageUrl62, messageParam62);
+																String massageStr62 = queryPost62.getString("result");
+																messageJson = JSONObject.parseObject(massageStr62);
+																massgeStatus = messageJson.getString("message");
+																massgeCode = "";
+																if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
+																	System.out.println("获取手机验证码失败！");
+																	if("短信还未到达,请继续获取".equalsIgnoreCase(massgeStatus)) {
+																		System.out.println("短信还未到达,第九次等待10秒，继续获取！");
+																		//等待手机接收验证码
+																		try {
+																			System.out.println("第九次等待10秒，等待手机接收到验证码！");
+																			int sleepTime = 0;
+																			while(true) {
+																				if(sleepTime==10) {break;}
+																				System.out.println(sleepTime+"s");
+																				Thread.sleep(1000);
+																				sleepTime++;
+																			}
+																		} catch (InterruptedException e) {
+																			e.printStackTrace();
+																		}
+																		System.out.println("==========获取手机验证码["+phoneNo+"]==========");
+																		String getMessageUrl63 = "http://api.do889.com:81/api/get_message";
+																		String messageParam63 = "token="+jieMaToken+"&project_id="+this.projectId+"&phone_num="+phoneNo+"";
+																		//TODO 调用接口
+																		JSONObject queryPost63 = RegisterGetPost.getTokenGet(getMessageUrl63, messageParam63);
+																		String massageStr63 = queryPost63.getString("result");
+																		messageJson = JSONObject.parseObject(massageStr63);
+																		massgeStatus = messageJson.getString("message");
+																		massgeCode = "";
+																		if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
+																			System.out.println("获取手机验证码失败！");
+																			return;
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
 						}
 					}
-					return;
-				}
-				massgeCode = messageJson.getString("code");
-				if(massgeCode == null || massgeCode.length()<3) {
-					System.out.println("获取手机验证码失败！");
-					return;
 				}
 			}
-			return;
 		}
 		massgeCode = messageJson.getString("code");
 		if(massgeCode == null || massgeCode.length()<3) {
@@ -411,7 +572,9 @@ public class RegisterKN {
 			System.out.println("==========失败原因:"+resultMessage+"==========");
 			if(resultMessage.contains("验证码发送过于频繁")) {
 				System.out.println("==========验证码发送过于频繁==========");
-				this.getValiateCount=11;
+				if (this.getValiateCount>4) {
+					this.getValiateCount=11;
+				}
 			}
 			if (this.getValiateCount>10) {
 				System.out.println("获取随机码已经获取超过10次！");
