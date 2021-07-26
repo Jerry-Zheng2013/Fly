@@ -5,12 +5,12 @@ import com.ticketsystem.net.CookieUtil;
 import com.ticketsystem.net.GetSender;
 import com.ticketsystem.net.PostSender;
 import com.ticketsystem.util.DemoData;
-import com.ticketsystem.util.SqlManager;
+import com.ticketsystem.util.KnSqlManager;
 
 public class CancelComp {
 
 	public void cancelTicket(String orderNo, String accountNo) {
-		SqlManager sqlManager = new SqlManager();
+		KnSqlManager sqlManager = new KnSqlManager();
 		JSONObject account = sqlManager.getAccount(accountNo);
 		String session = account.getString("session");
 		

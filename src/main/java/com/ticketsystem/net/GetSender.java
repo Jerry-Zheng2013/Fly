@@ -24,8 +24,6 @@ public class GetSender {
 	public JSONObject sendHttpGet(String url, String param) {
 		return sendHttpGet(url, param, "null");
 	}
-	
-	private int getCount=0;
 
 	public JSONObject hotCityGet(String hotCityUrl, String param, String cookieStr) {
 		JSONObject resultJson = new JSONObject();
@@ -111,16 +109,22 @@ public class GetSender {
 		JSONObject resultJson = new JSONObject();
 		StringBuffer responseBody = new StringBuffer();
 		Map<String, List<String>> responseHead = new TreeMap<String, List<String>>();
-		
+		System.out.println(url);
+		System.out.println(param);
         String result = "";
         String urlName = url + "?" + param;
         try {
             URL realURL = new URL(urlName);
             
             URLConnection conn = realURL.openConnection();
-            conn.setRequestProperty("accept", "*/*");
-            conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36");
+            conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+            conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+            conn.setRequestProperty("Connection", "keep-alive");
+            //conn.setRequestProperty("Host", "www.flycua.com");
+            //conn.setRequestProperty("Referer", "http://www.flycua.com/booking/search.html?flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-28&adults=4&children=0&militaryDisability=0&policeRemnants=0");
+            //conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36");
+            //conn.setRequestProperty("X-Referrer", "http://www.flycua.com/booking/search.html?flightType=oneway&radio-1-set=on&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-28&adults=4&children=0&militaryDisability=0&policeRemnants=0");
+            //conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
             
             conn.connect();
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
@@ -137,7 +141,7 @@ public class GetSender {
             
         } catch (IOException e) {
             e.printStackTrace();
-            //if (this.queryGet2<2) {
+            //if (this.queryGet2<3) {
             	try {
 					Thread.sleep(3000);
 				} catch (InterruptedException e1) {
@@ -285,5 +289,107 @@ public class GetSender {
 				throws java.security.cert.CertificateException {
 			return;
 		}
+	}
+
+	int queryGet3 = 0;
+	public JSONObject queryGet3(String queryUrl, String param, String queryCookie3) {
+		JSONObject resultJson = new JSONObject();
+		StringBuffer responseBody = new StringBuffer();
+		Map<String, List<String>> responseHead = new TreeMap<String, List<String>>();
+		
+        String result = "";
+        String urlName = queryUrl + "?" + param;
+        try {
+            URL realURL = new URL(urlName);
+            
+            URLConnection conn = realURL.openConnection();
+            conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+            conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+            conn.setRequestProperty("Connection", "keep-alive");
+            conn.setRequestProperty("Host", "www.flycua.com");
+            conn.setRequestProperty("Referer", "http://www.flycua.com/booking/search.html?flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-28&adults=4&children=0&militaryDisability=0&policeRemnants=0");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36");
+            conn.setRequestProperty("X-Referrer", "http://www.flycua.com/booking/search.html?flightType=oneway&radio-1-set=on&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-28&adults=4&children=0&militaryDisability=0&policeRemnants=0");
+            conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+            conn.setRequestProperty("Cookie", queryCookie3);
+            
+            conn.connect();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += "\n" + line;
+            }
+            responseBody.append(result);
+			System.out.println("responseBody:"+result);
+
+			//获取头信息
+			responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            //if (this.queryGet2<2) {
+            	try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+				}
+				this.queryGet3++;
+            	return queryGet3(queryUrl, param, queryCookie3);
+            //}
+        }
+        resultJson.put("responseBody", responseBody);
+        resultJson.put("responseHead", responseHead);
+        return resultJson;
+	}
+
+	int queryGet4 = 0;
+	public JSONObject queryGet4(String queryUrl4, String param4, String queryCookie) {
+		JSONObject resultJson = new JSONObject();
+		StringBuffer responseBody = new StringBuffer();
+		Map<String, List<String>> responseHead = new TreeMap<String, List<String>>();
+		
+        String result = "";
+        String urlName = queryUrl4 + "?" + param4;
+        try {
+            URL realURL = new URL(urlName);
+            
+            URLConnection conn = realURL.openConnection();
+            conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+            conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+            conn.setRequestProperty("Connection", "keep-alive");
+            conn.setRequestProperty("Host", "www.flycua.com");
+            conn.setRequestProperty("Referer", "http://www.flycua.com/booking/search.html?flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-28&adults=4&children=0&militaryDisability=0&policeRemnants=0");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36");
+            conn.setRequestProperty("X-Referrer", "http://www.flycua.com/booking/search.html?flightType=oneway&radio-1-set=on&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-28&adults=4&children=0&militaryDisability=0&policeRemnants=0");
+            conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+            conn.setRequestProperty("Cookie", queryCookie);
+            
+            conn.connect();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += "\n" + line;
+            }
+            responseBody.append(result);
+			System.out.println("responseBody:"+result);
+
+			//获取头信息
+			responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            //if (this.queryGet2<2) {
+            	try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e1) {
+				}
+				this.queryGet4++;
+            	return queryGet4(queryUrl4, param4, queryCookie);
+            //}
+        }
+        resultJson.put("responseBody", responseBody);
+        resultJson.put("responseHead", responseHead);
+        return resultJson;
 	}
 }

@@ -60,10 +60,10 @@ public class Test5 {
 			}
 			System.out.println("loginUUID=========="+loginUUID);
 			
-			//等待手机接收验证码
+			//5、刷新随机码
 			try {
-				int waitTime = 10;
-				System.out.println("等待"+waitTime+"秒，等待手机接收到验证码！");
+				int waitTime = 1;
+				System.out.println("等待"+waitTime+"秒，等待刷新随机码！");
 				int sleepTime = 0;
 				while(true) {
 					if(sleepTime==waitTime) {break;}
@@ -75,7 +75,7 @@ public class Test5 {
 				e.printStackTrace();
 			}
 			
-			//4、登录-获取随机码
+			//6、登录-获取随机码
 			//http://www.flycua.com/app/login/validate?_=0.3302511608257426
 			//_ga=GA1.2.1848051245.1626545196; flycua_user_cookie=true; _gid=GA1.2.2119893899.1627116780; session=s~9c17a9be-2480-4e94-9a04-6c620cfa8a75.a66357ceaef947a9aa58ef6c4399f6a7; X-LB=2.729.6fd82452.50; _gat=1
 			String validateUrl1 = "http://www.flycua.com/app/login/validate";
@@ -84,7 +84,7 @@ public class Test5 {
 			JSONObject validateRes1 = GetPostTest5.validateGet1(validateUrl1, validateParam1, validateCookie1);
 			String fileName = validateRes1.getString("fileName");
 			
-			//5、登录-识别随机码
+			//7、登录-识别随机码
 			String fieFullName = "d:/img/"+fileName;
 			String accurate = Accurate5.accurate(fieFullName);
 			System.out.println(accurate);
@@ -107,26 +107,8 @@ public class Test5 {
 			System.out.println("17656175477");
 			System.out.println("z1310305");
 			
-			//6、pooling
-			//http://www.flycua.com/app/loginRegister/pollingScanResult?_=1627208062527&uuid=B2C-9930d40c0cba4073a2e54ccad69e5aa5-LOGIN
-			//_ga=GA1.2.1848051245.1626545196; flycua_user_cookie=true; _gid=GA1.2.2119893899.1627116780; X-LB=2.729.6fd82452.50; session=s~20cebbcc-2e75-4a50-a67d-351cfec9c1d8.9b59ffcc931b7b4d3a581533b3d837b0; _gat=1
-			String poolingUrl = "http://www.flycua.com/app/loginRegister/pollingScanResult";
-			String poolingParam = "_="+String.valueOf(Math.random()).substring(2, 15)
-					+ "&uuid="+loginUUID+"";
-			String poolingCookie="_ga=GA1.2.1848051245.1626545196; "
-					+ "flycua_user_cookie=true; "
-					+ "_gid=GA1.2.2119893899.1627116780; "
-					+ "X-LB=2.729.6fd82452.50; "
-					+ "session="+checkSession1+"; "
-					+ "_gat=1";
-			
-			//6、登录-触发登录
+			//8、登录-触发登录
 			//http://www.flycua.com/app/login/userLogin?_=1627204027546
-			//type: P
-			//id: 17656175477
-			//pass: z1310305
-			//verifi: f1b7op
-			//_ga=GA1.2.1848051245.1626545196; flycua_user_cookie=true; _gid=GA1.2.2119893899.1627116780; X-LB=2.729.6fd82452.50; _gat=1; session=s~d0f22459-78f0-490d-b3e2-6b8d1e8a9c6e.e814c2a924abe9336ecb8692077a24de
 			String userLoginUrl1 = "http://www.flycua.com/app/login/userLogin?_="+String.valueOf(Math.random()).substring(2, 15);
 			String userLoginParam = "type=P&id=17656175477&pass=z1310305&verifi="+validateCode+"";
 			String userLoginCookie = "_ga=GA1.2.1848051245.1626545196; "
@@ -174,7 +156,7 @@ public class Test5 {
 			}
 			
 			
-			//7、检查
+			//9、检查
 			String checkUrl2 = "http://www.flycua.com/app/login/queryUserStatus";
 			String checkParam2 = "_="+String.valueOf(Math.random()).substring(2, 15);
 			String checkCookie2 = "_ga=GA1.2.1848051245.1626545196; "
@@ -186,7 +168,6 @@ public class Test5 {
 					+ "tokenId="+tokenId+"; "
 					+ "tokenUUID="+tokenUUID+"";
 			JSONObject checkRes2 = GetPostTest5.checkGet2(checkUrl2, checkParam2, checkCookie2);
-			
 			
 			
 			

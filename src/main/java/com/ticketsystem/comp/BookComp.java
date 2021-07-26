@@ -10,6 +10,7 @@ public class BookComp {
 	public JSONObject bookTicket(String bookDataStr, String bookCookie) {
 		JSONObject bookResult = new JSONObject();
 		String bookUrl = DemoData.bookUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
+		System.err.println("---机票预定URL="+bookUrl+"---PARAM="+bookDataStr+"---COOKIE="+bookCookie);
 		PostSender.bookPost(bookUrl, bookDataStr, bookCookie);
 		
 		//获取支付详情
