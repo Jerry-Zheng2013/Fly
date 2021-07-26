@@ -34,7 +34,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return accountInfo;
 	}
@@ -44,10 +48,10 @@ public class KnSqlManager {
 	 * 输入useTime<br/>
 	 * @param orderInfoData
 	 */
-	public ArrayList<JSONObject> getAccountList(JSONObject filterData) {
+	public synchronized ArrayList<JSONObject> getAccountList(JSONObject filterData) {
 		String useTime = filterData.getString("useTime");
 		
-		String sqlStr = "select account_no,name,contact_mobile,password,use_time,encryptStr,session "
+		String sqlStr = "select account_no,name,contact_mobile,password,use_time,encryptStr,session,tokenUUID,tokenId "
 				+ " from account_kn where (use_time < '"+useTime+"' or use_time is null) order by account_no asc ";
 		DBUtil db = new DBUtil();
 		ArrayList<JSONObject> accountList = new ArrayList<JSONObject>();
@@ -63,12 +67,18 @@ public class KnSqlManager {
 				accountData.put("useTime", rs.getString(5));
 				accountData.put("encryptStr", rs.getString(6));
 				accountData.put("session", rs.getString(7));
+				accountData.put("tokenUUID", rs.getString(8));
+				accountData.put("tokenId", rs.getString(9));
 				accountList.add(accountData);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return accountList;
 	}
@@ -111,7 +121,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return customerList;
 	}
@@ -121,7 +135,7 @@ public class KnSqlManager {
 	 * 传入accountNo，useTime<br/>
 	 * @param orderInfoData
 	 */
-	public synchronized void updateAccountTime(JSONObject accountData) {
+	public void updateAccountTime(JSONObject accountData) {
 		String accountNo=accountData.getString("accountNo");
 		String useTime=accountData.getString("useTime");
 		String session=accountData.getString("session");
@@ -136,7 +150,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -161,7 +179,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -201,7 +223,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return orderReturnData;
 	}
@@ -231,7 +257,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -252,7 +282,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return orderInfoData;
 	}
@@ -271,7 +305,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -287,7 +325,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -305,7 +347,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -321,7 +367,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -349,7 +399,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return cityInfo;
 	}
@@ -380,7 +434,11 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return addAccounttKN;
 	}
@@ -407,8 +465,39 @@ public class KnSqlManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			db.close();
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return knAccountInfo;
+	}
+
+	public synchronized void updateAccountSession(JSONObject updateSessionData) {
+		String accountNo=updateSessionData.getString("accountNo");
+		String useTime=updateSessionData.getString("useTime");
+		String tokenUUID=updateSessionData.getString("tokenUUID");
+		String tokenId=updateSessionData.getString("tokenId");
+		String session=updateSessionData.getString("session");
+		String sqlStr = "update account_kn set "
+				+ " use_time='"+useTime+"',session='"+session+"',tokenUUID='"+tokenUUID+"',tokenId='"+tokenId+"' "
+				+ " where account_no='"+accountNo+"' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		// TODO Auto-generated method stub
+		
 	}
 }

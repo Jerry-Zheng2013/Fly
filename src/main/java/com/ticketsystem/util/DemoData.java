@@ -10,9 +10,9 @@ import com.ticketsystem.model.DemoOrder;
 
 public class DemoData {
 	// 倒计时时长
-	public static long COUNTDOWNMILLIS = (long) (30 * 1000 * 5);
+	public static long COUNTDOWNMILLIS = (long) (1000 * 60 * 5);
 	// 每个账号预定多少张
-	public static int PERSONTICKETS = 3;
+	public static int PERSONTICKETS = 4;
 	
 	public static int ThreadNo = 0;
 	

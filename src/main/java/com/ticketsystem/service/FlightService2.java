@@ -69,7 +69,7 @@ public class FlightService2 {
     	
     	ArrayList<JSONObject> packageArrData = new ArrayList<JSONObject>();
     	
-    	String oiId = addData.getString("oiId");
+    	//String oiId = addData.getString("oiId");
     	String fromDate = addData.getString("fromDate");
     	String fightNo = addData.getString("fightNo");
     	String cabinCode = addData.getString("cabinCode");
@@ -109,7 +109,7 @@ public class FlightService2 {
     		// f表示整个预定请求中的第几个乘客
     		int f=0;
     		for (int d=0;d<accountCount;d++) {
-    			int currStandBy = nextStandBy>DemoData.PERSONTICKETS?4:nextStandBy;
+    			int currStandBy = nextStandBy>DemoData.PERSONTICKETS?DemoData.PERSONTICKETS:nextStandBy;
     			JSONObject packageData = new JSONObject();
     			JSONObject accountData = new JSONObject();
     			
@@ -148,6 +148,10 @@ public class FlightService2 {
         			String tokenId = logInResult.getString("tokenId");
         			String session = logInResult.getString("session");
         			//String JSESSIONID = loginResult.getString("JSESSIONID");
+        			if(session==null||session.length()<5) {
+        				System.out.println("==========登陆失败==========");
+        				return null;
+        			}
         			
         			//TODO 调用接口----------查询航班具体信息
         			addData.put("currStandBy", currStandBy);
@@ -247,6 +251,8 @@ public class FlightService2 {
             		orderInfoData.put("updateTime", sdf2.format(currentTime));
             		orderInfoData.put("inputUser", "user");
 
+            		/*
+            		//暂停不再进行订单的二次激活，而是全部进行订单新增
             		if (oiId == null || oiId.length()<1) {
             			//新增订单信息
             			JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
@@ -264,6 +270,11 @@ public class FlightService2 {
             			bookResult.put("oiId", oiId);
             			bookResult.put("accountNo", accountNo);
             		}
+            		*/
+            		JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
+        			addData.put("oiId", insertOrderInfo.getString("oiId"));
+        			bookResult.put("oiId", insertOrderInfo.getString("oiId"));
+        			bookResult.put("accountNo", accountNo);
             		
         			packageData.put("accountData", accountData);
         			packageData.put("customerArrData", customerDataArr);

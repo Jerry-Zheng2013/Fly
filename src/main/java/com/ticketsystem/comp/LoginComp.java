@@ -17,7 +17,7 @@ import com.ticketsystem.util.KnSqlManager;
 
 public class LoginComp {
 	public JSONObject accountLogin(JSONObject addData, String encryptStr, String session) {
-		JSONObject logInResult = new JSONObject();
+		JSONObject loginResult = new JSONObject();
 		String fromCity = addData.getString("fromCityCode");
     	String toCity = addData.getString("toCityCode");
     	String fromDate = addData.getString("fromDate");
@@ -50,19 +50,19 @@ public class LoginComp {
 								if (entryValue.toLowerCase().contains("jsessionid")) {
 									String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
 									System.out.println("JSESSIONID="+xlbValue);
-									logInResult.put("JSESSIONID", xlbValue);
+									loginResult.put("JSESSIONID", xlbValue);
 								} else if (entryValue.toLowerCase().contains("session")) {
 									String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
 									System.out.println("sessionValue="+sessionValue);
-									logInResult.put("session", sessionValue);
+									loginResult.put("session", sessionValue);
 								} else if (entryValue.toLowerCase().contains("tokenuuid")) {
 									String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
 									System.out.println("tokenUUID="+sessionValue);
-									logInResult.put("tokenUUID", sessionValue);
+									loginResult.put("tokenUUID", sessionValue);
 								}else if (entryValue.toLowerCase().contains("tokenid")) {
 									String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
 									System.out.println("tokenId="+xlbValue);
-									logInResult.put("tokenId", xlbValue);
+									loginResult.put("tokenId", xlbValue);
 								}
 							}
 						}
@@ -70,8 +70,8 @@ public class LoginComp {
 				}
 			}
 			
-			String tokenUUID = logInResult.getString("tokenUUID");
-			String tokenId = logInResult.getString("tokenId");
+			String tokenUUID = loginResult.getString("tokenUUID");
+			String tokenId = loginResult.getString("tokenId");
 			String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
 			
 			//确认航班
@@ -110,17 +110,17 @@ public class LoginComp {
 				uuid2 = addBody.substring(addBody.indexOf("\"uuid\":\"")+8, addBody.indexOf("\"}"));
 				System.out.println(uuid2);
 			}
-			logInResult.put("uuid", uuid2);
+			loginResult.put("uuid", uuid2);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return logInResult;
+		return loginResult;
 	}
 	
 	
 	public JSONObject accountLogin2(String encryptStr, String session) {
-		JSONObject logInResult = new JSONObject();
+		JSONObject loginResult = new JSONObject();
 		try {
 			//TODO 调用接口----------登录接口
 			PostSender postSender = new PostSender();
@@ -137,19 +137,19 @@ public class LoginComp {
 								if (entryValue.toLowerCase().contains("jsessionid")) {
 									String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
 									System.out.println("JSESSIONID="+xlbValue);
-									logInResult.put("JSESSIONID", xlbValue);
+									loginResult.put("JSESSIONID", xlbValue);
 								} else if (entryValue.toLowerCase().contains("session")) {
 									String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
 									System.out.println("sessionValue="+sessionValue);
-									logInResult.put("session", sessionValue);
+									loginResult.put("session", sessionValue);
 								} else if (entryValue.toLowerCase().contains("tokenuuid")) {
 									String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
 									System.out.println("tokenUUID="+sessionValue);
-									logInResult.put("tokenUUID", sessionValue);
+									loginResult.put("tokenUUID", sessionValue);
 								}else if (entryValue.toLowerCase().contains("tokenid")) {
 									String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
 									System.out.println("tokenId="+xlbValue);
-									logInResult.put("tokenId", xlbValue);
+									loginResult.put("tokenId", xlbValue);
 								}
 							}
 						}
@@ -159,10 +159,10 @@ public class LoginComp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return logInResult;
+		return loginResult;
 	}
 	
-	public JSONObject accountLogin3(JSONObject addData, String accountNo, String accountPas, String encryptStr, JSONObject tripParam, JSONObject logInResult) {
+	public JSONObject accountLogin3(JSONObject addData, String accountNo, String accountPas, String encryptStr, JSONObject tripParam, JSONObject loginResult0) {
 		//JSONObject logInResult = new JSONObject();
 		String fromCity = addData.getString("fromCityCode");
     	String toCity = addData.getString("toCityCode");
@@ -209,9 +209,9 @@ public class LoginComp {
 			*/
 			
 			
-			String tokenUUID = logInResult.getString("tokenUUID");
-			String tokenId = logInResult.getString("tokenId");
-			String session = logInResult.getString("session");
+			String tokenUUID = loginResult0.getString("tokenUUID");
+			String tokenId = loginResult0.getString("tokenId");
+			String session = loginResult0.getString("session");
 			if(session==null || session.length()<2) {return null;}
 			String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
 			
@@ -275,12 +275,12 @@ public class LoginComp {
 					return null;
 				}
 			}
-			logInResult.put("uuid", uuid2);
+			loginResult0.put("uuid", uuid2);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return logInResult;
+		return loginResult0;
 	}
 	
 	public JSONObject loginLoop(String accountNo, String accountPas) {
@@ -470,5 +470,26 @@ public class LoginComp {
 			e.printStackTrace();
 		}
 		return loginJson;
+	}
+	
+	public synchronized JSONObject login2(String accountNo, String accountPas) {
+		JSONObject loginResult = new JSONObject();
+		for (int i=0;i<50;i++) {
+			JSONObject loginRes = loginLoop(accountNo, accountPas);
+			if(loginRes!=null) {
+				String loginSession = loginRes.getString("session");
+				String loginTokenId = loginRes.getString("tokenId");
+				String loginTokenUUID = loginRes.getString("tokenUUID");
+				if(loginSession!=null && loginSession.length()>0
+						&&loginTokenId!=null && loginTokenId.length()>0
+						&&loginTokenUUID!=null && loginTokenUUID.length()>0) {
+					loginResult.put("session", loginSession);
+					loginResult.put("tokenId", loginTokenId);
+					loginResult.put("tokenUUID", loginTokenUUID);
+					break;
+				}
+			}
+		}
+		return loginResult;
 	}
 }

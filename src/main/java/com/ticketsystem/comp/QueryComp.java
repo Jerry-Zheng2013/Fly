@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.net.GetSender;
 import com.ticketsystem.net.PostSender;
 import com.ticketsystem.util.DemoData;
-import com.ticketsystem.util.HotCityUtil;
 import com.ticketsystem.util.KnSqlManager;
 import com.ticketsystem.util.Xml2JsonUtil;
 
@@ -54,9 +53,16 @@ public class QueryComp {
     								if (cabinCode.equalsIgnoreCase(CabinName)) {
     	    							if(DemoData.getSeatLeft().contains(seatLeftNum)) {
     	    								standbyCount = seatLeftNum;
-    	    								break;
     	    								//standbyCount = "1";
+    	    								//break;
+    	    								return standbyCount;
     	    							}
+    	    							if(seatLeftNum.equalsIgnoreCase("A")) {
+    	    								standbyCount = "5";
+    	    								//break;
+    	    								return standbyCount;
+    	    							}
+    	    							
     	    						}
     							}
     	    				}
@@ -84,12 +90,13 @@ public class QueryComp {
     	//flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-21&adults=1&children=0&militaryDisability=0&policeRemnants=0
     	String param = "flightType=oneway&Origin="+fromCityCode+"&Destination="+toCityCode+"&departDate="+fromDate+"&adults="+currStandBy+"&children=0&militaryDisability=0&policeRemnants=0";
     	String queryCookie = "session="+session;
+    	System.err.println("---查询具体航班详情URL="+queryUrl+"---PARAM="+param+"---COOKIE="+queryCookie);
     	getSender.queryGet3(queryUrl, param, queryCookie);
     	
-    	String queryUrl3 = DemoData.queryUrl3;
-    	String param3 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
-    	
-    	JSONObject queryPost = getSender.queryGet3(queryUrl3, param3, queryCookie);
+    	String queryUrl4 = DemoData.queryUrl3;
+    	String param4 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
+    	System.err.println("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
+    	JSONObject queryPost = getSender.queryGet4(queryUrl4, param4, queryCookie);
 		return queryPost;
 	}
 

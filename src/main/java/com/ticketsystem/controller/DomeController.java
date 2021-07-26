@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.model.User;
 import com.ticketsystem.service.DemoService;
-import com.ticketsystem.service.FlightService2;
+import com.ticketsystem.service.FlightService3;
 import com.ticketsystem.util.CommUtils;
 import com.ticketsystem.util.DemoData;
 
@@ -45,8 +45,9 @@ public class DomeController {
         addData.put("fightNo", flghtNo);
         addData.put("cabinCode", cabinCode);
         addData.put("tripCode", tripStr);
+        addData.put("ticketCount", "");
         //new DemoService().addTicket(addData);
-        new FlightService2().addTicket(addData);
+        new FlightService3().addTicket(addData);
 
         response.sendRedirect("/flight/allFlightList");
     }
@@ -68,7 +69,7 @@ public class DomeController {
         cancelData.put("orderNo", "FO2106290510525");
         cancelData.put("accountNo", "15083142384");
         //new DemoService().cancelTicket(cancelData);
-        new FlightService2().cancelTicket(cancelData);
+        new FlightService3().cancelTicket(cancelData);
         
         return "success";
     }
@@ -93,7 +94,7 @@ public class DomeController {
         addData.put("tripCode", inputData.getString("tripStr"));
         addData.put("oiId", inputData.getString("oiId"));
         //new DemoService().addTicket(addData);
-        new FlightService2().addTicket(addData);
+        new FlightService3().addTicket(addData);
         
         return "success";
     }

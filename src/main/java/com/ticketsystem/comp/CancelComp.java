@@ -9,7 +9,7 @@ import com.ticketsystem.util.KnSqlManager;
 
 public class CancelComp {
 
-	public synchronized void cancelTicket(String orderNo, String accountNo) {
+	public void cancelTicket(String orderNo, String accountNo) {
 		KnSqlManager sqlManager = new KnSqlManager();
 		JSONObject account = sqlManager.getAccount(accountNo);
 		String session = account.getString("session");

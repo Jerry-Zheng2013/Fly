@@ -272,6 +272,7 @@
                             <th class="column-title">余票 </th>
                             <th class="column-title">倒计时 </th>
                             <th class="column-title">轮次 </th>
+                            <th class="column-title">订单状态 </th>
                             <th class="column-title no-link last"><span class="nobr">操作</span>
                             </th>
                             <th class="bulk-actions" colspan="7">
@@ -294,6 +295,7 @@
 	                            <td class=" " th:text="${order.standbyCount}"></td>
 	                            <td class="remainedTime" th:text="${order.countTime}"></td>
 	                            <td class=" " th:text="${order.round}"></td>
+	                            <td class=" " th:text="${order.orderStatus}"></td>
 	                            <td class=" last"><a href="#">取消</a>
 	                            </td>
 	                          </tr>
