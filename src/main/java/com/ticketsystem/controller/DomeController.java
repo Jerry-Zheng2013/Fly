@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Api(value = "网络接口案例", tags = "网络接口")
-@RestController
+@Controller
 @MapperScan("com.ticketsystem.dao")
 @RequestMapping("/demo")
 public class DomeController {
@@ -33,11 +34,13 @@ public class DomeController {
     @RequestMapping(value="/add", method = RequestMethod.POST)
     public void add(@RequestParam(value = "trip_no",required = true) String tripStr,
                       @RequestParam(value = "flght_no",required = true) String flghtNo,
-                      @RequestParam(value = "cabin_code",required = true) String cabinCode, HttpServletResponse response) throws Exception {
+                      @RequestParam(value = "cabin_code",required = true) String cabinCode,
+                      @RequestParam(value = "ticket_number",required = false) String ticketNumber, HttpServletResponse response) throws Exception {
         JSONObject addData = new JSONObject();
         //AVH/PKXSHA/21JUL/D/KN
         addData.put("fromCityCode", tripStr.substring(4, 7));
         addData.put("toCityCode", tripStr.substring(7, 10));
+        addData.put("ticketNumber", ticketNumber);
         String fromDate = tripStr.substring(11, 16);
         String desDate = DemoData.CURR_YEAR + DemoData.CALENDAR_MAP.get(fromDate.substring(2, 5)) + fromDate.substring(0, 2);
         String desDate2 = CommUtils.stringDateFormate(desDate);
@@ -79,6 +82,7 @@ public class DomeController {
     @ResponseBody
     public String readd(@RequestBody Map<String, String> param, HttpServletRequest request) {
 		//默认已从前端获取到了数据
+		String ticketNumber = request.getParameter("ticket_number");
         JSONObject inputData = DemoData.getData3();
         JSONObject addData = new JSONObject();
         addData.put("fromCityCode", inputData.getString("tripStr").substring(4, 7));
