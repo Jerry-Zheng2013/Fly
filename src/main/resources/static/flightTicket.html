@@ -224,6 +224,12 @@
 									<input id="cabin_code" class="form-control" type="text" name="cabin_code">
 								</div>
 							</div>
+							<div class="item form-group" style="margin-left: 10px">
+								<label for="ticket_number" class="col-form-label col-md-4 col-sm-4 label-align">票数:</label>
+								<div class="col-md-6 col-sm-6 ">
+									<input id="ticket_number" class="form-control" type="text" name="ticket_number">
+								</div>
+							</div>
 							<div class="item form-group col-md-12 col-sm-12" style="margin-top: 30px;">
 								<div class="col-md-7 col-sm-7 offset-md-3">
 									<button class="btn btn-primary" type="reset">清空</button>
@@ -295,21 +301,18 @@
 	                            <td class=" " th:text="${order.standbyCount}"></td>
 	                            <td class="remainedTime" th:text="${order.countTime}"></td>
 	                            <td class=" " th:text="${order.round}"></td>
-	                            <td class=" " th:text="${order.orderStatus}"></td>
-	                            <td class=" last"><a href="#">取消</a>
+	                            <td class="orderStatus" th:text="${order.orderStatus}"></td>
+	                            <td class="cancel_ticket last"><a href="#" th:text="@{(*{order.orderStatus=='1'} ? '订票' : '取消')}"></a>
 	                            </td>
 	                          </tr>
                           </div>
                         </tbody>
                       </table>
                     </div>
-							
-						
                   </div>
                 </div>
               </div>
 		  </div>
-        </div>
         <!-- /page content -->
 
         <!-- footer content -->

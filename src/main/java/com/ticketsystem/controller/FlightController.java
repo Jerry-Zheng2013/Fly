@@ -99,7 +99,7 @@ public class FlightController {
         dataMap1.put("flghtNo", flghtNo);//KN0000
         dataMap1.put("cabinCode", cabinCode);//C
         JSONObject dataJson1 = new JSONObject(dataMap1);
-        new DemoService().add(dataJson1);
+        new DemoService().booking(dataJson1);
         return "success";
     }
 }
