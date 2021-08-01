@@ -1,60 +1,56 @@
 package com.ticketsystem.model;
 
-import lombok.Data;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
 public class OrderForm {
     private Integer orderFormId;
 
     private Integer userId;
 
-    private Integer ticketNumber;
+    private BigDecimal ticketNumber;
 
-    private Float totalPrice;
+    private Double totalPrice;
 
     private Date orderTime;
 
-	public Integer getOrderFormId() {
-		return orderFormId;
-	}
+    public Integer getOrderFormId() {
+        return orderFormId;
+    }
 
-	public void setOrderFormId(Integer orderFormId) {
-		this.orderFormId = orderFormId;
-	}
+    public void setOrderFormId(Integer orderFormId) {
+        this.orderFormId = orderFormId;
+    }
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public Integer getTicketNumber() {
-		return ticketNumber;
-	}
+    public BigDecimal getTicketNumber() {
+        return ticketNumber;
+    }
 
-	public void setTicketNumber(Integer ticketNumber) {
-		this.ticketNumber = ticketNumber;
-	}
+    public void setTicketNumber(BigDecimal ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
 
-	public Float getTotalPrice() {
-		return totalPrice;
-	}
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
 
-	public void setTotalPrice(Float totalPrice) {
-		this.totalPrice = totalPrice;
-	}
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
-	public Date getOrderTime() {
-		return orderTime;
-	}
+    public Date getOrderTime() {
+        return orderTime;
+    }
 
-	public void setOrderTime(Date orderTime) {
-		this.orderTime = orderTime;
-	}
-
-    
+    public void setOrderTime(Date orderTime) {
+        this.orderTime = orderTime;
+    }
 }

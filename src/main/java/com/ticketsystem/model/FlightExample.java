@@ -1,5 +1,6 @@
 package com.ticketsystem.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -375,52 +376,52 @@ public class FlightExample {
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberEqualTo(Integer value) {
+        public Criteria andPeopleNumberEqualTo(BigDecimal value) {
             addCriterion("people_number =", value, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberNotEqualTo(Integer value) {
+        public Criteria andPeopleNumberNotEqualTo(BigDecimal value) {
             addCriterion("people_number <>", value, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberGreaterThan(Integer value) {
+        public Criteria andPeopleNumberGreaterThan(BigDecimal value) {
             addCriterion("people_number >", value, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPeopleNumberGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("people_number >=", value, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberLessThan(Integer value) {
+        public Criteria andPeopleNumberLessThan(BigDecimal value) {
             addCriterion("people_number <", value, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andPeopleNumberLessThanOrEqualTo(BigDecimal value) {
             addCriterion("people_number <=", value, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberIn(List<Integer> values) {
+        public Criteria andPeopleNumberIn(List<BigDecimal> values) {
             addCriterion("people_number in", values, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberNotIn(List<Integer> values) {
+        public Criteria andPeopleNumberNotIn(List<BigDecimal> values) {
             addCriterion("people_number not in", values, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberBetween(Integer value1, Integer value2) {
+        public Criteria andPeopleNumberBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("people_number between", value1, value2, "peopleNumber");
             return (Criteria) this;
         }
 
-        public Criteria andPeopleNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andPeopleNumberNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("people_number not between", value1, value2, "peopleNumber");
             return (Criteria) this;
         }
@@ -435,52 +436,52 @@ public class FlightExample {
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketEqualTo(Integer value) {
+        public Criteria andLeftTicketEqualTo(BigDecimal value) {
             addCriterion("left_ticket =", value, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketNotEqualTo(Integer value) {
+        public Criteria andLeftTicketNotEqualTo(BigDecimal value) {
             addCriterion("left_ticket <>", value, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketGreaterThan(Integer value) {
+        public Criteria andLeftTicketGreaterThan(BigDecimal value) {
             addCriterion("left_ticket >", value, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketGreaterThanOrEqualTo(Integer value) {
+        public Criteria andLeftTicketGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("left_ticket >=", value, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketLessThan(Integer value) {
+        public Criteria andLeftTicketLessThan(BigDecimal value) {
             addCriterion("left_ticket <", value, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketLessThanOrEqualTo(Integer value) {
+        public Criteria andLeftTicketLessThanOrEqualTo(BigDecimal value) {
             addCriterion("left_ticket <=", value, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketIn(List<Integer> values) {
+        public Criteria andLeftTicketIn(List<BigDecimal> values) {
             addCriterion("left_ticket in", values, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketNotIn(List<Integer> values) {
+        public Criteria andLeftTicketNotIn(List<BigDecimal> values) {
             addCriterion("left_ticket not in", values, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketBetween(Integer value1, Integer value2) {
+        public Criteria andLeftTicketBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("left_ticket between", value1, value2, "leftTicket");
             return (Criteria) this;
         }
 
-        public Criteria andLeftTicketNotBetween(Integer value1, Integer value2) {
+        public Criteria andLeftTicketNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("left_ticket not between", value1, value2, "leftTicket");
             return (Criteria) this;
         }
@@ -495,52 +496,52 @@ public class FlightExample {
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceEqualTo(Float value) {
+        public Criteria andTicketPriceEqualTo(Double value) {
             addCriterion("ticket_price =", value, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceNotEqualTo(Float value) {
+        public Criteria andTicketPriceNotEqualTo(Double value) {
             addCriterion("ticket_price <>", value, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceGreaterThan(Float value) {
+        public Criteria andTicketPriceGreaterThan(Double value) {
             addCriterion("ticket_price >", value, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceGreaterThanOrEqualTo(Float value) {
+        public Criteria andTicketPriceGreaterThanOrEqualTo(Double value) {
             addCriterion("ticket_price >=", value, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceLessThan(Float value) {
+        public Criteria andTicketPriceLessThan(Double value) {
             addCriterion("ticket_price <", value, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceLessThanOrEqualTo(Float value) {
+        public Criteria andTicketPriceLessThanOrEqualTo(Double value) {
             addCriterion("ticket_price <=", value, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceIn(List<Float> values) {
+        public Criteria andTicketPriceIn(List<Double> values) {
             addCriterion("ticket_price in", values, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceNotIn(List<Float> values) {
+        public Criteria andTicketPriceNotIn(List<Double> values) {
             addCriterion("ticket_price not in", values, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceBetween(Float value1, Float value2) {
+        public Criteria andTicketPriceBetween(Double value1, Double value2) {
             addCriterion("ticket_price between", value1, value2, "ticketPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTicketPriceNotBetween(Float value1, Float value2) {
+        public Criteria andTicketPriceNotBetween(Double value1, Double value2) {
             addCriterion("ticket_price not between", value1, value2, "ticketPrice");
             return (Criteria) this;
         }

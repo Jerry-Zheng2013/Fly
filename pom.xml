@@ -5,8 +5,8 @@
 
 	<groupId>com</groupId>
 	<artifactId>ticket-system</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>1.0</version>
+	<packaging>war</packaging>
 
 	<name>ticket-system</name>
 	<description>The flight ticket system project for Spring Boot</description>
@@ -124,6 +124,15 @@
 		<!--<artifactId>swagger-ui-layer</artifactId>-->
 		<!--<version>0.0.6</version>-->
 		<!--</dependency>-->
+		
+		<!--排除内置的tomcat开始-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!--排除内置的tomcat结束-->
+		
 	</dependencies>
 
 	<build>

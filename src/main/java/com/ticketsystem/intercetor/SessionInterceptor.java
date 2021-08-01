@@ -20,7 +20,7 @@ public class SessionInterceptor implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/index.html", "/user/login", "/user/registered", "/css/**", "/js/**", "dist/**", "/fonts/**", "/img/**","/error"
+                .excludePathPatterns("/index.html", "/user/login", "/user/registered", "/css/**", "/js/**", "/dist/**", "/fonts/**", "/img/**","/error"
                 ,"/swagger-resources/**","/swagger-ui.html#!/**","/v2/**",
                 "/netdemo/query",
                 "/netdemo/book",

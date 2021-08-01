@@ -4,10 +4,8 @@ import com.ticketsystem.model.User;
 import com.ticketsystem.model.UserExample.Criteria;
 import com.ticketsystem.model.UserExample.Criterion;
 import com.ticketsystem.model.UserExample;
-
 import java.util.List;
 import java.util.Map;
-
 import org.apache.ibatis.jdbc.SQL;
 
 public class UserSqlProvider {
@@ -29,27 +27,27 @@ public class UserSqlProvider {
     public String insertSelective(User record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("user");
-
+        
         if (record.getUserId() != null) {
             sql.VALUES("user_id", "#{userId,jdbcType=INTEGER}");
         }
-
+        
         if (record.getIsManager() != null) {
             sql.VALUES("is_manager", "#{isManager,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getUserName() != null) {
-            sql.VALUES("user_name", "#{userName,jdbcType=CHAR}");
+            sql.VALUES("user_name", "#{userName,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getUserPassword() != null) {
-            sql.VALUES("user_password", "#{userPassword,jdbcType=CHAR}");
+            sql.VALUES("user_password", "#{userPassword,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getIsVip() != null) {
             sql.VALUES("is_VIP", "#{isVip,jdbcType=DECIMAL}");
         }
-
+        
         return sql.toString();
     }
 
@@ -66,41 +64,41 @@ public class UserSqlProvider {
         sql.SELECT("is_VIP");
         sql.FROM("user");
         applyWhere(sql, example, false);
-
+        
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-
+        
         return sql.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         User record = (User) parameter.get("record");
         UserExample example = (UserExample) parameter.get("example");
-
+        
         SQL sql = new SQL();
         sql.UPDATE("user");
-
+        
         if (record.getUserId() != null) {
             sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
         }
-
+        
         if (record.getIsManager() != null) {
             sql.SET("is_manager = #{record.isManager,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getUserName() != null) {
-            sql.SET("user_name = #{record.userName,jdbcType=CHAR}");
+            sql.SET("user_name = #{record.userName,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getUserPassword() != null) {
-            sql.SET("user_password = #{record.userPassword,jdbcType=CHAR}");
+            sql.SET("user_password = #{record.userPassword,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getIsVip() != null) {
             sql.SET("is_VIP = #{record.isVip,jdbcType=DECIMAL}");
         }
-
+        
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -108,13 +106,13 @@ public class UserSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
         sql.UPDATE("user");
-
+        
         sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
         sql.SET("is_manager = #{record.isManager,jdbcType=VARCHAR}");
-        sql.SET("user_name = #{record.userName,jdbcType=CHAR}");
-        sql.SET("user_password = #{record.userPassword,jdbcType=CHAR}");
+        sql.SET("user_name = #{record.userName,jdbcType=VARCHAR}");
+        sql.SET("user_password = #{record.userPassword,jdbcType=VARCHAR}");
         sql.SET("is_VIP = #{record.isVip,jdbcType=DECIMAL}");
-
+        
         UserExample example = (UserExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
@@ -123,25 +121,25 @@ public class UserSqlProvider {
     public String updateByPrimaryKeySelective(User record) {
         SQL sql = new SQL();
         sql.UPDATE("user");
-
+        
         if (record.getIsManager() != null) {
             sql.SET("is_manager = #{isManager,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getUserName() != null) {
-            sql.SET("user_name = #{userName,jdbcType=CHAR}");
+            sql.SET("user_name = #{userName,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getUserPassword() != null) {
-            sql.SET("user_password = #{userPassword,jdbcType=CHAR}");
+            sql.SET("user_password = #{userPassword,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getIsVip() != null) {
             sql.SET("is_VIP = #{isVip,jdbcType=DECIMAL}");
         }
-
+        
         sql.WHERE("user_id = #{userId,jdbcType=INTEGER}");
-
+        
         return sql.toString();
     }
 
@@ -149,7 +147,7 @@ public class UserSqlProvider {
         if (example == null) {
             return;
         }
-
+        
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -171,7 +169,7 @@ public class UserSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-
+        
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -183,7 +181,7 @@ public class UserSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-
+                
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -194,14 +192,14 @@ public class UserSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-
+                    
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -232,7 +230,7 @@ public class UserSqlProvider {
                 sb.append(')');
             }
         }
-
+        
         if (sb.length() > 0) {
             sql.WHERE(sb.toString());
         }

@@ -1,10 +1,8 @@
 package com.ticketsystem.model;
 
-import lombok.Data;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
 public class Flight {
     private Integer flightId;
 
@@ -14,67 +12,65 @@ public class Flight {
 
     private String endCity;
 
-    private Integer peopleNumber;
+    private BigDecimal peopleNumber;
 
-    private Integer leftTicket;
+    private BigDecimal leftTicket;
 
-    private Float ticketPrice;
+    private Double ticketPrice;
 
-	public Integer getFlightId() {
-		return flightId;
-	}
+    public Integer getFlightId() {
+        return flightId;
+    }
 
-	public void setFlightId(Integer flightId) {
-		this.flightId = flightId;
-	}
+    public void setFlightId(Integer flightId) {
+        this.flightId = flightId;
+    }
 
-	public Date getStartTime() {
-		return startTime;
-	}
+    public Date getStartTime() {
+        return startTime;
+    }
 
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
 
-	public String getStartCity() {
-		return startCity;
-	}
+    public String getStartCity() {
+        return startCity;
+    }
 
-	public void setStartCity(String startCity) {
-		this.startCity = startCity;
-	}
+    public void setStartCity(String startCity) {
+        this.startCity = startCity == null ? null : startCity.trim();
+    }
 
-	public String getEndCity() {
-		return endCity;
-	}
+    public String getEndCity() {
+        return endCity;
+    }
 
-	public void setEndCity(String endCity) {
-		this.endCity = endCity;
-	}
+    public void setEndCity(String endCity) {
+        this.endCity = endCity == null ? null : endCity.trim();
+    }
 
-	public Integer getPeopleNumber() {
-		return peopleNumber;
-	}
+    public BigDecimal getPeopleNumber() {
+        return peopleNumber;
+    }
 
-	public void setPeopleNumber(Integer peopleNumber) {
-		this.peopleNumber = peopleNumber;
-	}
+    public void setPeopleNumber(BigDecimal peopleNumber) {
+        this.peopleNumber = peopleNumber;
+    }
 
-	public Integer getLeftTicket() {
-		return leftTicket;
-	}
+    public BigDecimal getLeftTicket() {
+        return leftTicket;
+    }
 
-	public void setLeftTicket(Integer leftTicket) {
-		this.leftTicket = leftTicket;
-	}
+    public void setLeftTicket(BigDecimal leftTicket) {
+        this.leftTicket = leftTicket;
+    }
 
-	public Float getTicketPrice() {
-		return ticketPrice;
-	}
+    public Double getTicketPrice() {
+        return ticketPrice;
+    }
 
-	public void setTicketPrice(Float ticketPrice) {
-		this.ticketPrice = ticketPrice;
-	}
-
-    
+    public void setTicketPrice(Double ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
 }

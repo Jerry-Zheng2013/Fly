@@ -21,8 +21,17 @@ public class UserInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         System.out.println("执行到了preHandle方法");
         System.out.println(handler);
+        String requestURLStr = request.getRequestURL().toString();
+        boolean jumpFlag = false;
+        if (requestURLStr.contains("/css/")
+        		|| requestURLStr.contains("/dist/")
+        		|| requestURLStr.contains("/fonts/")
+        		|| requestURLStr.contains("/img/")
+        		|| requestURLStr.contains("/js/")) {
+        	jumpFlag = true;
+        }
         User user = (User) request.getSession().getAttribute("session_user");
-        if (user == null) {
+        if (user == null && !jumpFlag) {
             response.sendRedirect(request.getContextPath() + "/index.html");//拦截后跳转的方法
             System.out.println("已成功拦截并转发跳转");
             return false;

@@ -1,5 +1,6 @@
 package com.ticketsystem.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -384,52 +385,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsVipEqualTo(Short value) {
+        public Criteria andIsVipEqualTo(BigDecimal value) {
             addCriterion("is_VIP =", value, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipNotEqualTo(Short value) {
+        public Criteria andIsVipNotEqualTo(BigDecimal value) {
             addCriterion("is_VIP <>", value, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipGreaterThan(Short value) {
+        public Criteria andIsVipGreaterThan(BigDecimal value) {
             addCriterion("is_VIP >", value, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipGreaterThanOrEqualTo(Short value) {
+        public Criteria andIsVipGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("is_VIP >=", value, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipLessThan(Short value) {
+        public Criteria andIsVipLessThan(BigDecimal value) {
             addCriterion("is_VIP <", value, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipLessThanOrEqualTo(Short value) {
+        public Criteria andIsVipLessThanOrEqualTo(BigDecimal value) {
             addCriterion("is_VIP <=", value, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipIn(List<Short> values) {
+        public Criteria andIsVipIn(List<BigDecimal> values) {
             addCriterion("is_VIP in", values, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipNotIn(List<Short> values) {
+        public Criteria andIsVipNotIn(List<BigDecimal> values) {
             addCriterion("is_VIP not in", values, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipBetween(Short value1, Short value2) {
+        public Criteria andIsVipBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("is_VIP between", value1, value2, "isVip");
             return (Criteria) this;
         }
 
-        public Criteria andIsVipNotBetween(Short value1, Short value2) {
+        public Criteria andIsVipNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("is_VIP not between", value1, value2, "isVip");
             return (Criteria) this;
         }

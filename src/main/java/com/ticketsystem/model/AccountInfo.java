@@ -1,7 +1,5 @@
 package com.ticketsystem.model;
 
-import java.util.Date;
-
 public class AccountInfo {
     private String accountNo;
 
@@ -11,7 +9,11 @@ public class AccountInfo {
 
     private String contactMobile;
 
-    private Date useTime;
+    private String useTime;
+
+    private String encryptstr;
+
+    private String session;
 
     public String getAccountNo() {
         return accountNo;
@@ -45,11 +47,27 @@ public class AccountInfo {
         this.contactMobile = contactMobile == null ? null : contactMobile.trim();
     }
 
-    public Date getUseTime() {
+    public String getUseTime() {
         return useTime;
     }
 
-    public void setUseTime(Date useTime) {
-        this.useTime = useTime;
+    public void setUseTime(String useTime) {
+        this.useTime = useTime == null ? null : useTime.trim();
+    }
+
+    public String getEncryptstr() {
+        return encryptstr;
+    }
+
+    public void setEncryptstr(String encryptstr) {
+        this.encryptstr = encryptstr == null ? null : encryptstr.trim();
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session == null ? null : session.trim();
     }
 }

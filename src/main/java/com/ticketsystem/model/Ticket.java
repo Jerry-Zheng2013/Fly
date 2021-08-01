@@ -1,8 +1,5 @@
 package com.ticketsystem.model;
 
-import lombok.Data;
-
-@Data
 public class Ticket {
     private Integer ticketId;
 
@@ -10,59 +7,57 @@ public class Ticket {
 
     private Integer orderFormId;
 
-    private Float price;
+    private Double price;
 
-    private Float discount;
+    private Double discount;
 
     private String passengerName;
 
-	public Integer getTicketId() {
-		return ticketId;
-	}
+    public Integer getTicketId() {
+        return ticketId;
+    }
 
-	public void setTicketId(Integer ticketId) {
-		this.ticketId = ticketId;
-	}
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
+    }
 
-	public Integer getFlightId() {
-		return flightId;
-	}
+    public Integer getFlightId() {
+        return flightId;
+    }
 
-	public void setFlightId(Integer flightId) {
-		this.flightId = flightId;
-	}
+    public void setFlightId(Integer flightId) {
+        this.flightId = flightId;
+    }
 
-	public Integer getOrderFormId() {
-		return orderFormId;
-	}
+    public Integer getOrderFormId() {
+        return orderFormId;
+    }
 
-	public void setOrderFormId(Integer orderFormId) {
-		this.orderFormId = orderFormId;
-	}
+    public void setOrderFormId(Integer orderFormId) {
+        this.orderFormId = orderFormId;
+    }
 
-	public Float getPrice() {
-		return price;
-	}
+    public Double getPrice() {
+        return price;
+    }
 
-	public void setPrice(Float price) {
-		this.price = price;
-	}
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
-	public Float getDiscount() {
-		return discount;
-	}
+    public Double getDiscount() {
+        return discount;
+    }
 
-	public void setDiscount(Float discount) {
-		this.discount = discount;
-	}
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
 
-	public String getPassengerName() {
-		return passengerName;
-	}
+    public String getPassengerName() {
+        return passengerName;
+    }
 
-	public void setPassengerName(String passengerName) {
-		this.passengerName = passengerName;
-	}
-
-    
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName == null ? null : passengerName.trim();
+    }
 }

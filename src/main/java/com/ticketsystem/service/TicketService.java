@@ -7,6 +7,7 @@ import com.ticketsystem.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -63,7 +64,7 @@ public class TicketService {
      */
     public void altTicket(int ticketId, int flightId, String passengerName, float price) {
         Ticket ticket = new Ticket();
-        ticket.setPrice(price);
+        ticket.setPrice(new BigDecimal(String.valueOf(price)).doubleValue());
         ticket.setFlightId(flightId);
         ticket.setPassengerName(passengerName);
         ticket.setTicketId(ticketId);
@@ -79,15 +80,15 @@ public class TicketService {
         Ticket ticket = ticketMapper.selectByPrimaryKey(ticketId);
         ticketMapper.deleteByPrimaryKey(ticketId);
         OrderForm orderForm = orderFormMapper.selectByPrimaryKey(ticket.getOrderFormId());
-        orderForm.setTicketNumber(orderForm.getTicketNumber() - 1);
-        if (orderForm.getTicketNumber() == 0) {
+        orderForm.setTicketNumber(orderForm.getTicketNumber().divide(new BigDecimal("1")));
+        if (orderForm.getTicketNumber() == new BigDecimal("0")) {
             orderFormMapper.deleteByPrimaryKey(orderForm.getOrderFormId());
         } else {
             orderForm.setTotalPrice(orderForm.getTotalPrice() - ticket.getPrice() * ticket.getDiscount());
             orderFormMapper.updateByPrimaryKeySelective(orderForm);
         }
         Flight flight = flightMapper.selectByPrimaryKey(ticket.getFlightId());
-        flight.setLeftTicket(flight.getLeftTicket() + 1);
+        flight.setLeftTicket(flight.getLeftTicket().add(new BigDecimal("1")));
         flightMapper.updateByPrimaryKey(flight);
         ticketMapper.deleteByPrimaryKey(ticketId);
     }
