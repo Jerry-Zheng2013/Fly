@@ -82,7 +82,7 @@ public class FlightService3 {
     	//TODO 调用接口----------查询航班余票信息
     	String standbyCountStr = new QueryComp().queryTicket(addData);
     	int standbyCount  = Integer.valueOf(standbyCountStr);
-    	standbyCount = 2;
+    	//standbyCount = 2;
     	
     	//预定数据组装
     	if (standbyCount>0) {
@@ -331,7 +331,7 @@ public class FlightService3 {
     	//TODO 调用接口----------查询航班余票信息
     	String standbyCountStr = new QueryComp().queryTicket(addData);
     	int standbyCount  = Integer.valueOf(standbyCountStr);
-    	standbyCount = 2;
+    	//standbyCount = 2;
     	
     	//预定数据组装
     	if (standbyCount>0) {
