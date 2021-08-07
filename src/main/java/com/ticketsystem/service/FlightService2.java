@@ -60,7 +60,7 @@ public class FlightService2 {
      */
     public synchronized JSONObject booking(JSONObject addData) {
     	Date intoDate = new Date();
-    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	System.out.println("当前时间：==="+format.format(intoDate));
 		System.out.println("["+Thread.currentThread().getName()+"]----------线程进入预定阶段");
     	
@@ -224,7 +224,7 @@ public class FlightService2 {
         			bookDataBiz.setUuid(uuid);
         			
         	    	//TODO 调用接口----------机票预定接口
-        			String bookDataStr = bookDataBiz.toString().replace(" ", "");
+        			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
         			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
         			
@@ -246,7 +246,7 @@ public class FlightService2 {
             		orderInfoData.put("orderStatus", "1");
             		orderInfoData.put("round", "1");
             		Date currentTime = new Date();
-            		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+            		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             		orderInfoData.put("inputTime", sdf2.format(currentTime));
             		orderInfoData.put("updateTime", sdf2.format(currentTime));
             		orderInfoData.put("inputUser", "user");
@@ -309,10 +309,22 @@ public class FlightService2 {
     	String orderNo = cancelData.getString("orderNo");
     	String accountNo = cancelData.getString("accountNo");
     	
-    	//更新订单信息
-    	sqlManager.updateOrderStatus2(oiId, "2");
     	//TODO 调用接口----------取消订单接口
-    	new CancelComp().cancelTicket(orderNo, accountNo);
+    	boolean cancelFlag = true;
+    	try {
+			new CancelComp().cancelTicket(orderNo, accountNo);
+		} catch (Exception e) {
+			cancelFlag = false;
+			e.printStackTrace();
+		}
+    	
+    	if (cancelFlag) {
+    		//更新订单信息
+    		sqlManager.updateOrderStatus2(oiId, "订单暂停");
+    	} else {
+    		//取消失败，更新订单状态为取消失败
+    		sqlManager.updateOrderStatus2(oiId, "暂停失败");
+    	}
     	
     	//更新客户信息
     	sqlManager.updateCustomerByOrder2(accountNo, "1");

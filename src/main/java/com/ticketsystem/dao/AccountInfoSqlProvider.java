@@ -45,7 +45,15 @@ public class AccountInfoSqlProvider {
         }
         
         if (record.getUseTime() != null) {
-            sql.VALUES("use_time", "#{useTime,jdbcType=DATE}");
+            sql.VALUES("use_time", "#{useTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEncryptstr() != null) {
+            sql.VALUES("encryptStr", "#{encryptstr,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSession() != null) {
+            sql.VALUES("session", "#{session,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -62,6 +70,8 @@ public class AccountInfoSqlProvider {
         sql.SELECT("password");
         sql.SELECT("contact_mobile");
         sql.SELECT("use_time");
+        sql.SELECT("encryptStr");
+        sql.SELECT("session");
         sql.FROM("account_info");
         applyWhere(sql, example, false);
         
@@ -96,7 +106,15 @@ public class AccountInfoSqlProvider {
         }
         
         if (record.getUseTime() != null) {
-            sql.SET("use_time = #{record.useTime,jdbcType=DATE}");
+            sql.SET("use_time = #{record.useTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEncryptstr() != null) {
+            sql.SET("encryptStr = #{record.encryptstr,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSession() != null) {
+            sql.SET("session = #{record.session,jdbcType=VARCHAR}");
         }
         
         applyWhere(sql, example, true);
@@ -111,10 +129,45 @@ public class AccountInfoSqlProvider {
         sql.SET("name = #{record.name,jdbcType=VARCHAR}");
         sql.SET("password = #{record.password,jdbcType=VARCHAR}");
         sql.SET("contact_mobile = #{record.contactMobile,jdbcType=VARCHAR}");
-        sql.SET("use_time = #{record.useTime,jdbcType=DATE}");
+        sql.SET("use_time = #{record.useTime,jdbcType=VARCHAR}");
+        sql.SET("encryptStr = #{record.encryptstr,jdbcType=VARCHAR}");
+        sql.SET("session = #{record.session,jdbcType=VARCHAR}");
         
         AccountInfoExample example = (AccountInfoExample) parameter.get("example");
         applyWhere(sql, example, true);
+        return sql.toString();
+    }
+
+    public String updateByPrimaryKeySelective(AccountInfo record) {
+        SQL sql = new SQL();
+        sql.UPDATE("account_info");
+        
+        if (record.getName() != null) {
+            sql.SET("name = #{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getPassword() != null) {
+            sql.SET("password = #{password,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContactMobile() != null) {
+            sql.SET("contact_mobile = #{contactMobile,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUseTime() != null) {
+            sql.SET("use_time = #{useTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEncryptstr() != null) {
+            sql.SET("encryptStr = #{encryptstr,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSession() != null) {
+            sql.SET("session = #{session,jdbcType=VARCHAR}");
+        }
+        
+        sql.WHERE("account_no = #{accountNo,jdbcType=VARCHAR}");
+        
         return sql.toString();
     }
 

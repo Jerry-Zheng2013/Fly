@@ -2,7 +2,6 @@ package com.ticketsystem.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mybatis.spring.annotation.MapperScan;
@@ -12,14 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ticketsystem.model.User;
-import com.ticketsystem.service.DemoService;
 import com.ticketsystem.service.FlightService3;
 import com.ticketsystem.util.CommUtils;
 import com.ticketsystem.util.DemoData;
+import com.ticketsystem.util.KnSqlManager;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,58 +45,94 @@ public class DomeController {
         addData.put("fightNo", flghtNo);
         addData.put("cabinCode", cabinCode);
         addData.put("tripCode", tripStr);
-        addData.put("ticketCount", "");
         //new DemoService().addTicket(addData);
         new FlightService3().addTicket(addData);
 
         response.sendRedirect("/flight/allFlightList");
     }
 	
-	@ApiOperation(value = "取消", notes = "取消订单")
+	
+    @ApiOperation(value = "暂停", notes = "暂停订单")
     @RequestMapping("/cancel")
     @ResponseBody
-    public String cancel(@RequestBody Map<String, String> param, HttpServletRequest request) {
-        String username = param.get("username");
-        String password = param.get("password");
-        User user = new User();
-        user.setUserName(username);
-        user.setUserPassword(password);
-        System.out.println(username);
-        System.out.println(password);
+    public void cancel(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
+    	String oiId = param.get("oiId");
+        String orderNo = param.get("orderNo");
+        String accountNo = param.get("accountNo");
         
         JSONObject cancelData = new JSONObject();
-        cancelData.put("oiId", "xxx");
-        cancelData.put("orderNo", "FO2106290510525");
-        cancelData.put("accountNo", "15083142384");
-        //new DemoService().cancelTicket(cancelData);
-        new FlightService3().cancelTicket(cancelData);
-        
-        return "success";
+        cancelData.put("oiId", oiId);
+        cancelData.put("orderNo", orderNo);
+        cancelData.put("accountNo", accountNo);
+        new FlightService3().suspendTicket(cancelData);
+        //return "success";
+        response.sendRedirect("/flight/allFlightList");
     }
 	
 	@ApiOperation(value = "启动", notes = "重新预定")
     @RequestMapping("/readd")
     @ResponseBody
-    public String readd(@RequestBody Map<String, String> param, HttpServletRequest request) {
-		//默认已从前端获取到了数据
-		String ticketNumber = request.getParameter("ticket_number");
-        JSONObject inputData = DemoData.getData3();
+    public void readd(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
+		//从前端获取到了数据
+        String oiId = param.get("oiId");
+        String tripStr = param.get("tripCode");
+        String flghtNo = param.get("flghtNo");
+        String cabinCode = param.get("cabinCode");
+        String ticketNumber = param.get("ticketNumber");
+        if("null"==ticketNumber || ticketNumber == null) { ticketNumber=""; }
+        
+        //先将原订单更新为“正常结束”
+        new KnSqlManager().updateOrderStatus2(oiId, "正常结束");
+        
+        //重新下单
         JSONObject addData = new JSONObject();
-        addData.put("fromCityCode", inputData.getString("tripStr").substring(4, 7));
-        addData.put("toCityCode", inputData.getString("tripStr").substring(7, 10));
-        String fromDate = inputData.getString("tripStr").substring(11, 19);
-    	StringBuffer fromTimeSB = new StringBuffer(fromDate);
-    	fromTimeSB.insert(4, "-");
-    	fromTimeSB.insert(7, "-");
-    	fromDate = fromTimeSB.toString();
-        addData.put("fromDate", fromDate);
-        addData.put("fightNo", inputData.getString("fightNo"));
-        addData.put("cabinCode", inputData.getString("cabinCode"));
-        addData.put("tripCode", inputData.getString("tripStr"));
-        addData.put("oiId", inputData.getString("oiId"));
+        //AVH/PKXSHA/21JUL/D/KN
+        addData.put("fromCityCode", tripStr.substring(4, 7));
+        addData.put("toCityCode", tripStr.substring(7, 10));
+        addData.put("ticketNumber", ticketNumber);
+        String fromDate = tripStr.substring(11, 16);
+        String desDate = DemoData.CURR_YEAR + DemoData.CALENDAR_MAP.get(fromDate.substring(2, 5)) + fromDate.substring(0, 2);
+        String desDate2 = CommUtils.stringDateFormate(desDate);
+        addData.put("fromDate", desDate2);
+        addData.put("fightNo", flghtNo);
+        addData.put("cabinCode", cabinCode);
+        addData.put("tripCode", tripStr);
         //new DemoService().addTicket(addData);
         new FlightService3().addTicket(addData);
-        
-        return "success";
+
+        response.sendRedirect("/flight/allFlightList");
     }
+	
+	@ApiOperation(value = "删除", notes = "删除订单")
+    @RequestMapping("/delete")
+    @ResponseBody
+    public void delete(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
+		//从前端获取到了数据
+        String oiId = param.get("oiId");
+        
+        new FlightService3().deleteOrder(oiId);
+
+        response.sendRedirect("/flight/allFlightList");
+    }
+	
+	@ApiOperation(value = "删除", notes = "删除丢票记录")
+    @RequestMapping("/deletelost")
+    public void deleteLost(HttpServletResponse response) throws Exception {
+		//从前端获取到了数据
+		System.out.println("删除丢票记录");
+		new FlightService3().deleteLost();
+    }
+    
+    @ApiOperation(value = "获取", notes = "获取丢票记录")
+    @RequestMapping("/getlost")
+    @ResponseBody
+    public String getlost(HttpServletResponse response) throws Exception {
+    	//System.out.println("获取丢票记录");
+    	JSONObject lostJson = new FlightService3().getLost();
+		String resultStr = lostJson.getString("resultStr");
+		return resultStr;
+    }
+	
+	
+	
 }

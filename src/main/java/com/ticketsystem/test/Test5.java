@@ -85,7 +85,7 @@ public class Test5 {
 			String fileName = validateRes1.getString("fileName");
 			
 			//7、登录-识别随机码
-			String fieFullName = "d:/img/"+fileName;
+			String fieFullName = "C:/img/"+fileName;
 			String accurate = Accurate5.accurate(fieFullName);
 			System.out.println(accurate);
 			JSONObject accurateJson = new JSONObject();

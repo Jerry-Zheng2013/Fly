@@ -368,7 +368,7 @@ public class LoginComp {
 			String fileName = validateRes1.getString("fileName");
 			
 			//7、登录-识别随机码
-			String fieFullName = "d:/img/"+fileName;
+			String fieFullName = "C:/img/"+fileName;
 			String accurate = Accurate5.accurate(fieFullName);
 			System.out.println(accurate);
 			JSONObject accurateJson = new JSONObject();
@@ -385,7 +385,7 @@ public class LoginComp {
 			}
 			String ss = accArr.getJSONObject(0).getString("words");
 			validateCode = ss.trim().replaceAll(" ", "");
-			System.out.println("==========百度识别成功:"+fileName+"--"+validateCode+"==========");
+			System.out.println("==========百度识别结果为:"+fileName+"--"+validateCode+"==========");
 			
 			//8、登录-触发登录
 			//http://www.flycua.com/app/login/userLogin?_=1627204027546

@@ -1,5 +1,6 @@
 package com.ticketsystem.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -235,52 +236,52 @@ public class OrderFormExample {
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberEqualTo(Integer value) {
+        public Criteria andTicketNumberEqualTo(BigDecimal value) {
             addCriterion("ticket_number =", value, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberNotEqualTo(Integer value) {
+        public Criteria andTicketNumberNotEqualTo(BigDecimal value) {
             addCriterion("ticket_number <>", value, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberGreaterThan(Integer value) {
+        public Criteria andTicketNumberGreaterThan(BigDecimal value) {
             addCriterion("ticket_number >", value, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTicketNumberGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("ticket_number >=", value, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberLessThan(Integer value) {
+        public Criteria andTicketNumberLessThan(BigDecimal value) {
             addCriterion("ticket_number <", value, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andTicketNumberLessThanOrEqualTo(BigDecimal value) {
             addCriterion("ticket_number <=", value, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberIn(List<Integer> values) {
+        public Criteria andTicketNumberIn(List<BigDecimal> values) {
             addCriterion("ticket_number in", values, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberNotIn(List<Integer> values) {
+        public Criteria andTicketNumberNotIn(List<BigDecimal> values) {
             addCriterion("ticket_number not in", values, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberBetween(Integer value1, Integer value2) {
+        public Criteria andTicketNumberBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("ticket_number between", value1, value2, "ticketNumber");
             return (Criteria) this;
         }
 
-        public Criteria andTicketNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andTicketNumberNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("ticket_number not between", value1, value2, "ticketNumber");
             return (Criteria) this;
         }
@@ -295,52 +296,52 @@ public class OrderFormExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceEqualTo(Float value) {
+        public Criteria andTotalPriceEqualTo(Double value) {
             addCriterion("total_price =", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotEqualTo(Float value) {
+        public Criteria andTotalPriceNotEqualTo(Double value) {
             addCriterion("total_price <>", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceGreaterThan(Float value) {
+        public Criteria andTotalPriceGreaterThan(Double value) {
             addCriterion("total_price >", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceGreaterThanOrEqualTo(Float value) {
+        public Criteria andTotalPriceGreaterThanOrEqualTo(Double value) {
             addCriterion("total_price >=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceLessThan(Float value) {
+        public Criteria andTotalPriceLessThan(Double value) {
             addCriterion("total_price <", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceLessThanOrEqualTo(Float value) {
+        public Criteria andTotalPriceLessThanOrEqualTo(Double value) {
             addCriterion("total_price <=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceIn(List<Float> values) {
+        public Criteria andTotalPriceIn(List<Double> values) {
             addCriterion("total_price in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotIn(List<Float> values) {
+        public Criteria andTotalPriceNotIn(List<Double> values) {
             addCriterion("total_price not in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceBetween(Float value1, Float value2) {
+        public Criteria andTotalPriceBetween(Double value1, Double value2) {
             addCriterion("total_price between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotBetween(Float value1, Float value2) {
+        public Criteria andTotalPriceNotBetween(Double value1, Double value2) {
             addCriterion("total_price not between", value1, value2, "totalPrice");
             return (Criteria) this;
         }

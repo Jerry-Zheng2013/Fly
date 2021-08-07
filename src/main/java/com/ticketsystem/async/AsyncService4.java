@@ -16,7 +16,7 @@ import com.ticketsystem.util.KnSqlManager;
 
 
 @Service
-public class AsyncService3 {
+public class AsyncService4 {
 	
 	/**
 	 * 开启新线程<br>
@@ -123,9 +123,8 @@ public class AsyncService3 {
 		JSONObject addData2 = loopData.getJSONObject("addData");
 		addData2.put("oiId", preOrderData.getString("oiId"));
 		addData2.put("ticketNumber", "");
-		addData2.put("preNumber", loopData.getString("preNumber"));
 		JSONObject bigData2 = FlightService3.booking2(addData2);
-		if(bigData2==null || !"true".equals(bigData2.getString("bookSucess"))) {
+		if(bigData2==null) {
     		//压票失败，发出警报，更新订单状态为压票失败
 			sqlManager.insertLost(preOrderData.getString("accountNo"), "failed");
 	    	sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败");

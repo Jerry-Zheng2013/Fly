@@ -329,7 +329,12 @@ public class BookData {
 			JSONObject Departure = trip.getJSONObject("Departure");
 			sb.append("\"Departure\":{");
 			sb.append("\"IATA\":");  sb.append("\""+Departure.getString("IATA")+"\",");
-			sb.append("\"Airport\":");  sb.append("\""+Departure.getString("Airport")+"\",");
+
+			String d_airport = Departure.getString("Airport");
+			if ("北京大兴".equalsIgnoreCase(d_airport)) {
+				d_airport = "北京大兴国际";
+			}
+			sb.append("\"Airport\":");  sb.append("\""+d_airport+"\",");
 			sb.append("\"TS_CityCode\":");  sb.append("\""+Departure.getString("TS_CityCode")+"\",");
 			sb.append("\"Terminal\":");  sb.append("\""+Departure.getString("Terminal")+"\",");
 			sb.append("\"DateTime\":");  sb.append("\""+Departure.getString("DateTime")+"\",");
@@ -339,7 +344,11 @@ public class BookData {
 			JSONObject Arrival = trip.getJSONObject("Arrival");
 			sb.append("\"Arrival\":{");
 			sb.append("\"IATA\":");  sb.append("\""+Arrival.getString("IATA")+"\",");
-			sb.append("\"Airport\":");  sb.append("\""+Arrival.getString("Airport")+"\",");
+			String a_airport = Arrival.getString("Airport");
+			if ("北京大兴".equalsIgnoreCase(a_airport)) {
+				a_airport = "北京大兴国际";
+			}
+			sb.append("\"Airport\":");  sb.append("\""+a_airport+"\",");
 			sb.append("\"TS_CityCode\":");  sb.append("\""+Arrival.getString("TS_CityCode")+"\",");
 			sb.append("\"Terminal\":");  sb.append("\""+Arrival.getString("Terminal")+"\",");
 			sb.append("\"DateTime\":");  sb.append("\""+Arrival.getString("DateTime")+"\",");

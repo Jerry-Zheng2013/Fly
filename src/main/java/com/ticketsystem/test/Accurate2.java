@@ -33,8 +33,7 @@ public class Accurate2 {
             // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
             String accessToken = "24.889ba8206844a9bfed7d0b0653506ec7.2592000.1629569738.282335-24592255";
             //24.5cb78c01ce4f8a231717aa7043d9e953.2592000.1629576258.282335-24585859
-            accessToken = "24.5cb78c01ce4f8a231717aa7043d9e953.2592000.1629576258.282335-24585859";
-            accessToken = "24.613973fd50eeaa77156d8433ae49f093.2592000.1629786126.282335-24601534";
+            accessToken = "24.6aa3b5ee126cd327bbb6e6098687964b.2592000.1630545142.282335-24601534";
             result = HttpUtil.post(url, accessToken, param);
             //System.out.println(result);
             return result;

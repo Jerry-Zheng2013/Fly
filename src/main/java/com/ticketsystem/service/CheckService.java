@@ -3,6 +3,9 @@ package com.ticketsystem.service;
 import com.ticketsystem.dao.UserMapper;
 import com.ticketsystem.model.User;
 import com.ticketsystem.model.UserExample;
+
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +51,7 @@ public class CheckService {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         user.setIsManager("1");
-        user.setIsVip(new Short("1"));
+        user.setIsVip(new BigDecimal("1"));
         userMapper.insert(user);
         //criteria.andUserNameEqualTo(user.getUserName());
         if (userMapper.selectByExample(userExample).size() != 0) {

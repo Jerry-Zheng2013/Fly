@@ -14,7 +14,9 @@ import com.ticketsystem.model.DemoOrder;
 
 public class DemoData {
 	// 倒计时时长
-	public static long COUNTDOWNMILLIS = (long) (1000 * 60 * 5);
+	public static long COUNTDOWNMILLIS = (long) (1000 * 60 * 11);
+	// 倒计时时长/分钟
+	public static int COUNTMM = 11;
 	// 每个账号预定多少张
 	public static int PERSONTICKETS = 4;
 	
@@ -58,6 +60,8 @@ public class DemoData {
 		put("NOV","11");
 		put("DEC","12");
 	}};
+	
+	public static String alarmFilePath = "src/main/resources/doc/alarm606.wav";
 	
 	/**
 	 * 系统信息

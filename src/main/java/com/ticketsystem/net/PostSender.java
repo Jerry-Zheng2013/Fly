@@ -69,6 +69,55 @@ public class PostSender {
         return resultJson;
 	}
 	
+	
+
+	public JSONObject cancelPost(String url, String postDataStr, String cookieStr) throws Exception {
+		JSONObject resultJson = new JSONObject();
+		StringBuffer responseBody = new StringBuffer();
+		Map<String, List<String>> responseHead = new TreeMap<String, List<String>>();
+		
+        String result = "";
+        try {
+            URL realUrl = new URL(url);
+            
+            URLConnection conn = realUrl.openConnection();
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			if (!"null".equalsIgnoreCase(cookieStr)) {
+				conn.setRequestProperty("Cookie", cookieStr);
+			}
+			
+            //post设置如下两行
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            
+            PrintWriter out = new PrintWriter(conn.getOutputStream());
+            out.print(postDataStr);
+            out.flush();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"));
+            String line;
+            while((line = in.readLine()) != null){
+                result +=" " + line;
+            }
+            responseBody.append(result);
+			System.out.println("responseBody:"+result);
+
+			//获取头信息
+			responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        resultJson.put("responseBody", responseBody);
+        resultJson.put("responseHead", responseHead);
+        return resultJson;
+	}
+	
+	
 	public JSONObject queryPost(String url, String postDataStr) {
 		JSONObject resultJson = new JSONObject();
 		StringBuffer responseBody = new StringBuffer();

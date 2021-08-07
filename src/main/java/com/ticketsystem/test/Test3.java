@@ -78,7 +78,7 @@ public class Test3 {
 		System.out.println(fileName);
 		
 		//百度识别
-		String fieFullName = "d:/img/"+fileName;
+		String fieFullName = "C:/img/"+fileName;
 		String accurate = Accurate2.accurate(fieFullName);
 		System.out.println(accurate);
 		JSONObject accurateJson = new JSONObject();
@@ -191,7 +191,7 @@ public class Test3 {
 		System.out.println(fileName);
 		
 		//百度识别
-		String fieFullName = "d:/img/"+fileName;
+		String fieFullName = "C:/img/"+fileName;
 		String accurate = Accurate2.accurate(fieFullName);
 		System.out.println(accurate);
 		JSONObject accurateJson = new JSONObject();

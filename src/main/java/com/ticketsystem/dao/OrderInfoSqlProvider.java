@@ -228,6 +228,75 @@ public class OrderInfoSqlProvider {
         return sql.toString();
     }
 
+    public String updateByPrimaryKeySelective(OrderInfo record) {
+        SQL sql = new SQL();
+        sql.UPDATE("order_info");
+        
+        if (record.getAccountNo() != null) {
+            sql.SET("account_no = #{accountNo,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOrderNo() != null) {
+            sql.SET("order_no = #{orderNo,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTripCode() != null) {
+            sql.SET("trip_code = #{tripCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getFlightNo() != null) {
+            sql.SET("flight_no = #{flightNo,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCabinCode() != null) {
+            sql.SET("cabin_code = #{cabinCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getPrice() != null) {
+            sql.SET("price = #{price,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStandbyCount() != null) {
+            sql.SET("standby_count = #{standbyCount,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOrderStatus() != null) {
+            sql.SET("order_status = #{orderStatus,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCountTime() != null) {
+            sql.SET("count_time = #{countTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRound() != null) {
+            sql.SET("round = #{round,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInputTime() != null) {
+            sql.SET("input_time = #{inputTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getUpdateTime() != null) {
+            sql.SET("update_time = #{updateTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getInputUser() != null) {
+            sql.SET("input_user = #{inputUser,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAttribute0() != null) {
+            sql.SET("attribute0 = #{attribute0,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("remark = #{remark,jdbcType=VARCHAR}");
+        }
+        
+        sql.WHERE("oi_id = #{oiId,jdbcType=VARCHAR}");
+        
+        return sql.toString();
+    }
+
     protected void applyWhere(SQL sql, OrderInfoExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;

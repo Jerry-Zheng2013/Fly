@@ -1,8 +1,6 @@
 package com.ticketsystem.model;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class AccountInfoExample {
@@ -104,32 +102,6 @@ public class AccountInfoExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andAccountNoIsNull() {
@@ -422,53 +394,203 @@ public class AccountInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeEqualTo(Date value) {
-            addCriterionForJDBCDate("use_time =", value, "useTime");
+        public Criteria andUseTimeEqualTo(String value) {
+            addCriterion("use_time =", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeNotEqualTo(Date value) {
-            addCriterionForJDBCDate("use_time <>", value, "useTime");
+        public Criteria andUseTimeNotEqualTo(String value) {
+            addCriterion("use_time <>", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeGreaterThan(Date value) {
-            addCriterionForJDBCDate("use_time >", value, "useTime");
+        public Criteria andUseTimeGreaterThan(String value) {
+            addCriterion("use_time >", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("use_time >=", value, "useTime");
+        public Criteria andUseTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("use_time >=", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeLessThan(Date value) {
-            addCriterionForJDBCDate("use_time <", value, "useTime");
+        public Criteria andUseTimeLessThan(String value) {
+            addCriterion("use_time <", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("use_time <=", value, "useTime");
+        public Criteria andUseTimeLessThanOrEqualTo(String value) {
+            addCriterion("use_time <=", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeIn(List<Date> values) {
-            addCriterionForJDBCDate("use_time in", values, "useTime");
+        public Criteria andUseTimeLike(String value) {
+            addCriterion("use_time like", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeNotIn(List<Date> values) {
-            addCriterionForJDBCDate("use_time not in", values, "useTime");
+        public Criteria andUseTimeNotLike(String value) {
+            addCriterion("use_time not like", value, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("use_time between", value1, value2, "useTime");
+        public Criteria andUseTimeIn(List<String> values) {
+            addCriterion("use_time in", values, "useTime");
             return (Criteria) this;
         }
 
-        public Criteria andUseTimeNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("use_time not between", value1, value2, "useTime");
+        public Criteria andUseTimeNotIn(List<String> values) {
+            addCriterion("use_time not in", values, "useTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseTimeBetween(String value1, String value2) {
+            addCriterion("use_time between", value1, value2, "useTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseTimeNotBetween(String value1, String value2) {
+            addCriterion("use_time not between", value1, value2, "useTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrIsNull() {
+            addCriterion("encryptStr is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrIsNotNull() {
+            addCriterion("encryptStr is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrEqualTo(String value) {
+            addCriterion("encryptStr =", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrNotEqualTo(String value) {
+            addCriterion("encryptStr <>", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrGreaterThan(String value) {
+            addCriterion("encryptStr >", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrGreaterThanOrEqualTo(String value) {
+            addCriterion("encryptStr >=", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrLessThan(String value) {
+            addCriterion("encryptStr <", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrLessThanOrEqualTo(String value) {
+            addCriterion("encryptStr <=", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrLike(String value) {
+            addCriterion("encryptStr like", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrNotLike(String value) {
+            addCriterion("encryptStr not like", value, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrIn(List<String> values) {
+            addCriterion("encryptStr in", values, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrNotIn(List<String> values) {
+            addCriterion("encryptStr not in", values, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrBetween(String value1, String value2) {
+            addCriterion("encryptStr between", value1, value2, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andEncryptstrNotBetween(String value1, String value2) {
+            addCriterion("encryptStr not between", value1, value2, "encryptstr");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionIsNull() {
+            addCriterion("session is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionIsNotNull() {
+            addCriterion("session is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionEqualTo(String value) {
+            addCriterion("session =", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionNotEqualTo(String value) {
+            addCriterion("session <>", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionGreaterThan(String value) {
+            addCriterion("session >", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionGreaterThanOrEqualTo(String value) {
+            addCriterion("session >=", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionLessThan(String value) {
+            addCriterion("session <", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionLessThanOrEqualTo(String value) {
+            addCriterion("session <=", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionLike(String value) {
+            addCriterion("session like", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionNotLike(String value) {
+            addCriterion("session not like", value, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionIn(List<String> values) {
+            addCriterion("session in", values, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionNotIn(List<String> values) {
+            addCriterion("session not in", values, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionBetween(String value1, String value2) {
+            addCriterion("session between", value1, value2, "session");
+            return (Criteria) this;
+        }
+
+        public Criteria andSessionNotBetween(String value1, String value2) {
+            addCriterion("session not between", value1, value2, "session");
             return (Criteria) this;
         }
     }

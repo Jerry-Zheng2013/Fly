@@ -11,7 +11,7 @@ import com.ticketsystem.util.Xml2JsonUtil;
 public class QueryComp {
 
 	public String queryTicket(JSONObject queryData) {
-		String standbyCount = "0"; //临时代码，临时等于1
+		String standbyCount = "0";
     	String fromCity = queryData.getString("fromCityCode");
     	String toCity = queryData.getString("toCityCode");
     	String fromDate = queryData.getString("fromDate");
@@ -54,11 +54,6 @@ public class QueryComp {
     	    							if(DemoData.getSeatLeft().contains(seatLeftNum)) {
     	    								standbyCount = seatLeftNum;
     	    								//standbyCount = "1";
-    	    								//break;
-    	    								return standbyCount;
-    	    							}
-    	    							if(seatLeftNum.equalsIgnoreCase("A")) {
-    	    								standbyCount = "5";
     	    								//break;
     	    								return standbyCount;
     	    							}

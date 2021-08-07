@@ -27,7 +27,10 @@ public class SessionInterceptor implements WebMvcConfigurer {
                 "/netdemo/cancel",
                 "/demo/add",
                 "/demo/cancel",
-                "/demo/readd"
+                "/demo/readd",
+                "/demo/delete",
+                "/demo/deletelost",
+                "/demo/getlost"
                 );
 
     }

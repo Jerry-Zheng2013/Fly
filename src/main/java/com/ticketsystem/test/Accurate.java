@@ -22,7 +22,7 @@ public class Accurate {
         String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate";
         try {
             // 本地文件路径
-            String filePath = "d:/img/3333.png";
+            String filePath = "C:/img/3333.png";
             byte[] imgData = FileUtil.readFileByBytes(filePath);
             String imgStr = Base64Util.encode(imgData);
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");

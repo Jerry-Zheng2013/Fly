@@ -51,6 +51,14 @@ public class FlightController {
     	modelMap.put("orderInfoList", orderInfoList);
         return "flightTicket";
     }
+    
+    @ApiOperation(value = "获取历史订单信息", notes = "")
+    @RequestMapping(value = "/historyFlightList",method = RequestMethod.GET)
+    public String getHistoryFlight(ModelMap modelMap) {
+    	List<OrderInfo> orderInfoList = orderInfoService.getHistoryList();
+    	modelMap.put("orderInfoList", orderInfoList);
+        return "historyTicket";
+    }
 
     @ApiOperation(value = "获取航班ID", notes = "")
     @RequestMapping("flightId")

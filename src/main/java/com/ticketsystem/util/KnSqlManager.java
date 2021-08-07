@@ -497,7 +497,94 @@ public class KnSqlManager {
 				e.printStackTrace();
 			}
 		}
-		// TODO Auto-generated method stub
-		
 	}
+
+	/**
+	 * 删除订单<br/>
+	 * @param oiId 订单流水号
+	 */
+	public void deleteOrder(String oiId) {
+		String sqlStr = "delete from order_info "
+				+ " where oi_id='"+oiId+"' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void deleteLost() {
+		String sqlStr = "delete from order_lost "
+				+ " where 1=1 ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public JSONObject getLost() {
+		//根据ID获取联航账号信息
+		String sqlStr = "select account_no,trip_code as olCount "
+				+ " from order_lost where 1=1 ";
+		DBUtil db = new DBUtil();
+		JSONObject lostJson = new JSONObject();
+		try {
+			db.open();
+			ResultSet rs = db.executeQuery(sqlStr);
+			if(rs.next()){
+				lostJson.put("resultStr", rs.getString(1)+"K"+rs.getString(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return lostJson;
+	}
+
+	public void insertLost(String accountNo, String tripCode) {
+		String orderNo="9999";
+		//自动生成主键oiId
+		String oiId = System.currentTimeMillis()+"X"+Math.round(Math.random()*100000);
+		String sqlStr = "insert into order_lost (oi_id,account_no,order_no,trip_code ) "
+				+ " values('"+oiId+"','"+accountNo+"','"+orderNo+"','"+tripCode+"' ) "; 
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			db.executeUpdate(sqlStr);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 }

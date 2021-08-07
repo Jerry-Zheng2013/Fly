@@ -158,7 +158,7 @@ public class GetPostTest3 {
             bis = new BufferedInputStream(conn.getInputStream());
             
             fileName = String.valueOf(Math.random()).substring(2, 15)+".png";
-            fos = new FileOutputStream("d:/img/"+fileName);
+            fos = new FileOutputStream("C:/img/"+fileName);
             byte[] buf = new byte[1024];
     		int size = 0;
             while ((size = bis.read(buf)) != -1) {

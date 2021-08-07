@@ -158,6 +158,47 @@ public class CustomerInfoSqlProvider {
         return sql.toString();
     }
 
+    public String updateByPrimaryKeySelective(CustomerInfo record) {
+        SQL sql = new SQL();
+        sql.UPDATE("customer_info");
+        
+        if (record.getName() != null) {
+            sql.SET("name = #{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCardType() != null) {
+            sql.SET("card_type = #{cardType,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCardNo() != null) {
+            sql.SET("card_no = #{cardNo,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getMobile() != null) {
+            sql.SET("mobile = #{mobile,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getBirthday() != null) {
+            sql.SET("birthday = #{birthday,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTicketType() != null) {
+            sql.SET("ticket_type = #{ticketType,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCustomerStatus() != null) {
+            sql.SET("customer_status = #{customerStatus,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAccountNo() != null) {
+            sql.SET("account_no = #{accountNo,jdbcType=VARCHAR}");
+        }
+        
+        sql.WHERE("customer_id = #{customerId,jdbcType=VARCHAR}");
+        
+        return sql.toString();
+    }
+
     protected void applyWhere(SQL sql, CustomerInfoExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;

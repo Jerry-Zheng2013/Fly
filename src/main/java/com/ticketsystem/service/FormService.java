@@ -8,6 +8,7 @@ import com.ticketsystem.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -54,11 +55,12 @@ public class FormService {
     public float getAllPrice(String username, int ticketNum, int flightId) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUserNameEqualTo(username);
-        int isVip = userMapper.selectByExample(userExample).get(0).getIsVip();
-        float totalPrice = ticketNum * flightMapper.selectByPrimaryKey(flightId).getTicketPrice();
-        if (isVip == 1)
+        BigDecimal isVip = userMapper.selectByExample(userExample).get(0).getIsVip();
+        double totalPrice = ticketNum * flightMapper.selectByPrimaryKey(flightId).getTicketPrice();
+        if (isVip.intValue() == 1)
             totalPrice = (float) 0.8 * totalPrice;
-        return totalPrice;
+        
+        return new BigDecimal(String.valueOf(totalPrice)).floatValue();
     }
 
     /**
@@ -78,10 +80,10 @@ public class FormService {
         OrderForm orderForm = new OrderForm();
         Date now = new Date();
         orderForm.setOrderTime(now);
-        orderForm.setTicketNumber(ticketNum);
-        if (user.getIsVip() == 1) {
+        orderForm.setTicketNumber(new BigDecimal(String.valueOf(ticketNum)));
+        if (user.getIsVip().intValue() == 1) {
             totalPrice = (float) (flightMapper.selectByPrimaryKey(tickets.get(0).getFlightId()).getTicketPrice() * ticketNum * 0.8);
-            orderForm.setTotalPrice(totalPrice);
+            orderForm.setTotalPrice(new BigDecimal(String.valueOf(totalPrice)).doubleValue());
 
         }
         orderForm.setUserId(user.getUserId());
@@ -96,15 +98,15 @@ public class FormService {
 
         for (Ticket ticket : tickets) {
             ticket.setPrice(flightMapper.selectByPrimaryKey(ticket.getFlightId()).getTicketPrice());
-            if (user.getIsVip() == 1)
-                ticket.setDiscount((float) 0.8);
-            else ticket.setDiscount((float) 1);
+            if (user.getIsVip().intValue() == 1)
+                ticket.setDiscount(0.8);
+            else ticket.setDiscount(1.0);
             ticket.setOrderFormId(orderForm.getOrderFormId());
             ticketMapper.insert(ticket);
         }
 
         Flight flight = flightMapper.selectByPrimaryKey(tickets.get(0).getFlightId());
-        flight.setLeftTicket(flight.getLeftTicket() - ticketNum);
+        flight.setLeftTicket(flight.getLeftTicket().divide(new BigDecimal(String.valueOf(ticketNum))));
         flightMapper.updateByPrimaryKey(flight);
 
         return totalPrice;

@@ -39,8 +39,6 @@
             </div>
 
             <div class="clearfix"></div>
-            <!-- 警报！警报！警报！ -->
-			<audio autoplay="false" id="myAudio" src=""></audio>
 
             <!-- menu profile quick info -->
             <div class="profile clearfix">
@@ -201,57 +199,16 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-			<div class="col-md-12 col-sm-12 ">
-				<div class="x_panel">
-					<div class="x_content">
-						<br />
-						<form id="searche-ticket" data-parsley-validate class="form-inline" action="/demo/add" method="post">
-
-							<div class="item form-group">
-								<label class="col-form-label col-md-4 col-sm-4 label-align" for="trip_no">行程代码:<span class="required">*</span>
-								</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input type="text" id="trip_no" name="trip_no" required="required" class="form-control ">
-								</div>
-							</div>
-							<div class="item form-group">
-								<label class="col-form-label col-md-4 col-sm-4 label-align" for="flght_no">航班号:<span class="required">*</span>
-								</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input type="text" id="flght_no" name="flght_no" required="required" class="form-control">
-								</div>
-							</div>
-							<div class="item form-group">
-								<label for="cabin_code" class="col-form-label col-md-4 col-sm-4 label-align">仓位:</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input id="cabin_code" class="form-control" type="text" name="cabin_code">
-								</div>
-							</div>
-							<div class="item form-group" style="margin-left: 10px">
-								<label for="ticket_number" class="col-form-label col-md-4 col-sm-4 label-align">票数:</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input id="ticket_number" class="form-control" type="text" name="ticket_number">
-								</div>
-							</div>
-							<div class="item form-group col-md-12 col-sm-12" style="margin-top: 30px;">
-								<div class="col-md-7 col-sm-7 offset-md-3">
-									<button class="btn" id="startPlay"  style="display: none;" onclick="startAlarm()" type="reset" >开始警报</button>
-									<span>&nbsp;&nbsp;&nbsp;</span>
-									<button class="btn btn-primary" type="reset">清空</button>
-									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-									<button type="submit" class="btn btn-success">添加</button>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
+			<div class="col-md-7 col-sm-7 offset-md-3">
+				<button class="btn" id="startPlay"  style="display: none;"  type="reset" >开始警报</button>
+				<span>&nbsp;&nbsp;&nbsp;</span>
 			</div>
 		  </div>
 		  <div class="row">
 			<div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>抢票任务 <small>实时更新</small></h2>
+                    <h2>抢票任务</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -271,12 +228,11 @@
                   <div class="x_content">
                     <div class="table-responsive">
                       <table class="table table-striped jambo_table bulk_action">
-                        <thead style="height: 47px;">
+                        <thead>
                           <tr class="headings">
                             <th>
                               <input type="checkbox" id="check-all" class="flat">
                             </th>
-                            <th class="column-title">订单号 </th>
                             <th class="column-title">官网账号 </th>
                             <th class="column-title">行程代码 </th>
                             <th class="column-title">航班号 </th>
@@ -288,7 +244,6 @@
                             <th class="column-title" style="display: none;" >轮次 </th>
                             <th class="column-title">订单状态 </th>
                             <th class="column-title no-link last"><span class="nobr">操作</span>
-                            <th class="column-title no-link last"><span class="nobr">删除</span>
                             </th>
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">批量操作 ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
@@ -303,28 +258,17 @@
 	                              <input type="checkbox" class="flat" name="table_records">
 	                            </td>
 	                            <td class=" oiId"  style="display: none;" th:text="${order.oiId}"></td>
-	                            <td class=" orderNo">
-	                            	<a href="http://www.flycua.com/order/index.html"  target="_blank"  th:text="${order.orderNo}"></a>
-	                            </td>
-	                            <td class=" accountNo" th:text="${order.accountNo}"></td>
-	                            <td class=" tripCode" th:text="${order.tripCode}"></td>
-	                            <td class=" flightNo" th:text="${order.flightNo}"></td>
-	                            <td class=" cabinCode" th:text="${order.cabinCode}"></td>
+	                            <td class=" " th:text="${order.accountNo}"></td>
+	                            <td class=" " th:text="${order.tripCode}"></td>
+	                            <td class=" " th:text="${order.flightNo}"></td>
+	                            <td class=" " th:text="${order.cabinCode}"></td>
 	                            <td class="a-right a-right " th:text="${order.price}">￥</td>
 	                            <td class=" " th:text="${order.standbyCount}"></td>
 	                            <td class=" " th:text="${order.inputTime}"></td>
 	                            <td class="remainedTime" th:text="${order.countTime}"></td>
 	                            <td class=" "  style="display: none;" th:text="${order.round}"></td>
 	                            <td class="orderStatus" th:text="${order.orderStatus}"></td>
-	                            <td class="cancel_ticket last">
-	                            	<a href="#" th:text="@{(*{order.orderStatus=='正常'} ? '暂停':'')} "></a>
-	                            	<a href="#" th:text="@{(*{order.orderStatus=='订单暂停'} ? '重订':'')} "></a>
-	                            	<a href="#" th:text="@{(*{order.orderStatus=='压票失败'} ? '需手动新增':'')} "></a>
-	                            	<a href="#" th:text="@{(*{order.orderStatus=='取消失败'} ? '需手动取消':'')} "></a>
-	                            	<a href="#" th:text="@{(*{order.orderStatus=='暂停失败'} ? '需手动取消':'')} "></a>
-	                            </td>
-	                            <td class="delete_ticket last">
-	                            	<a href="#" th:text="删除"></a>
+	                            <td class="cancel_ticket last"><a href="#" th:text="删除"></a>
 	                            </td>
 	                          </tr>
                           </div>
@@ -390,7 +334,6 @@
     
     <!-- 警报 -->
     <script src="../js/alarm.js"></script>
-    
 	<script>
 	    function remainedTimeAct (){
 	    	$('.remainedTime').each(function(){
@@ -430,11 +373,11 @@
 		        firstTime = false;
 	        }
 		}
-	    
+
 	    var alarmFlag = ""; //发起警报标识
 	    function eventStart() {
 	    	//监听鼠标移动，生效播放器
-	    	startAlarm;
+	    	document.getElementById("myAudio").muted = false;
 	    	console.log("move");
 	    }
     </script>

@@ -1,12 +1,8 @@
 package com.ticketsystem.model;
 
-import lombok.Data;
+import java.math.BigDecimal;
 
-import java.io.Serializable;
-
-@Data
-public class User implements Serializable {
-    private static final long serialVersionUID = 8655851615465363473L;
+public class User {
     private Integer userId;
 
     private String isManager;
@@ -15,63 +11,45 @@ public class User implements Serializable {
 
     private String userPassword;
 
-    private Short isVip;
-    
-    
+    private BigDecimal isVip;
 
     public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public String getIsManager() {
-		return isManager;
-	}
-
-	public void setIsManager(String isManager) {
-		this.isManager = isManager;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
-
-	public Short getIsVip() {
-		return isVip;
-	}
-
-	public void setIsVip(Short isVip) {
-		this.isVip = isVip;
-	}
-
-	public User() {
+        return userId;
     }
 
-    public User(String username, String password) {
-        this.userName = username;
-        this.userPassword = password;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public User(Integer id, String username, String password) {
-        this.userId = id;
-        this.userName = username;
-        this.userPassword = password;
+    public String getIsManager() {
+        return isManager;
     }
 
+    public void setIsManager(String isManager) {
+        this.isManager = isManager == null ? null : isManager.trim();
+    }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword == null ? null : userPassword.trim();
+    }
+
+    public BigDecimal getIsVip() {
+        return isVip;
+    }
+
+    public void setIsVip(BigDecimal isVip) {
+        this.isVip = isVip;
+    }
 }
