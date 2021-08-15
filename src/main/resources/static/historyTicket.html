@@ -353,6 +353,11 @@
 
 		    	        var new_date_time = PrefixInteger(new_h,2) + ":" + PrefixInteger(new_m,2) + ":" + PrefixInteger(new_s,2);
 		    	        $(this).text(new_date_time);
+		    	        if ("00:00:00"==new_date_time) {
+		    	        	setTimeout(function(){
+		    	        		location.reload();
+		    	        	}, 25000);
+		    	        }
 	    	        }
 	    	    }
 	    	});
@@ -375,9 +380,11 @@
 		}
 
 	    var alarmFlag = ""; //发起警报标识
+	    var alarmTimes = 0; //警报的次数
 	    function eventStart() {
 	    	//监听鼠标移动，生效播放器
-	    	document.getElementById("myAudio").muted = false;
+	    	//document.getElementById("myAudio").muted = false;
+	    	startAlarm();
 	    	console.log("move");
 	    }
     </script>

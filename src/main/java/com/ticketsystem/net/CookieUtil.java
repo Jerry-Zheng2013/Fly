@@ -42,9 +42,10 @@ public class CookieUtil {
 
 	public static String getBookCookie2(String tokenId, String tokenUUID, String session) {
 		String accountCheckCookie = 
-				"X-LB=2.728.fc1ba9b5.50; " + 
-				"session="+session+"; " + 
+				"_ga=GA1.2.1796015753.1627231732; " + 
 				"flycua_user_cookie=true; " + 
+				"_gid=GA1.2.1583018025.1628939718; " + 
+				"session="+session+"; " + 
 				"tokenId="+tokenId+"; " + 
 				"tokenUUID="+tokenUUID+"; " +
 				" ";

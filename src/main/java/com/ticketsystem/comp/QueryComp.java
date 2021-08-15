@@ -85,7 +85,7 @@ public class QueryComp {
     	//flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-21&adults=1&children=0&militaryDisability=0&policeRemnants=0
     	String param = "flightType=oneway&Origin="+fromCityCode+"&Destination="+toCityCode+"&departDate="+fromDate+"&adults="+currStandBy+"&children=0&militaryDisability=0&policeRemnants=0";
     	String queryCookie = "session="+session;
-    	System.err.println("---查询具体航班详情URL="+queryUrl+"---PARAM="+param+"---COOKIE="+queryCookie);
+    	System.out.println("---查询具体航班详情URL="+queryUrl+"---PARAM="+param+"---COOKIE="+queryCookie);
     	getSender.queryGet3(queryUrl, param, queryCookie);
     	
     	String queryUrl4 = DemoData.queryUrl3;

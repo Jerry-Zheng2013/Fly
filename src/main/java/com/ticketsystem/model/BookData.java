@@ -51,8 +51,8 @@ public class BookData {
 				+ "\"personName\":{"
 				+ "\"surname\":\""+name+"\","
 				+ "\"Surname\":\""+name1+"\","
-				+ "\"givenName\":\""+name2+"\","
-				+ "\"namePrefix\":\""+nameP+"\""
+				+ "\"givenName\":\""+name2+"\""
+				/*+ "\"namePrefix\":\""+nameP+"\""*/
 				+ "},"
 				+ "\"passport\":{"
 				+ "\"docType\":\"5\","
@@ -263,7 +263,7 @@ public class BookData {
 				+ "\"age\":\"≥12岁\","
 				+ "\"Typetext\":\"成人\","
 				+ "\"plusType\":\"COMMON\","
-				+ "\"priceType\":\"COMMON\","
+				+ "\"priceType\":\"\","
 				+ "\"flightDate\":\""+passInfo.getString("flightDate")+"\","
 				+ "\"name\":\""+passInfo.getString("name")+"\"}";
 		JSONObject passJson = JSONObject.parseObject(ss);
@@ -467,7 +467,8 @@ public class BookData {
 		sb.append("}");
 		sb.append("},");
 
-		sb.append("\"uuid\":");  sb.append("\""+uuid+"\"");
+		sb.append("\"uuid\":");  sb.append("\""+uuid+"\",");
+		sb.append("\"channel\":\"TSDF\""); 
 		sb.append("}"); 
 		return sb.toString();
 	}

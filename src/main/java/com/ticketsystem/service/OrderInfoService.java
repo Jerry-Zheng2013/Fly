@@ -32,6 +32,7 @@ public class OrderInfoService {
 		orderList.add("取消失败");
 		orderList.add("暂停失败");
 		createCriteria.andOrderStatusIn(orderList);
+		example.setOrderByClause(" flight_no asc,account_no desc ");
 		List<OrderInfo> orderInfoList = orInfoMapper.selectByExample(example);
 		if (orderInfoList != null && orderInfoList.size() > 0) {
 			
@@ -65,6 +66,7 @@ public class OrderInfoService {
 		OrderInfoExample example= new OrderInfoExample();
 		Criteria createCriteria = example.createCriteria();
 		createCriteria.andOrderStatusEqualTo("正常结束");
+		example.setOrderByClause(" flight_no asc,account_no desc ");
 		List<OrderInfo> orderInfoList = orInfoMapper.selectByExample(example);
 		if (orderInfoList != null && orderInfoList.size() > 0) {
 			

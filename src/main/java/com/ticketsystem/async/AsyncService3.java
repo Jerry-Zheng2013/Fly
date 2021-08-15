@@ -140,6 +140,7 @@ public class AsyncService3 {
 			loopData2.put("addData", bigData2.getJSONObject("addData"));
 			loopData2.put("customerArrData", jsonArray2.getJSONObject(i).getJSONArray("customerArrData"));
 			loopData2.put("orderInfoData", jsonArray2.getJSONObject(i).getJSONObject("orderData"));
+			loopData2.put("preNumber", bigData2.getString("preNumber"));
 			//一直循环自身
 			deepLoop(loopData2);
 		}

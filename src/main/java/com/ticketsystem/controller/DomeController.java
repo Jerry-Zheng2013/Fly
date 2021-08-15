@@ -35,6 +35,14 @@ public class DomeController {
                       @RequestParam(value = "ticket_number",required = false) String ticketNumber, HttpServletResponse response) throws Exception {
         JSONObject addData = new JSONObject();
         //AVH/PKXSHA/21JUL/D/KN
+        tripStr = tripStr.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
+        flghtNo = flghtNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
+        cabinCode = cabinCode.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
+        ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
+        System.out.println("=====tripStr====="+tripStr);
+        System.out.println("=====flghtNo====="+flghtNo);
+        System.out.println("=====cabinCode====="+cabinCode);
+        System.out.println("=====ticketNumber====="+ticketNumber);
         addData.put("fromCityCode", tripStr.substring(4, 7));
         addData.put("toCityCode", tripStr.substring(7, 10));
         addData.put("ticketNumber", ticketNumber);
