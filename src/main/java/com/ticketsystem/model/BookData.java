@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ticketsystem.util.StringX;
 
 public class BookData {
 	public String hasFrequentPassenger = "false";
@@ -180,13 +181,24 @@ public class BookData {
 	}
 	
 	public void addTripInfo(JSONObject tripParam) {
+		String d_datetime = tripParam.getString("d_datetime");
+		String d_datetimeStr = "";
+		if (!StringX.empty(d_datetime)&&d_datetime.length()>9) {
+			d_datetimeStr = d_datetime.substring(0, 10)+"T "+d_datetime.substring(10, d_datetime.length())+":00";
+		}
+		String a_datetime = tripParam.getString("a_datetime");
+		String a_datetimeStr = "";
+		if (!StringX.empty(a_datetime)&&a_datetime.length()>9) {
+			a_datetimeStr = a_datetime.substring(0, 10)+"T"+a_datetime.substring(10, a_datetime.length())+":00";
+		}
+		
 		String ss = "{"
 				+ "\"Departure\":{"
 				+ "\"IATA\":\""+tripParam.getString("d_iata")+"\","
 				+ "\"Airport\":\""+tripParam.getString("d_airport")+"\","
 				+ "\"TS_CityCode\":\""+tripParam.getString("d_ts_citycode")+"\","
 				+ "\"Terminal\":\""+tripParam.getString("d_terminal")+"\","
-				+ "\"DateTime\":\""+tripParam.getString("d_datetime").substring(0, 10)+"T "+tripParam.getString("d_datetime").substring(10, tripParam.getString("d_datetime").length())+":00"+"\","
+				+ "\"DateTime\":\""+d_datetimeStr+"\","
 				+ "\"Date\":\""+tripParam.getString("d_date")+"\","
 				+ "\"Time\":\""+tripParam.getString("d_time")+":00"+"\"},"
 				+ "\"Arrival\":{"
@@ -194,7 +206,7 @@ public class BookData {
 				+ "\"Airport\":\""+tripParam.getString("a_airport")+"\","
 				+ "\"TS_CityCode\":\""+tripParam.getString("a_ts_citycode")+"\","
 				+ "\"Terminal\":\""+tripParam.getString("a_terminal")+"\","
-				+ "\"DateTime\":\""+tripParam.getString("a_datetime").substring(0, 10)+"T"+tripParam.getString("a_datetime").substring(10, tripParam.getString("a_datetime").length())+":00"+"\","
+				+ "\"DateTime\":\""+a_datetimeStr+"\","
 				+ "\"Date\":\""+tripParam.getString("a_date")+"\","
 				+ "\"Time\":\""+tripParam.getString("a_time")+":00"+"\""
 				+ "},"

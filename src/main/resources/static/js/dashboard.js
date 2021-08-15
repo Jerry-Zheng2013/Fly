@@ -100,17 +100,6 @@ $(document).ready(function () {
     
 
     $("#startPlay").click(function () {
-    	//删除丢票记录
-    	var jsonObj1 = new Object();
-        $.ajax({
-            url: "/demo/deletelost",
-            contentType: "application/json;charset=utf-8",
-            type: "POST",
-            data: JSON.stringify(jsonObj1),
-            success: function () {
-                //location.reload();
-            }
-        });
     	//查询丢票记录，循环查询，每个一分钟查询一次
         setTimeout(function(){
         	var jsonObj2 = new Object();
@@ -131,11 +120,23 @@ $(document).ready(function () {
         				}
         			}
         		})
-        	},50000);
+        	},20000);
         }, 1000);
-    	
     });
     
+    $("#stopAlarm").click(function () {
+    	//删除丢票记录
+    	var jsonObj1 = new Object();
+        $.ajax({
+            url: "/demo/deletelost",
+            contentType: "application/json;charset=utf-8",
+            type: "POST",
+            data: JSON.stringify(jsonObj1),
+            success: function () {
+                location.reload();
+            }
+        });
+    });
     
     
     

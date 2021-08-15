@@ -29,8 +29,8 @@
 	    <!-- Custom Theme Style -->
 	    <link href="../dist/css/custom.min.css" rel="stylesheet">
   </head>
-  <body class="nav-md">
-    <div class="container body" onmouseover="eventStart()">
+  <body class="nav-md" onmouseover="eventStart()" onmouseout="eventStart2()">
+    <div class="container body" >
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
@@ -236,7 +236,8 @@
 							<div class="item form-group col-md-12 col-sm-12" style="margin-top: 30px;">
 								<div class="col-md-7 col-sm-7 offset-md-3">
 									<button class="btn" id="startPlay"  style="display: none;" onclick="startAlarm()" type="reset" >开始警报</button>
-									<span>&nbsp;&nbsp;&nbsp;</span>
+									<button class="btn" id="stopAlarm" type="reset" >关闭警报</button>
+									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 									<button class="btn btn-primary" type="reset">清空</button>
 									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 									<button type="submit" class="btn btn-success">添加</button>
@@ -413,7 +414,7 @@
 		    	        if ("00:00:00"==new_date_time) {
 		    	        	setTimeout(function(){
 		    	        		location.reload();
-		    	        	}, 25000);
+		    	        	}, 30000);
 		    	        }
 	    	        }
 	    	    }
@@ -442,7 +443,12 @@
 	    	//监听鼠标移动，生效播放器
 	    	//document.getElementById("myAudio").muted = false;
 	    	startAlarm();
-	    	console.log("move");
+	    	//console.log("move");
+	    }
+	    function eventStart2() {
+	    	//监听鼠标移动，生效播放器
+	    	startAlarm();
+	    	//console.log("move2");
 	    }
     </script>
   </body>

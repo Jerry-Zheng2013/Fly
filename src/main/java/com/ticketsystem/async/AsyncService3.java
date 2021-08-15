@@ -35,6 +35,10 @@ public class AsyncService3 {
 		KnSqlManager sqlManager = new KnSqlManager();
 		FlightService3 FlightService3 = new FlightService3();
 		JSONObject preOrderData = loopData.getJSONObject("orderInfoData");
+		JSONObject addData2 = loopData.getJSONObject("addData");
+    	String tripStr = addData2.getString("tripCode");
+    	String fightNo = addData2.getString("fightNo");
+    	String cabinCode = addData2.getString("cabinCode");
 		
 		boolean accessFlag = true;
 		//循环开始时间
@@ -58,7 +62,6 @@ public class AsyncService3 {
 				return;
 			}
 			//经历的实际时间+两分钟 > 规定等待时间，去提前登录下一个账号
-			
 			if(currentTimeMillis-startTimeMillis+1000*60*2>DemoData.COUNTDOWNMILLIS && accessFlag) {
 				//获取官网账户信息
 	    		JSONObject filterData = new JSONObject();
@@ -93,9 +96,24 @@ public class AsyncService3 {
 	    		}
 	    		accessFlag = false;
 			}
-			
 			currentTimeMillis = System.currentTimeMillis();
 		}
+		try {
+			Date bookTimeDate = DemoData.PreBookTimeMap.get(tripStr+fightNo+cabinCode);
+			if (bookTimeDate!=null) {
+				while(true) {
+					Date currTime = new Date();
+					if (currTime.before(new Date(bookTimeDate.getTime()+1000*15))) {
+						Thread.sleep(1000);
+					} else {
+						break;
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		Date intoDate3 = new Date();
 		System.err.println("==="+format.format(intoDate3)+"===["+Thread.currentThread().getName()+"]===监听时段结束");
 		
@@ -118,9 +136,7 @@ public class AsyncService3 {
 			customerData.put("customerStatus", "1");
 			sqlManager.updateCustomerStatus(customerData);
 		}
-		
 		//接着调用订票接口
-		JSONObject addData2 = loopData.getJSONObject("addData");
 		addData2.put("oiId", preOrderData.getString("oiId"));
 		addData2.put("ticketNumber", "");
 		addData2.put("preNumber", loopData.getString("preNumber"));

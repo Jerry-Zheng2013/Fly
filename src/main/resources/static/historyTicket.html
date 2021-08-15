@@ -30,7 +30,7 @@
 	    <link href="../dist/css/custom.min.css" rel="stylesheet">
   </head>
   <body class="nav-md">
-    <div class="container body" onmouseover="eventStart()">
+    <div class="container body" onmouseover="eventStart()" onmouseout="eventStart2()">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
@@ -356,7 +356,7 @@
 		    	        if ("00:00:00"==new_date_time) {
 		    	        	setTimeout(function(){
 		    	        		location.reload();
-		    	        	}, 25000);
+		    	        	}, 30000);
 		    	        }
 	    	        }
 	    	    }
@@ -385,7 +385,12 @@
 	    	//监听鼠标移动，生效播放器
 	    	//document.getElementById("myAudio").muted = false;
 	    	startAlarm();
-	    	console.log("move");
+	    	//console.log("move");
+	    }
+	    function eventStart2() {
+	    	//监听鼠标移动，生效播放器
+	    	startAlarm();
+	    	//console.log("move2");
 	    }
     </script>
   </body>

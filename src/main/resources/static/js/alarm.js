@@ -19,6 +19,18 @@
 		if(alarmTimes<2) {
 			setTimeout(function () { audio.play();}, 800);
 			alarmTimes++;
+		} else {
+	    	//删除丢票记录
+	    	var jsonObj1 = new Object();
+	        $.ajax({
+	            url: "/demo/deletelost",
+	            contentType: "application/json;charset=utf-8",
+	            type: "POST",
+	            data: JSON.stringify(jsonObj1),
+	            success: function () {
+	                //location.reload();
+	            }
+	        });
 		}
 	}
 /*

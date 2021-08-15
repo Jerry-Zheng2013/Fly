@@ -35,10 +35,10 @@ public class DomeController {
                       @RequestParam(value = "ticket_number",required = false) String ticketNumber, HttpServletResponse response) throws Exception {
         JSONObject addData = new JSONObject();
         //AVH/PKXSHA/21JUL/D/KN
-        tripStr = tripStr.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
-        flghtNo = flghtNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
-        cabinCode = cabinCode.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
-        ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");;
+        tripStr = tripStr.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        flghtNo = flghtNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        cabinCode = cabinCode.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         System.out.println("=====tripStr====="+tripStr);
         System.out.println("=====flghtNo====="+flghtNo);
         System.out.println("=====cabinCode====="+cabinCode);
@@ -64,9 +64,9 @@ public class DomeController {
     @RequestMapping("/cancel")
     @ResponseBody
     public void cancel(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
-    	String oiId = param.get("oiId");
-        String orderNo = param.get("orderNo");
-        String accountNo = param.get("accountNo");
+    	String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        String orderNo = param.get("orderNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        String accountNo = param.get("accountNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         
         JSONObject cancelData = new JSONObject();
         cancelData.put("oiId", oiId);
@@ -82,11 +82,11 @@ public class DomeController {
     @ResponseBody
     public void readd(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
-        String oiId = param.get("oiId");
-        String tripStr = param.get("tripCode");
-        String flghtNo = param.get("flghtNo");
-        String cabinCode = param.get("cabinCode");
-        String ticketNumber = param.get("ticketNumber");
+        String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        String tripStr = param.get("tripCode").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        String flghtNo = param.get("flghtNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        String cabinCode = param.get("cabinCode").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        String ticketNumber = param.get("ticketNumber").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         if("null"==ticketNumber || ticketNumber == null) { ticketNumber=""; }
         
         //先将原订单更新为“正常结束”
@@ -116,7 +116,7 @@ public class DomeController {
     @ResponseBody
     public void delete(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
-        String oiId = param.get("oiId");
+        String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         
         new FlightService3().deleteOrder(oiId);
 

@@ -157,7 +157,7 @@ public class FlightService3 {
         			JSONObject updateTimeData = new JSONObject();
         			updateTimeData.put("accountNo", accountNo);
         			updateTimeData.put("useTime", currentDateStr2);
-        			updateTimeData.put("session", session);
+        			updateTimeData.put("session", accountSession);
         			sqlManager.updateAccountTime(updateTimeData);
     			} else {
         			//更新账户使用时间
@@ -174,6 +174,9 @@ public class FlightService3 {
     				tokenId = loginResult0.getString("tokenId");
     				session = loginResult0.getString("session");
     				//JSESSIONID = loginResult.getString("JSESSIONID");
+    				//再更新一次
+        			updateTimeData.put("session", session);
+        			sqlManager.updateAccountTime(updateTimeData);
     			}
     			if(session==null||session.length()<5) {
     				System.out.println("==========登陆失败==========");
@@ -234,21 +237,6 @@ public class FlightService3 {
     			bookDataBiz.initPassengers2();
     			bookDataBiz.setUuid(uuid);
     			
-    			try {
-    				Date bookTimeDate = DemoData.PreBookTimeMap.get(tripStr+fightNo+cabinCode);
-    				if (bookTimeDate!=null) {
-    					while(true) {    					
-    						Date currTime = new Date();
-    						if (currTime.before(new Date(bookTimeDate.getTime()+1000*60))) {
-    							Thread.sleep(1000);    							
-    						} else {
-    							break;
-    						}
-    					}
-    				}
-    			} catch (Exception e) {
-    				e.printStackTrace();
-    			}
     	    	//TODO 调用接口----------机票预定接口
     			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
     			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
@@ -258,11 +246,12 @@ public class FlightService3 {
     			if(bookResult.getString("orderNo").length()<7) {
     				//新增压票失败，更新账户信息，更新客户信息
         			//更新账户信息-初始化使用时间
-        			JSONObject updateTimeData2 = new JSONObject();
+        			/*JSONObject updateTimeData2 = new JSONObject();
         			updateTimeData2.put("accountNo", accountNo);
         			updateTimeData2.put("useTime", "2021/07/11");
         			updateTimeData2.put("session", session);
         			sqlManager.updateAccountTime(updateTimeData2);
+        			*/
         			//更新客户信息-解锁
         			for (int cc=0;cc<customerDataArr.size();cc++) {
         				JSONObject customerObject = customerDataArr.get(cc);
@@ -435,7 +424,7 @@ public class FlightService3 {
         			JSONObject updateTimeData = new JSONObject();
         			updateTimeData.put("accountNo", accountNo);
         			updateTimeData.put("useTime", currentDateStr2);
-        			updateTimeData.put("session", session);
+        			updateTimeData.put("session", accountSession);
         			sqlManager.updateAccountTime(updateTimeData);
     			} else {
         			//更新账户使用时间
@@ -452,6 +441,9 @@ public class FlightService3 {
     				tokenId = loginResult0.getString("tokenId");
     				session = loginResult0.getString("session");
     				//JSESSIONID = loginResult.getString("JSESSIONID");
+    				//再更新一次
+        			updateTimeData.put("session", session);
+        			sqlManager.updateAccountTime(updateTimeData);
     			}
     			if(session==null||session.length()<5) {
     				System.out.println("==========登陆失败==========");
@@ -473,15 +465,6 @@ public class FlightService3 {
     			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
     			if(loginResult==null) {return null;}
     			String uuid = loginResult.getString("uuid");
-    			
-    			//更新账户使用时间
-        		Date currentDate2 = new Date();
-        		String currentDateStr2 = sdf.format(currentDate2);
-    			JSONObject updateTimeData = new JSONObject();
-    			updateTimeData.put("accountNo", accountNo);
-    			updateTimeData.put("useTime", currentDateStr2);
-    			updateTimeData.put("session", session);
-    			sqlManager.updateAccountTime(updateTimeData);
     			
     			//预定信息-客户信息
         		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
@@ -521,22 +504,6 @@ public class FlightService3 {
     			bookDataBiz.initPassengers2();
     			bookDataBiz.setUuid(uuid);
     			
-    			try {
-    				Date bookTimeDate = DemoData.PreBookTimeMap.get(tripStr+fightNo+cabinCode);
-    				if (bookTimeDate!=null) {
-    					while(true) {    					
-    						Date currTime = new Date();
-    						if (currTime.before(new Date(bookTimeDate.getTime()+1000*60))) {
-    							Thread.sleep(1000);    							
-    						} else {
-    							break;
-    						}
-    					}
-    				}
-    			} catch (Exception e) {
-    				e.printStackTrace();
-    			}
-    			
     	    	//TODO 调用接口----------机票预定接口
     			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
     			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
@@ -546,11 +513,12 @@ public class FlightService3 {
     			if(bookResult.getString("orderNo").length()<7) {
     				//新增压票失败，更新账户信息，更新客户信息
         			//更新账户信息-初始化使用时间
-        			JSONObject updateTimeData2 = new JSONObject();
+        			/*JSONObject updateTimeData2 = new JSONObject();
         			updateTimeData2.put("accountNo", accountNo);
         			updateTimeData2.put("useTime", "2021/07/11");
         			updateTimeData2.put("session", session);
         			sqlManager.updateAccountTime(updateTimeData2);
+        			*/
         			//更新客户信息-解锁
         			for (int cc=0;cc<customerDataArr.size();cc++) {
         				JSONObject customerObject = customerDataArr.get(cc);

@@ -90,7 +90,7 @@ public class QueryComp {
     	
     	String queryUrl4 = DemoData.queryUrl3;
     	String param4 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
-    	System.err.println("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
+    	System.out.println("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
     	JSONObject queryPost = getSender.queryGet4(queryUrl4, param4, queryCookie);
 		return queryPost;
 	}
