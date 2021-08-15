@@ -63,19 +63,20 @@ public class FlightService3 {
      * 		}<br/>
      */
     public synchronized JSONObject booking(JSONObject addData) {
+    	JSONObject bigData = new JSONObject();
+    	bigData.put("addData", addData);
+
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	Date intoDate = new Date();
 		System.err.println("当前时间:==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===预定");
     	
 		String ticketNumber = addData.getString("ticketNumber");
-		
-    	JSONObject bigData = new JSONObject();
-    	bigData.put("addData", addData);
     	
     	ArrayList<JSONObject> packageArrData = new ArrayList<JSONObject>();
     	
     	//String oiId = addData.getString("oiId");
     	String fromDate = addData.getString("fromDate");
+    	String tripStr = addData.getString("tripCode");
     	String fightNo = addData.getString("fightNo");
     	String cabinCode = addData.getString("cabinCode");
 
@@ -150,7 +151,24 @@ public class FlightService3 {
         			tokenId = accountTokenId;
         			session =accountSession;
         			//JSESSIONID =accountJsessionid;
+        			//更新账户使用时间
+            		Date currentDate2 = new Date();
+            		String currentDateStr2 = sdf.format(currentDate2);
+        			JSONObject updateTimeData = new JSONObject();
+        			updateTimeData.put("accountNo", accountNo);
+        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("session", session);
+        			sqlManager.updateAccountTime(updateTimeData);
     			} else {
+        			//更新账户使用时间
+            		Date currentDate2 = new Date();
+            		String currentDateStr2 = sdf.format(currentDate2);
+        			JSONObject updateTimeData = new JSONObject();
+        			updateTimeData.put("accountNo", accountNo);
+        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("session", session);
+        			sqlManager.updateAccountTime(updateTimeData);
+        			
     				loginResult0 = new LoginComp().login2(accountNo, accountPas);
     				tokenUUID = loginResult0.getString("tokenUUID");
     				tokenId = loginResult0.getString("tokenId");
@@ -160,7 +178,7 @@ public class FlightService3 {
     			if(session==null||session.length()<5) {
     				System.out.println("==========登陆失败==========");
     				return null;
-    			}    				
+    			}
     			
     			//TODO 调用接口----------查询航班具体信息
     			addData.put("currStandBy", currStandBy);
@@ -177,15 +195,6 @@ public class FlightService3 {
     			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
     			if(loginResult==null) {return null;}
     			String uuid = loginResult.getString("uuid");
-    			
-    			//更新账户使用时间
-        		Date currentDate2 = new Date();
-        		String currentDateStr2 = sdf.format(currentDate2);
-    			JSONObject updateTimeData = new JSONObject();
-    			updateTimeData.put("accountNo", accountNo);
-    			updateTimeData.put("useTime", currentDateStr2);
-    			updateTimeData.put("session", session);
-    			sqlManager.updateAccountTime(updateTimeData);
     			
     			//预定信息-客户信息
         		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
@@ -225,6 +234,21 @@ public class FlightService3 {
     			bookDataBiz.initPassengers2();
     			bookDataBiz.setUuid(uuid);
     			
+    			try {
+    				Date bookTimeDate = DemoData.PreBookTimeMap.get(tripStr+fightNo+cabinCode);
+    				if (bookTimeDate!=null) {
+    					while(true) {    					
+    						Date currTime = new Date();
+    						if (currTime.before(new Date(bookTimeDate.getTime()+1000*60))) {
+    							Thread.sleep(1000);    							
+    						} else {
+    							break;
+    						}
+    					}
+    				}
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
     	    	//TODO 调用接口----------机票预定接口
     			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
     			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
@@ -251,6 +275,7 @@ public class FlightService3 {
     				return null;
     			}
     			Date bookDate = new Date();
+    			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
     			System.err.println("当前时间:==="+format.format(bookDate)+"===订票成功===");
     			
         		//新增订单信息
@@ -310,6 +335,9 @@ public class FlightService3 {
      * 		}<br/>
      */
     public synchronized JSONObject booking2(JSONObject addData) {
+    	JSONObject bigData = new JSONObject();
+    	bigData.put("addData", addData);
+    	
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	Date intoDate = new Date();
 		System.err.println("当前时间:==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===预定");
@@ -318,13 +346,12 @@ public class FlightService3 {
 		String preNumber = addData.getString("preNumber");
 		
 		KnSqlManager sqlManager = new KnSqlManager();
-    	JSONObject bigData = new JSONObject();
-    	bigData.put("addData", addData);
     	
     	ArrayList<JSONObject> packageArrData = new ArrayList<JSONObject>();
     	
     	//String oiId = addData.getString("oiId");
     	String fromDate = addData.getString("fromDate");
+    	String tripStr = addData.getString("tripCode");
     	String fightNo = addData.getString("fightNo");
     	String cabinCode = addData.getString("cabinCode");
 
@@ -402,7 +429,24 @@ public class FlightService3 {
         			tokenId = accountTokenId;
         			session =accountSession;
         			//JSESSIONID =accountJsessionid;
+        			//更新账户使用时间
+            		Date currentDate2 = new Date();
+            		String currentDateStr2 = sdf.format(currentDate2);
+        			JSONObject updateTimeData = new JSONObject();
+        			updateTimeData.put("accountNo", accountNo);
+        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("session", session);
+        			sqlManager.updateAccountTime(updateTimeData);
     			} else {
+        			//更新账户使用时间
+            		Date currentDate2 = new Date();
+            		String currentDateStr2 = sdf.format(currentDate2);
+        			JSONObject updateTimeData = new JSONObject();
+        			updateTimeData.put("accountNo", accountNo);
+        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("session", session);
+        			sqlManager.updateAccountTime(updateTimeData);
+        			
     				loginResult0 = new LoginComp().login2(accountNo, accountPas);
     				tokenUUID = loginResult0.getString("tokenUUID");
     				tokenId = loginResult0.getString("tokenId");
@@ -477,6 +521,22 @@ public class FlightService3 {
     			bookDataBiz.initPassengers2();
     			bookDataBiz.setUuid(uuid);
     			
+    			try {
+    				Date bookTimeDate = DemoData.PreBookTimeMap.get(tripStr+fightNo+cabinCode);
+    				if (bookTimeDate!=null) {
+    					while(true) {    					
+    						Date currTime = new Date();
+    						if (currTime.before(new Date(bookTimeDate.getTime()+1000*60))) {
+    							Thread.sleep(1000);    							
+    						} else {
+    							break;
+    						}
+    					}
+    				}
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
+    			
     	    	//TODO 调用接口----------机票预定接口
     			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
     			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
@@ -503,6 +563,7 @@ public class FlightService3 {
     				return null;
     			}
     			Date bookDate = new Date();
+    			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
     			System.err.println("当前时间:==="+format.format(bookDate)+"===订票成功===");
     	    	bigData.put("bookSucess", "true");
     			

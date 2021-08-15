@@ -50,9 +50,9 @@ public class DomeController {
         String desDate = DemoData.CURR_YEAR + DemoData.CALENDAR_MAP.get(fromDate.substring(2, 5)) + fromDate.substring(0, 2);
         String desDate2 = CommUtils.stringDateFormate(desDate);
         addData.put("fromDate", desDate2);
+        addData.put("tripCode", tripStr);
         addData.put("fightNo", flghtNo);
         addData.put("cabinCode", cabinCode);
-        addData.put("tripCode", tripStr);
         //new DemoService().addTicket(addData);
         new FlightService3().addTicket(addData);
 

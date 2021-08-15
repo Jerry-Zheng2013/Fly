@@ -22,6 +22,8 @@ public class DemoData {
 	
 	public static int ThreadNo = 0;
 	
+	public static Map<String, Date> PreBookTimeMap = new HashMap<String, Date>();
+	
 	public static TreeMap<String, String> OrderStatusMap = new TreeMap<String, String>();
 	
 	public static TreeMap<String, DemoOrder> OrderBeanMap = new TreeMap<String, DemoOrder>();
