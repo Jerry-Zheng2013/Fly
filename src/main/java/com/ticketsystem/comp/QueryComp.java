@@ -27,6 +27,7 @@ public class QueryComp {
     			+ "&FlightDate="+fromDate
     			+ "&Airline=KN&direct=true&eticket=true&limittime=0000&outstyle=0";
     	
+    	System.out.println("=====黑屏查询余票=====url["+queryUrl+"]=====param["+postDataStr+"]");
     	JSONObject queryPost = new PostSender().queryPost(queryUrl, postDataStr);
     	if (queryPost.size()>0) {
     		String queryBody = queryPost.getString("responseBody");
@@ -81,12 +82,13 @@ public class QueryComp {
     	String toCityCode = sqlmanager.getCityInfo(toCity).getString("cityCode");
     	
     	GetSender getSender = new GetSender();
-    	String queryUrl = DemoData.queryUrl2;
-    	//flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-21&adults=1&children=0&militaryDisability=0&policeRemnants=0
-    	String param = "flightType=oneway&Origin="+fromCityCode+"&Destination="+toCityCode+"&departDate="+fromDate+"&adults="+currStandBy+"&children=0&militaryDisability=0&policeRemnants=0";
     	String queryCookie = "session="+session;
-    	System.out.println("---查询具体航班详情URL="+queryUrl+"---PARAM="+param+"---COOKIE="+queryCookie);
-    	getSender.queryGet3(queryUrl, param, queryCookie);
+    	
+    	//String queryUrl = DemoData.queryUrl2;
+    	//flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-21&adults=1&children=0&militaryDisability=0&policeRemnants=0
+    	//String param = "flightType=oneway&Origin="+fromCityCode+"&Destination="+toCityCode+"&departDate="+fromDate+"&adults="+currStandBy+"&children=0&militaryDisability=0&policeRemnants=0";
+    	//System.out.println("---查询具体航班详情URL="+queryUrl+"---PARAM="+param+"---COOKIE="+queryCookie);
+    	//getSender.queryGet3(queryUrl, param, queryCookie);
     	
     	String queryUrl4 = DemoData.queryUrl3;
     	String param4 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";

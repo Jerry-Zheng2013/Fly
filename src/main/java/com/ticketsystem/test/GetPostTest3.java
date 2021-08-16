@@ -28,8 +28,6 @@ public class GetPostTest3 {
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
-            System.out.println("Warning: URL Host: " + urlHostName + " vs. "
-                               + session.getPeerHost());
             return true;
         }
     };
@@ -92,12 +90,13 @@ public class GetPostTest3 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
-            resultJson.put("result", result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			resultJson.put("result", result);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,13 +122,13 @@ public class GetPostTest3 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
-            resultJson.put("flightData", result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
-            resultJson.put("headers", headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+            resultJson.put("flightData", result);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -199,13 +198,14 @@ public class GetPostTest3 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
-			resultJson.put("result", result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
-			resultJson.put("headers", headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			resultJson.put("headers", responseHead.toString());
+			resultJson.put("result", result);
 			
         } catch (IOException e) {
             e.printStackTrace();
@@ -232,13 +232,14 @@ public class GetPostTest3 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
-			resultJson.put("result", result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
-			resultJson.put("headers", headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			resultJson.put("headers", responseHead.toString());
+			resultJson.put("result", result);
 			
         } catch (IOException e) {
             e.printStackTrace();

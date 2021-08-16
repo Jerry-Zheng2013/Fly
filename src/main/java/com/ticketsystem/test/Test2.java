@@ -21,7 +21,6 @@ public class Test2 {
 		int firstStart = checkHead.indexOf("session=s~")-1;
 		int firstEnd = checkHead.indexOf("; Path=/; Expires=");
 		String firstSession = checkHead.substring(firstStart, firstEnd);
-		System.out.println("firstSession=="+firstSession);
 		
 		String valideCookie = "_ga=GA1.2.1848051245.1626545196; flycua_user_cookie=true; _gid=GA1.2.937509221.1626978245; session="
 				+firstSession+"; X-LB=2.727.65daae9e.50; _gat=1";
@@ -30,7 +29,6 @@ public class Test2 {
 		
 		JSONObject validateGet = GetPostTest2.getImageGet(valideUrl, valideParam, valideCookie);
 		String fileName = validateGet.getString("fileName");
-		System.out.println(fileName);
 		
 		//百度识别
 		String fieFullName = "C:/img/"+fileName;
@@ -41,8 +39,6 @@ public class Test2 {
 			accurateJson = JSONObject.parseObject(accurate);
 			String ss = accurateJson.getJSONArray("words_result").getJSONObject(0).getString("words");
 			ss = ss.trim().replaceAll(" ", "");
-			System.out.println("word===="+ss);
-			System.out.println("ss的长度为："+ss.length());
 			
 			//第一次登录
 			String loginUrl = "https://higo.flycua.com/ffp/member/login";

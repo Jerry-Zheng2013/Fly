@@ -11,9 +11,6 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -21,7 +18,7 @@ public class GetPostTest5 {
 
 	public static JSONObject indexGet(String indexUrl) {
 		JSONObject resultJson = new JSONObject();
-        String result = "";
+        //String result = "";
         String urlName = indexUrl;
         try {
             URL realURL = new URL(urlName);
@@ -33,17 +30,8 @@ public class GetPostTest5 {
             
             conn.connect();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result += "\n" + line;
-            }
-            //System.out.println("result:"+result);
-
-			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			resultJson.put("headers", headerFields.toString());
-			//System.out.println("headerFields:"+headerFields.toString());
+            new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,12 +57,13 @@ public class GetPostTest5 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result:"+result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			resultJson.put("headers", headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			resultJson.put("headers", responseHead.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,7 +72,6 @@ public class GetPostTest5 {
 
 	public static JSONObject loginGet1(String loginUrl1, String loginParam1, String loginCookie1) {
 		JSONObject resultJson = new JSONObject();
-        String result = "";
         String urlName = loginUrl1;
         try {
             URL realURL = new URL(urlName);
@@ -96,18 +84,8 @@ public class GetPostTest5 {
             
             conn.connect();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result += "\n" + line;
-            }
-            //System.out.println("result:"+result);
-
-			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			resultJson.put("headers", headerFields.toString());
-			//System.out.println("headerFields:"+headerFields.toString());
-			
+            new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -134,13 +112,14 @@ public class GetPostTest5 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result:"+result);
-			resultJson.put("result", result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			resultJson.put("headers", headerFields.toString());
-			System.out.println("headerFields:"+headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			resultJson.put("headers", responseHead.toString());
+			resultJson.put("result", result);
 			
         } catch (IOException e) {
             e.printStackTrace();
@@ -224,13 +203,14 @@ public class GetPostTest5 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            System.out.println("result:"+result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
 			resultJson.put("result", result);
-
-            //获取loginPost
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			resultJson.put("headers", headerFields.toString());
+			resultJson.put("headers", responseHead.toString());
 			headMap = conn.getHeaderFields();
 			resultJson.put("headMap", headMap);
 			
@@ -260,13 +240,14 @@ public class GetPostTest5 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result:"+result);
-			resultJson.put("result", result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			resultJson.put("headers", headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			resultJson.put("result", result);
+			resultJson.put("headers", responseHead.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

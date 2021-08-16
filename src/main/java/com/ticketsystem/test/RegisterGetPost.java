@@ -92,7 +92,7 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+            System.out.println("responseBody:"+result);
             resultJson.put("result", result);
 
 			//获取头信息
@@ -123,7 +123,7 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+            System.out.println("responseBody:"+result);
             resultJson.put("result", result);
 
 			//获取头信息
@@ -154,7 +154,7 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+            System.out.println("responseBody:"+result);
             resultJson.put("flightData", result);
 
 			//获取头信息
@@ -230,7 +230,7 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+            System.out.println("responseBody:"+result);
 			resultJson.put("result", result);
 
 			//获取头信息
@@ -266,7 +266,7 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+            System.out.println("responseBody:"+result);
 			resultJson.put("result", result);
 
 			//获取头信息

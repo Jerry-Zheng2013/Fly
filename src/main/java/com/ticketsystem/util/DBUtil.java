@@ -19,7 +19,6 @@ public class DBUtil {
 	public ResultSet executeQuery(String sql) throws SQLException {
 		ResultSet rs = null;
 		rs = stmt.executeQuery(sql);
-		//System.out.println ("执行查询");
 		return rs;
 	}
 	

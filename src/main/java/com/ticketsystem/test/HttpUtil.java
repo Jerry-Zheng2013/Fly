@@ -63,15 +63,14 @@ public class HttpUtil {
         }
         // 定义 BufferedReader输入流来读取URL的响应
         BufferedReader in = null;
-        in = new BufferedReader(
-                new InputStreamReader(connection.getInputStream(), encoding));
+        in = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding));
         String result = "";
         String getLine;
         while ((getLine = in.readLine()) != null) {
             result += getLine;
         }
+        System.out.println("responseBody:"+result);
         in.close();
-        System.out.println("result:" + result);
         return result;
     }
 }

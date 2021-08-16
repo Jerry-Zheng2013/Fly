@@ -30,13 +30,15 @@ public class GetSender {
 		StringBuffer responseBody = new StringBuffer();
 		Map<String, List<String>> responseHead = new TreeMap<String, List<String>>();
 		
+		InputStream is = null;
 		OutputStreamWriter out = null;
+		HttpURLConnection conn = null;
 		BufferedReader br = null;
 		String result = "";
 		try {
 			URL url = new URL(hotCityUrl + "?" +param);
 			// 打开和url之间的连接
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn = (HttpURLConnection) url.openConnection();
 			// 请求方式
 			conn.setRequestMethod("GET");
 
@@ -52,9 +54,6 @@ public class GetSender {
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 
-			/**
-			 * 下面的三句代码，就是调用第三方http接口
-			 */
 			// 获取URLConnection对象对应的输出流
 			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 			// 发送请求参数即数据
@@ -62,36 +61,35 @@ public class GetSender {
 			// flush输出流的缓冲
 			out.flush();
 
-			/**
-			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
-			 */
 			// 获取URLConnection对象对应的输入流
-			//conn.connect();
-			InputStream is = conn.getInputStream();
+			is = conn.getInputStream();
 			// 构造一个字符流缓存
 			br = new BufferedReader(new InputStreamReader(is));
 			String str = "";
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-            responseBody.append(result);
+			//获取响应体
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
 			System.out.println("responseHead:"+responseHead.toString());
-			
-			// 关闭流
-			is.close();
-			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
-			conn.disconnect();
+
+			responseBody.append(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (out != null) {
+				if(is != null){
+					is.close();					
+				}
+				if(conn!=null){
+					conn.disconnect();					
+				}
+				if(out != null){
 					out.close();
 				}
-				if (br != null) {
+				if(br != null){
 					br.close();
 				}
 			} catch (IOException e) {
@@ -109,8 +107,6 @@ public class GetSender {
 		JSONObject resultJson = new JSONObject();
 		StringBuffer responseBody = new StringBuffer();
 		Map<String, List<String>> responseHead = new TreeMap<String, List<String>>();
-		System.out.println(url);
-		System.out.println(param);
         String result = "";
         String urlName = url + "?" + param;
         try {
@@ -132,12 +128,13 @@ public class GetSender {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            responseBody.append(result);
+			//获取响应体
 			System.out.println("responseBody:"+result);
-
 			//获取头信息
 			responseHead = conn.getHeaderFields();
 			System.out.println("responseHead:"+responseHead.toString());
+			
+			responseBody.append(result);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -179,12 +176,13 @@ public class GetSender {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            responseBody.append(result);
+			//获取响应体
 			System.out.println("responseBody:"+result);
-
 			//获取头信息
 			responseHead = conn.getHeaderFields();
 			System.out.println("responseHead:"+responseHead.toString());
+			
+			responseBody.append(result);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -227,12 +225,13 @@ public class GetSender {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            responseBody.append(result);
+			//获取响应体
 			System.out.println("responseBody:"+result);
-
 			//获取头信息
 			responseHead = conn.getHeaderFields();
 			System.out.println("responseHead:"+responseHead.toString());
+			
+			responseBody.append(result);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -319,12 +318,13 @@ public class GetSender {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            responseBody.append(result);
+			//获取响应体
 			System.out.println("responseBody:"+result);
-
 			//获取头信息
 			responseHead = conn.getHeaderFields();
 			System.out.println("responseHead:"+responseHead.toString());
+			
+			responseBody.append(result);
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -370,12 +370,13 @@ public class GetSender {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            responseBody.append(result);
+			//获取响应体
 			System.out.println("responseBody:"+result);
-
 			//获取头信息
 			responseHead = conn.getHeaderFields();
 			System.out.println("responseHead:"+responseHead.toString());
+			
+			responseBody.append(result);
             
         } catch (IOException e) {
             e.printStackTrace();

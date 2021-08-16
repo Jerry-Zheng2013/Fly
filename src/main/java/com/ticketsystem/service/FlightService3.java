@@ -144,6 +144,7 @@ public class FlightService3 {
     			//String JSESSIONID ="";
     			//判断账户是否已经登录
     			if(!StringX.empty(useTime) && "2000-01-01".equals(useTime)) {
+    				//已经登录
     				loginResult0.put("tokenUUID", accountTokenUUID);
     				loginResult0.put("tokenId", accountTokenId);
     				loginResult0.put("session", accountSession);
@@ -160,6 +161,7 @@ public class FlightService3 {
         			updateTimeData.put("session", accountSession);
         			sqlManager.updateAccountTime(updateTimeData);
     			} else {
+    				//未登录
         			//更新账户使用时间
             		Date currentDate2 = new Date();
             		String currentDateStr2 = sdf.format(currentDate2);
@@ -187,6 +189,7 @@ public class FlightService3 {
     			addData.put("currStandBy", currStandBy);
     			addData.put("session", session);
     			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
+    			
     			//填充bookDataBiz
     			String flightStr = queryPost2.getString("responseBody");
     			if (flightStr.length()<10) {return null;}
@@ -194,7 +197,7 @@ public class FlightService3 {
     			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
     			bookDataBiz.addTripInfo(processTripParam);
     			
-    			//TODO 调用接口----------账户订单确认
+    			//TODO 调用接口----------加入购物车
     			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
     			if(loginResult==null) {return null;}
     			String uuid = loginResult.getString("uuid");
@@ -230,7 +233,7 @@ public class FlightService3 {
     					bookDataBiz.addTotal(processTripParam.getString("amount"));
     					
     				} else {
-    					System.out.println("乘机人信息已不够用了！！！");
+    					System.err.println("=====乘机人信息已不够用了！！！=====");
     				}
         		}
     			//bookDataBiz最后的组装
@@ -296,14 +299,14 @@ public class FlightService3 {
     			packageData.put("standbyCount", currStandBy);
     			packageArrData.add(packageData);
 			} else {
-				System.out.println("官网账号已不够用了！！！");
+				System.err.println("=====官网账号已不够用了！！！=====");
 			}
     		
     		//返回信息
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
-    		System.out.println("查询航班没有余票啦！");
+    		System.err.println("=====查询航班没有余票啦！！！=====");
     	}
     	return bigData;
     }
@@ -411,6 +414,7 @@ public class FlightService3 {
     			//String JSESSIONID ="";
     			//判断账户是否已经登录
     			if(!StringX.empty(useTime) && "2000-01-01".equals(useTime)) {
+    				//已经登录
     				loginResult0.put("tokenUUID", accountTokenUUID);
     				loginResult0.put("tokenId", accountTokenId);
     				loginResult0.put("session", accountSession);
@@ -427,6 +431,7 @@ public class FlightService3 {
         			updateTimeData.put("session", accountSession);
         			sqlManager.updateAccountTime(updateTimeData);
     			} else {
+    				//未登录
         			//更新账户使用时间
             		Date currentDate2 = new Date();
             		String currentDateStr2 = sdf.format(currentDate2);
@@ -454,6 +459,7 @@ public class FlightService3 {
     			addData.put("currStandBy", currStandBy);
     			addData.put("session", session);
     			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
+    			
     			//填充bookDataBiz
     			String flightStr = queryPost2.getString("responseBody");
     			if (flightStr.length()<10) {return null;}
@@ -461,7 +467,7 @@ public class FlightService3 {
     			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
     			bookDataBiz.addTripInfo(processTripParam);
     			
-    			//TODO 调用接口----------账户订单确认
+    			//TODO 调用接口----------加入购物车
     			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
     			if(loginResult==null) {return null;}
     			String uuid = loginResult.getString("uuid");
@@ -497,7 +503,7 @@ public class FlightService3 {
     					bookDataBiz.addTotal(processTripParam.getString("amount"));
     					
     				} else {
-    					System.out.println("乘机人信息已不够用了！！！");
+    					System.err.println("=====乘机人信息已不够用了！！！=====");
     				}
         		}
     			//bookDataBiz最后的组装
@@ -569,7 +575,7 @@ public class FlightService3 {
     			packageData.put("standbyCount", currStandBy);
     			packageArrData.add(packageData);
 			} else {
-				System.out.println("官网账号已不够用了！！！");
+				System.err.println("=====官网账号已不够用了！！！=====");
 				return null;
 			}
     		
@@ -577,7 +583,7 @@ public class FlightService3 {
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
-    		System.out.println("查询航班没有余票啦！");
+    		System.err.println("=====查询航班没有余票啦！！！=====");
 			return null;
     	}
     	return bigData;

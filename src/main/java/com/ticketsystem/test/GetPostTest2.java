@@ -28,8 +28,6 @@ public class GetPostTest2 {
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
-            System.out.println("Warning: URL Host: " + urlHostName + " vs. "
-                               + session.getPeerHost());
             return true;
         }
     };
@@ -101,36 +99,32 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            System.out.println("result====="+result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
 
             //获取loginPost
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("jsessionid")) {
 								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-								System.out.println("JSESSIONID="+xlbValue);
 								resultJson.put("JSESSIONID", xlbValue);
 							} else if (entryValue.toLowerCase().contains("session")) {
 								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("sessionValue="+sessionValue);
 								resultJson.put("session", sessionValue);
 							} else if (entryValue.toLowerCase().contains("x-lb")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("xlb="+xlbValue);
 								resultJson.put("xlb", xlbValue);
 							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
 								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
-								System.out.println("tokenUUID="+sessionValue);
 								resultJson.put("tokenUUID", sessionValue);
 							}else if (entryValue.toLowerCase().contains("tokenid")) {
 								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("tokenId="+xlbValue);
 								resultJson.put("tokenId", xlbValue);
 							}
 						}
@@ -160,13 +154,11 @@ public class GetPostTest2 {
             conn.connect();
             Map<String, List<String>> map = conn.getHeaderFields();
             for (String s : map.keySet()) {
-                System.out.println(s + "-->" + map.get(s));
                 if("set-cookie".equalsIgnoreCase(s)) {
                 	List<String> list = map.get(s);
                 	for (String ss: list) {
                 		if (ss.contains("session=")) {
                 			String sessionId = ss.substring(ss.indexOf("session=")+8);
-                			System.out.println("session1111="+sessionId);
                 		}
                 	}
                 }
@@ -176,36 +168,31 @@ public class GetPostTest2 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
 
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("jsessionid")) {
 								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-								System.out.println("JSESSIONID="+xlbValue);
 								resultJson.put("JSESSIONID", xlbValue);
 							} else if (entryValue.toLowerCase().contains("session")) {
 								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("sessionValue="+sessionValue);
 								resultJson.put("session", sessionValue);
 							} else if (entryValue.toLowerCase().contains("x-lb")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("xlb="+xlbValue);
 								resultJson.put("xlb", xlbValue);
 							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
 								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
-								System.out.println("tokenUUID="+sessionValue);
 								resultJson.put("tokenUUID", sessionValue);
 							}else if (entryValue.toLowerCase().contains("tokenid")) {
 								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("tokenId="+xlbValue);
 								resultJson.put("tokenId", xlbValue);
 							}
 						}
@@ -240,12 +227,13 @@ public class GetPostTest2 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			resultJson.put("head", headerFields.toString());
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			resultJson.put("head", responseHead.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -324,36 +312,31 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            System.out.println(result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
 
             //获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("jsessionid")) {
 								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-								System.out.println("JSESSIONID="+xlbValue);
 								resultJson.put("JSESSIONID", xlbValue);
 							} else if (entryValue.toLowerCase().contains("session")) {
 								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("sessionValue="+sessionValue);
 								resultJson.put("session", sessionValue);
 							} else if (entryValue.toLowerCase().contains("x-lb")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("xlb="+xlbValue);
 								resultJson.put("xlb", xlbValue);
 							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
 								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
-								System.out.println("tokenUUID="+sessionValue);
 								resultJson.put("tokenUUID", sessionValue);
 							}else if (entryValue.toLowerCase().contains("tokenid")) {
 								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("tokenId="+xlbValue);
 								resultJson.put("tokenId", xlbValue);
 							}
 						}
@@ -383,13 +366,11 @@ public class GetPostTest2 {
             conn.connect();
             Map<String, List<String>> map = conn.getHeaderFields();
             for (String s : map.keySet()) {
-                System.out.println(s + "-->" + map.get(s));
                 if("set-cookie".equalsIgnoreCase(s)) {
                 	List<String> list = map.get(s);
                 	for (String ss: list) {
                 		if (ss.contains("session=")) {
                 			String sessionId = ss.substring(ss.indexOf("session=")+8);
-                			System.out.println("session1111="+sessionId);
                 		}
                 	}
                 }
@@ -399,36 +380,31 @@ public class GetPostTest2 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
 
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("jsessionid")) {
 								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-								System.out.println("JSESSIONID="+xlbValue);
 								resultJson.put("JSESSIONID", xlbValue);
 							} else if (entryValue.toLowerCase().contains("session")) {
 								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("sessionValue="+sessionValue);
 								resultJson.put("session", sessionValue);
 							} else if (entryValue.toLowerCase().contains("x-lb")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("xlb="+xlbValue);
 								resultJson.put("xlb", xlbValue);
 							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
 								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
-								System.out.println("tokenUUID="+sessionValue);
 								resultJson.put("tokenUUID", sessionValue);
 							}else if (entryValue.toLowerCase().contains("tokenid")) {
 								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("tokenId="+xlbValue);
 								resultJson.put("tokenId", xlbValue);
 							}
 						}
@@ -467,10 +443,8 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            System.out.println("订票结果====="+result);
+            System.out.println("responseBody:"+result);
 
-			//获取
-			
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -502,22 +476,22 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            System.out.println(result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
             String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
             resultJson.put("uuid", uuidStr2);
 
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("uuid")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("uuid="+xlbValue);
 								resultJson.put("uuid", xlbValue);
 							}
 						}
@@ -556,23 +530,22 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            //{"resultType":"1001","resultMsg":"success","uuid":"d75c96df-08a8-4116-b399-fa9f85be653d"}
-            System.out.println(result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
             String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
             resultJson.put("uuid", uuidStr2);
 
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("uuid")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("uuid="+xlbValue);
 								resultJson.put("uuid", xlbValue);
 							}
 						}
@@ -611,23 +584,19 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            //{"resultType":"1001","resultMsg":"success","uuid":"d75c96df-08a8-4116-b399-fa9f85be653d"}
-            System.out.println(result);
-            //String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
-            //resultJson.put("uuid", uuidStr2);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			//获取头信息
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("uuid")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("uuid="+xlbValue);
 								resultJson.put("uuid", xlbValue);
 							}
 						}
@@ -659,37 +628,33 @@ public class GetPostTest2 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
             resultJson.put("flightData", result);
 
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("jsessionid")) {
 								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-								System.out.println("JSESSIONID="+xlbValue);
 								resultJson.put("JSESSIONID", xlbValue);
 							} else if (entryValue.toLowerCase().contains("session")) {
 								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("sessionValue="+sessionValue);
 								resultJson.put("session", sessionValue);
 							} else if (entryValue.toLowerCase().contains("x-lb")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("xlb="+xlbValue);
 								resultJson.put("xlb", xlbValue);
 							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
 								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
-								System.out.println("tokenUUID="+sessionValue);
 								resultJson.put("tokenUUID", sessionValue);
 							}else if (entryValue.toLowerCase().contains("tokenid")) {
 								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("tokenId="+xlbValue);
 								resultJson.put("tokenId", xlbValue);
 							}
 						}
@@ -719,13 +684,11 @@ public class GetPostTest2 {
             conn.connect();
             Map<String, List<String>> map = conn.getHeaderFields();
             for (String s : map.keySet()) {
-                System.out.println(s + "-->" + map.get(s));
                 if("set-cookie".equalsIgnoreCase(s)) {
                 	List<String> list = map.get(s);
                 	for (String ss: list) {
                 		if (ss.contains("session=")) {
                 			String sessionId = ss.substring(ss.indexOf("session=")+8);
-                			System.out.println("session1111="+sessionId);
                 		}
                 	}
                 }
@@ -735,36 +698,31 @@ public class GetPostTest2 {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("result====="+result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
 			//获取头信息
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
+			//获取头信息
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("jsessionid")) {
 								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-								System.out.println("JSESSIONID="+xlbValue);
 								resultJson.put("JSESSIONID", xlbValue);
 							} else if (entryValue.toLowerCase().contains("session")) {
 								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("sessionValue="+sessionValue);
 								resultJson.put("session", sessionValue);
 							} else if (entryValue.toLowerCase().contains("x-lb")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("xlb="+xlbValue);
 								resultJson.put("xlb", xlbValue);
 							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
 								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
-								System.out.println("tokenUUID="+sessionValue);
 								resultJson.put("tokenUUID", sessionValue);
 							}else if (entryValue.toLowerCase().contains("tokenid")) {
 								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("tokenId="+xlbValue);
 								resultJson.put("tokenId", xlbValue);
 							}
 						}
@@ -807,36 +765,31 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            System.out.println("result====="+result);
-
+			//获取响应体
+			System.out.println("responseBody:"+result);
+			//获取头信息
+			Map<String, List<String>> responseHead = conn.getHeaderFields();
+			System.out.println("responseHead:"+responseHead.toString());
+			
             //获取loginPost
-			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headerFields:"+headerFields.toString());
-			for (Entry<String, List<String>> entry : headerFields.entrySet()) {
-				System.out.println(entry.getKey());
-				System.out.println(entry.getValue());	
+			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
 				if ("set-cookie".equalsIgnoreCase(entry.getKey())) {
 					for (String entryValue: entry.getValue()) {
 						if (entryValue != null) {
 							if (entryValue.toLowerCase().contains("jsessionid")) {
 								String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-								System.out.println("JSESSIONID="+xlbValue);
 								resultJson.put("JSESSIONID", xlbValue);
 							} else if (entryValue.toLowerCase().contains("session")) {
 								String sessionValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("sessionValue="+sessionValue);
 								resultJson.put("session", sessionValue);
 							} else if (entryValue.toLowerCase().contains("x-lb")) {
 								String xlbValue = entryValue.substring(5, entryValue.indexOf(";"));
-								System.out.println("xlb="+xlbValue);
 								resultJson.put("xlb", xlbValue);
 							}else if (entryValue.toLowerCase().contains("tokenuuid")) {
 								String sessionValue = entryValue.substring(10, entryValue.indexOf(";"));
-								System.out.println("tokenUUID="+sessionValue);
 								resultJson.put("tokenUUID", sessionValue);
 							}else if (entryValue.toLowerCase().contains("tokenid")) {
 								String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-								System.out.println("tokenId="+xlbValue);
 								resultJson.put("tokenId", xlbValue);
 							}
 						}

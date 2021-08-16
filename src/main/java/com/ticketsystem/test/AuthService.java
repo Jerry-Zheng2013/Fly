@@ -76,7 +76,7 @@ public class AuthService {
             /**
              * 返回结果示例
              */
-            System.err.println("result:" + result);
+            System.out.println("responseBody:"+result);
             JSONObject jsonObject = new JSONObject(result);
             String access_token = jsonObject.getString("access_token");
             return access_token;

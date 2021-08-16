@@ -249,7 +249,6 @@ public class FlightPackager2 {
 				"    }," + 
 				"    \"uuid\": \"" + uuid + "\"" +
 				"}";
-		System.out.println("ssss");
 		return bookPostData.trim().replaceAll(" ", "");
 	}
 	

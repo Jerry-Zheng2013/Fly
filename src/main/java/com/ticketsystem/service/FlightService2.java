@@ -215,7 +215,7 @@ public class FlightService2 {
             					bookDataBiz.addTotal(processTripParam.getString("amount"));
             					
             				} else {
-            					System.out.println("乘机人信息已不够用了！！！");
+            					System.out.println("=====乘机人信息已不够用了！！！=====");
             				}
             			}
             		}

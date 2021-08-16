@@ -67,7 +67,9 @@ public class DomeController {
     	String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String orderNo = param.get("orderNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String accountNo = param.get("accountNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        
+        System.out.println("=====oiId====="+oiId);
+        System.out.println("=====orderNo====="+orderNo);
+        System.out.println("=====accountNo====="+accountNo);
         JSONObject cancelData = new JSONObject();
         cancelData.put("oiId", oiId);
         cancelData.put("orderNo", orderNo);
@@ -87,11 +89,15 @@ public class DomeController {
         String flghtNo = param.get("flghtNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String cabinCode = param.get("cabinCode").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String ticketNumber = param.get("ticketNumber").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        System.out.println("=====oiId====="+oiId);
+        System.out.println("=====tripStr====="+tripStr);
+        System.out.println("=====flghtNo====="+flghtNo);
+        System.out.println("=====cabinCode====="+cabinCode);
+        System.out.println("=====ticketNumber====="+ticketNumber);
         if("null"==ticketNumber || ticketNumber == null) { ticketNumber=""; }
         
         //先将原订单更新为“正常结束”
         new KnSqlManager().updateOrderStatus2(oiId, "正常结束");
-        
         //重新下单
         JSONObject addData = new JSONObject();
         //AVH/PKXSHA/21JUL/D/KN
@@ -117,7 +123,7 @@ public class DomeController {
     public void delete(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
         String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        
+        System.out.println("=====oiId====="+oiId);
         new FlightService3().deleteOrder(oiId);
 
         response.sendRedirect("/flight/allFlightList");
@@ -135,7 +141,6 @@ public class DomeController {
     @RequestMapping("/getlost")
     @ResponseBody
     public String getlost(HttpServletResponse response) throws Exception {
-    	//System.out.println("获取丢票记录");
     	JSONObject lostJson = new FlightService3().getLost();
 		String resultStr = lostJson.getString("resultStr");
 		return resultStr;

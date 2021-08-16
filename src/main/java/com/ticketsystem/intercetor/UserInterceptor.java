@@ -19,15 +19,15 @@ public class UserInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        System.out.println("执行到了preHandle方法");
-        System.out.println(handler);
+        //System.out.println("执行到了preHandle方法");
+        //System.out.println(handler);
         User user = (User) request.getSession().getAttribute("session_user");
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/index.html");//拦截后跳转的方法
             System.out.println("已成功拦截并转发跳转");
             return false;
         }
-        System.out.println("合格不需要拦截，放行");
+        //System.out.println("合格不需要拦截，放行");
         return true;
     }
 
@@ -37,7 +37,7 @@ public class UserInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        System.out.println("执行了postHandle方法");
+        //System.out.println("执行了postHandle方法");
     }
 
 //     * 视图渲染之后的操作
@@ -45,7 +45,7 @@ public class UserInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3) throws Exception {
-        System.out.println("执行到了afterCompletion方法");
+        //System.out.println("执行到了afterCompletion方法");
     }
 
 }

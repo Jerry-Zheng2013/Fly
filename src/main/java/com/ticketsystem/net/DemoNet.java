@@ -36,7 +36,6 @@ public class DemoNet {
     	String descSign = MD5Util.getMD5(sourceSign);
 
     	String urlStr = queryUrl+"?appKey="+appKey+"&fromCityCode="+fromCity+"&toCityCode="+toCity+"&fromDate="+fromDate+"&sign="+descSign;
-    	System.out.println(urlStr);
     	JSONObject queryResultData = new JSONObject(new HashMap<String, Object>());
     	queryResultData = QueryHttpClient.doPostOrGet2(urlStr, "GET", "");
     	//获取余票数量
@@ -66,7 +65,6 @@ public class DemoNet {
     					if(DemoData.getSeatLeft().contains(seatLeftNum)) {
     						//锁定到余票数量
 							standbyCount = seatLeftNum;
-							System.out.println(standbyCount);
 							bookTicketData.put("flightNo", fightNo);
 							bookTicketData.put("fromAirportCode", fromCity);
 							bookTicketData.put("toAirportCode", toCity);

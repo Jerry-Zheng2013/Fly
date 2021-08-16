@@ -44,20 +44,12 @@ public class QueryHttpClient {
 			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
-
-			/**
-			 * 下面的三句代码，就是调用第三方http接口
-			 */
 			// 获取URLConnection对象对应的输出流
 			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 			// 发送请求参数即数据
 			out.write(data);
 			// flush输出流的缓冲
 			out.flush();
-
-			/**
-			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
-			 */
 			// 获取URLConnection对象对应的输入流
 			InputStream is = conn.getInputStream();
 			// 构造一个字符流缓存
@@ -66,7 +58,7 @@ public class QueryHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println(result);
+			System.out.println("responseBody:"+result);
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
@@ -121,20 +113,12 @@ public class QueryHttpClient {
 			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
-
-			/**
-			 * 下面的三句代码，就是调用第三方http接口
-			 */
 			// 获取URLConnection对象对应的输出流
 			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 			// 发送请求参数即数据
 			out.write(dataStr);
 			// flush输出流的缓冲
 			out.flush();
-
-			/**
-			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
-			 */
 			// 获取URLConnection对象对应的输入流
 			InputStream is = conn.getInputStream();
 			// 构造一个字符流缓存
@@ -143,7 +127,7 @@ public class QueryHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println(result);
+			System.out.println("responseBody:"+result);
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
@@ -228,20 +212,12 @@ public class QueryHttpClient {
 			// DoOutput设置是否向httpUrlConnection输出，DoInput设置是否从httpUrlConnection读入，此外发送post请求必须设置这两个
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
-
-			/**
-			 * 下面的三句代码，就是调用第三方http接口
-			 */
 			// 获取URLConnection对象对应的输出流
 			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 			// 发送请求参数即数据
 			out.write(dataStr);
 			// flush输出流的缓冲
 			out.flush();
-
-			/**
-			 * 下面的代码相当于，获取调用第三方http接口后返回的结果
-			 */
 			// 获取URLConnection对象对应的输入流
 			InputStream is = conn.getInputStream();
 			// 构造一个字符流缓存
@@ -250,7 +226,7 @@ public class QueryHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println(result);
+			System.out.println("responseBody:"+result);
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。

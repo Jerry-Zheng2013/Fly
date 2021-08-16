@@ -64,7 +64,7 @@ public class BookHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println(result);
+			System.out.println("responseBody:"+result);
 			
 			// 关闭流
 			is.close();
