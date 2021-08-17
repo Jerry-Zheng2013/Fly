@@ -52,6 +52,10 @@ public class QueryComp {
     								String CabinName = ibeJson.getJSONArray("CabinName").getString(0);
     								String seatLeftNum = ibeJson.getJSONArray("CabinInfo").getString(0);
     								if (cabinCode.equalsIgnoreCase(CabinName)) {
+    									if("A".equalsIgnoreCase(seatLeftNum)) {
+    										standbyCount = "10";
+    										return standbyCount;
+    									}
     	    							if(DemoData.getSeatLeft().contains(seatLeftNum)) {
     	    								standbyCount = seatLeftNum;
     	    								//standbyCount = "1";
