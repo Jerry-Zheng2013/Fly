@@ -30,7 +30,7 @@ $(document).ready(function () {
                 type: "POST",
                 data: JSON.stringify(jsonObj),
                 success: function () {
-                    alert("提交成功");
+                    //alert("提交成功");
                     location.reload();
                 }
             });
@@ -54,7 +54,7 @@ $(document).ready(function () {
                 type: "POST",
                 data: JSON.stringify(jsonObj),
                 success: function () {
-                    alert("提交成功");
+                    //alert("提交成功");
                     location.reload();
                 }
             });

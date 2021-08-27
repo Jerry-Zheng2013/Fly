@@ -36,6 +36,5 @@ mybatis:
 logging:
   level:
     com.ticketsystem: debug
-#  file: ./log/info.log
-  file: E:/info.log
-  root: INFO
+  file: C:/log/info.log
+  root: debug

@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,8 @@ import io.swagger.annotations.ApiOperation;
 @MapperScan("com.ticketsystem.dao")
 @RequestMapping("/demo")
 public class DomeController {
+	
+	Logger log = LogManager.getLogger(DomeController.class);
 
 	@ApiOperation(value = "预定", notes = "新增订单")
     @RequestMapping(value="/add", method = RequestMethod.POST)
@@ -39,10 +43,14 @@ public class DomeController {
         flghtNo = flghtNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         cabinCode = cabinCode.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        System.out.println("=====tripStr====="+tripStr);
-        System.out.println("=====flghtNo====="+flghtNo);
-        System.out.println("=====cabinCode====="+cabinCode);
-        System.out.println("=====ticketNumber====="+ticketNumber);
+		log.info("=====tripStr====="+tripStr);
+		System.out.println("=====tripStr====="+tripStr);
+		log.info("=====flghtNo====="+flghtNo);
+		System.out.println("=====flghtNo====="+flghtNo);
+		log.info("=====cabinCode====="+cabinCode);
+		System.out.println("=====cabinCode====="+cabinCode);
+		log.info("=====ticketNumber====="+ticketNumber);
+		System.out.println("=====ticketNumber====="+ticketNumber);
         addData.put("fromCityCode", tripStr.substring(4, 7));
         addData.put("toCityCode", tripStr.substring(7, 10));
         addData.put("ticketNumber", ticketNumber);
@@ -67,9 +75,12 @@ public class DomeController {
     	String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String orderNo = param.get("orderNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String accountNo = param.get("accountNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        System.out.println("=====oiId====="+oiId);
-        System.out.println("=====orderNo====="+orderNo);
-        System.out.println("=====accountNo====="+accountNo);
+		log.info("=====oiId====="+oiId);
+		System.out.println("=====oiId====="+oiId);
+		log.info("=====orderNo====="+orderNo);
+		System.out.println("=====orderNo====="+orderNo);
+		log.info("=====accountNo====="+accountNo);
+		System.out.println("=====accountNo====="+accountNo);
         JSONObject cancelData = new JSONObject();
         cancelData.put("oiId", oiId);
         cancelData.put("orderNo", orderNo);
@@ -89,11 +100,16 @@ public class DomeController {
         String flghtNo = param.get("flghtNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String cabinCode = param.get("cabinCode").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         String ticketNumber = param.get("ticketNumber").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        System.out.println("=====oiId====="+oiId);
-        System.out.println("=====tripStr====="+tripStr);
-        System.out.println("=====flghtNo====="+flghtNo);
-        System.out.println("=====cabinCode====="+cabinCode);
-        System.out.println("=====ticketNumber====="+ticketNumber);
+		log.info("=====oiId====="+oiId);
+		System.out.println("=====oiId====="+oiId);
+		log.info("=====tripStr====="+tripStr);
+		System.out.println("=====tripStr====="+tripStr);
+		log.info("=====flghtNo====="+flghtNo);
+		System.out.println("=====flghtNo====="+flghtNo);
+		log.info("=====cabinCode====="+cabinCode);
+		System.out.println("=====cabinCode====="+cabinCode);
+		log.info("=====ticketNumber====="+ticketNumber);
+		System.out.println("=====ticketNumber====="+ticketNumber);
         if("null"==ticketNumber || ticketNumber == null) { ticketNumber=""; }
         
         //先将原订单更新为“正常结束”
@@ -123,9 +139,9 @@ public class DomeController {
     public void delete(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
         String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        System.out.println("=====oiId====="+oiId);
+		log.info("=====oiId====="+oiId);
+		System.out.println("=====oiId====="+oiId);
         new FlightService3().deleteOrder(oiId);
-
         response.sendRedirect("/flight/allFlightList");
     }
 	
@@ -133,6 +149,7 @@ public class DomeController {
     @RequestMapping("/deletelost")
     public void deleteLost(HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
+		log.info("删除丢票记录");
 		System.out.println("删除丢票记录");
 		new FlightService3().deleteLost();
     }

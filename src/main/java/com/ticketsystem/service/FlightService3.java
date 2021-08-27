@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +23,15 @@ import com.ticketsystem.util.DemoData;
 import com.ticketsystem.util.KnSqlManager;
 import com.ticketsystem.util.StringX;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class FlightService3 {
 
 	@Autowired
 	private AsyncService3 asyncService3;
+	Logger log = LogManager.getLogger(FlightService3.class);
 	
 	/**
      * 预定<br/>
@@ -68,6 +74,8 @@ public class FlightService3 {
 
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	Date intoDate = new Date();
+
+		log.info("当前时间:==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===预定");
 		System.err.println("当前时间:==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===预定");
     	
 		String ticketNumber = addData.getString("ticketNumber");
@@ -181,6 +189,7 @@ public class FlightService3 {
         			sqlManager.updateAccountTime(updateTimeData);
     			}
     			if(session==null||session.length()<5) {
+    				log.info("==========登陆失败==========");
     				System.out.println("==========登陆失败==========");
     				return null;
     			}
@@ -233,6 +242,8 @@ public class FlightService3 {
     					bookDataBiz.addTotal(processTripParam.getString("amount"));
     					
     				} else {
+
+    					log.info("=====乘机人信息已不够用了！！！=====");
     					System.err.println("=====乘机人信息已不够用了！！！=====");
     				}
         		}
@@ -268,6 +279,8 @@ public class FlightService3 {
     			}
     			Date bookDate = new Date();
     			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
+
+    			log.info("当前时间:==="+format.format(bookDate)+"===订票成功===");
     			System.err.println("当前时间:==="+format.format(bookDate)+"===订票成功===");
     			
         		//新增订单信息
@@ -299,6 +312,8 @@ public class FlightService3 {
     			packageData.put("standbyCount", currStandBy);
     			packageArrData.add(packageData);
 			} else {
+
+				log.info("=====官网账号已不够用了！！！=====");
 				System.err.println("=====官网账号已不够用了！！！=====");
 			}
     		
@@ -306,6 +321,8 @@ public class FlightService3 {
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
+
+    		log.info("=====查询航班没有余票啦！！！=====");
     		System.err.println("=====查询航班没有余票啦！！！=====");
     	}
     	return bigData;
@@ -332,6 +349,8 @@ public class FlightService3 {
     	
     	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	Date intoDate = new Date();
+
+		log.info("当前时间:==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===预定");
 		System.err.println("当前时间:==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===预定");
     	
 		String ticketNumber = addData.getString("ticketNumber");
@@ -451,6 +470,7 @@ public class FlightService3 {
         			sqlManager.updateAccountTime(updateTimeData);
     			}
     			if(session==null||session.length()<5) {
+    				log.info("==========登陆失败==========");
     				System.out.println("==========登陆失败==========");
     				return null;
     			}    				
@@ -503,6 +523,8 @@ public class FlightService3 {
     					bookDataBiz.addTotal(processTripParam.getString("amount"));
     					
     				} else {
+
+    					log.info("=====乘机人信息已不够用了！！！=====");
     					System.err.println("=====乘机人信息已不够用了！！！=====");
     				}
         		}
@@ -538,6 +560,8 @@ public class FlightService3 {
     			}
     			Date bookDate = new Date();
     			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
+
+    			log.info("当前时间:==="+format.format(bookDate)+"===订票成功===");
     			System.err.println("当前时间:==="+format.format(bookDate)+"===订票成功===");
     	    	bigData.put("bookSucess", "true");
     			
@@ -575,6 +599,8 @@ public class FlightService3 {
     			packageData.put("standbyCount", currStandBy);
     			packageArrData.add(packageData);
 			} else {
+
+				log.info("=====官网账号已不够用了！！！=====");
 				System.err.println("=====官网账号已不够用了！！！=====");
 				return null;
 			}
@@ -583,6 +609,8 @@ public class FlightService3 {
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
+
+    		log.info("=====查询航班没有余票啦！！！=====");
     		System.err.println("=====查询航班没有余票啦！！！=====");
 			return null;
     	}
@@ -607,14 +635,20 @@ public class FlightService3 {
     	try {
 			new CancelComp().cancelTicket(orderNo, accountNo);
 		} catch (Exception e) {
+			log.info("===取消订单失败=====");
+			System.out.println("===取消订单失败=====");
 			cancelFlag = false;
 			e.printStackTrace();
 		}
     	
     	if (cancelFlag) {
+    		log.info("===取消成功之后，更新订单信息=====");
+			System.out.println("===取消成功之后，更新订单信息=====");
     		//更新订单信息
     		sqlManager.updateOrderStatus2(oiId, "正常结束");
     	} else {
+    		log.info("===取消失败之后，更新订单信息=====");
+			System.out.println("===取消失败之后，更新订单信息=====");
     		//发出警报
     		sqlManager.insertLost(accountNo, "failed");
     		//取消失败，更新订单状态为取消失败
@@ -657,9 +691,13 @@ public class FlightService3 {
 		}
     	
     	if (cancelFlag) {
+    		log.info("===取消订单成功=====");
+    		System.out.println("===取消订单成功=====");
     		//更新订单信息
     		sqlManager.updateOrderStatus2(oiId, "订单暂停");
     	} else {
+    		log.info("===取消订单失败=====");
+    		System.out.println("===取消订单失败=====");
     		//取消失败，更新订单状态为取消失败
     		sqlManager.updateOrderStatus2(oiId, "暂停失败");
     	}

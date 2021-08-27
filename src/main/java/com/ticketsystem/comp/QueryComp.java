@@ -1,5 +1,8 @@
 package com.ticketsystem.comp;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.net.GetSender;
@@ -9,6 +12,8 @@ import com.ticketsystem.util.KnSqlManager;
 import com.ticketsystem.util.Xml2JsonUtil;
 
 public class QueryComp {
+	
+	Logger log = LogManager.getLogger(QueryComp.class);
 
 	public String queryTicket(JSONObject queryData) {
 		String standbyCount = "0";
@@ -26,7 +31,8 @@ public class QueryComp {
     			+ "&dstCity="+toCity 
     			+ "&FlightDate="+fromDate
     			+ "&Airline=KN&direct=true&eticket=true&limittime=0000&outstyle=0";
-    	
+
+		log.info("=====黑屏查询余票=====url["+queryUrl+"]=====param["+postDataStr+"]");
     	System.out.println("=====黑屏查询余票=====url["+queryUrl+"]=====param["+postDataStr+"]");
     	JSONObject queryPost = new PostSender().queryPost(queryUrl, postDataStr);
     	if (queryPost.size()>0) {
@@ -88,14 +94,9 @@ public class QueryComp {
     	GetSender getSender = new GetSender();
     	String queryCookie = "session="+session;
     	
-    	//String queryUrl = DemoData.queryUrl2;
-    	//flightType=oneway&Origin=CITY_BJS_CN&Destination=CitCnSHANGHA364&departDate=2021-07-21&adults=1&children=0&militaryDisability=0&policeRemnants=0
-    	//String param = "flightType=oneway&Origin="+fromCityCode+"&Destination="+toCityCode+"&departDate="+fromDate+"&adults="+currStandBy+"&children=0&militaryDisability=0&policeRemnants=0";
-    	//System.out.println("---查询具体航班详情URL="+queryUrl+"---PARAM="+param+"---COOKIE="+queryCookie);
-    	//getSender.queryGet3(queryUrl, param, queryCookie);
-    	
     	String queryUrl4 = DemoData.queryUrl3;
     	String param4 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
+		log.info("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
     	System.out.println("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
     	JSONObject queryPost = getSender.queryGet4(queryUrl4, param4, queryCookie);
 		return queryPost;

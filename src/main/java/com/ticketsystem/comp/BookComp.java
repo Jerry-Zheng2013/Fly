@@ -1,15 +1,22 @@
 package com.ticketsystem.comp;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.net.GetSender;
 import com.ticketsystem.net.PostSender;
 import com.ticketsystem.util.DemoData;
 
 public class BookComp {
+
+	Logger log = LogManager.getLogger(BookComp.class);
 	
 	public JSONObject bookTicket(String bookDataStr, String bookCookie) {
 		JSONObject bookResult = new JSONObject();
 		String bookUrl = DemoData.bookUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
+
+		log.info("---机票预定URL="+bookUrl+"---PARAM="+bookDataStr+"---COOKIE="+bookCookie);
 		System.err.println("---机票预定URL="+bookUrl+"---PARAM="+bookDataStr+"---COOKIE="+bookCookie);
 		PostSender.bookPost(bookUrl, bookDataStr, bookCookie);
 		
