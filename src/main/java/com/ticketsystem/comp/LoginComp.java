@@ -152,7 +152,6 @@ public class LoginComp {
 		try {
 			//TODO 调用接口----------登录接口
 			PostSender postSender = new PostSender();
-			
 			String tokenUUID = loginResult0.getString("tokenUUID");
 			String tokenId = loginResult0.getString("tokenId");
 			String session = loginResult0.getString("session");
@@ -227,8 +226,6 @@ public class LoginComp {
 			//1、主页
 			//http://www.flycua.com
 			String indexUrl = "http://www.flycua.com";
-			//String indexParam = "_="+String.valueOf(Math.random()).substring(2, 15);
-
 			log.info("=====1、重新进入主页=====url["+indexUrl+"]");
 			System.out.println("=====1、重新进入主页=====url["+indexUrl+"]");
 			GetPostTest5.indexGet(indexUrl);
@@ -236,7 +233,6 @@ public class LoginComp {
 			//2、检查
 			String checkUrl1 = "http://www.flycua.com/app/login/queryUserStatus";
 			String checkparam1 = "_="+String.valueOf(Math.random()).substring(2, 15);
-
 			log.info("=====2、检查登录状态=====url["+checkUrl1+"]=====param["+checkparam1+"]");
 			System.out.println("=====2、检查登录状态=====url["+checkUrl1+"]=====param["+checkparam1+"]");
 			JSONObject checkRes1 = GetPostTest5.checkGet1(checkUrl1, checkparam1);

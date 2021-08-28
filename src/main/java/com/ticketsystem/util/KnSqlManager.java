@@ -268,7 +268,7 @@ public class KnSqlManager {
 	public synchronized JSONObject getOrderInfo(String oiId) {
 		JSONObject orderInfoData = new JSONObject();
 		//字段可自行扩展
-		String sqlStr = "select oi_id,order_status,round from order_info where oi_id='"+oiId+"' ";
+		String sqlStr = "select oi_id,order_status,round,input_time,remark from order_info where oi_id='"+oiId+"' ";
 		DBUtil db = new DBUtil();
 		try {
 			db.open();
@@ -277,6 +277,8 @@ public class KnSqlManager {
 				orderInfoData.put("oiId", rs.getString(1));
 				orderInfoData.put("orderStatus", rs.getString(2));
 				orderInfoData.put("round", rs.getString(3));
+				orderInfoData.put("inputTime", rs.getString(4));
+				orderInfoData.put("remark", rs.getString(5));
 				//可扩展
 			}
 		} catch (SQLException e) {
@@ -313,9 +315,9 @@ public class KnSqlManager {
 		}
 	}
 	
-	public void updateOrderStatus2(String oiId, String orderStatus) {
+	public void updateOrderStatus2(String oiId, String orderStatus, String remark) {
 		String sqlStr = "update order_info set "
-				+ " order_status='"+orderStatus+"' "
+				+ " order_status='"+orderStatus+"',remark='"+remark+"' "
 				+ " where oi_id='"+oiId+"' ";
 		DBUtil db = new DBUtil();
 		try {
@@ -575,6 +577,26 @@ public class KnSqlManager {
 		try {
 			db.open();
 			db.executeUpdate(sqlStr);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void updateOrderInputTime(String oiId, String secondTimeStr, String remark) {
+		String sqlStr = "update order_info set "
+				+ " input_time='"+secondTimeStr+"',remark='"+remark+"' "
+				+ " where oi_id='"+oiId+"' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			System.out.println("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {

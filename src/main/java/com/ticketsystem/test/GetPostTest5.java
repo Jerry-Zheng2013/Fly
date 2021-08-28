@@ -12,9 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
+import com.ticketsystem.net.PostSender;
 
 public class GetPostTest5 {
+	
+	static Logger log = LogManager.getLogger(PostSender.class);
 
 	public static JSONObject indexGet(String indexUrl) {
 		JSONObject resultJson = new JSONObject();
@@ -58,9 +64,11 @@ public class GetPostTest5 {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			resultJson.put("headers", responseHead.toString());
@@ -113,9 +121,11 @@ public class GetPostTest5 {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			resultJson.put("headers", responseHead.toString());
@@ -204,9 +214,11 @@ public class GetPostTest5 {
                 result +="\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			resultJson.put("result", result);
@@ -241,9 +253,11 @@ public class GetPostTest5 {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			resultJson.put("result", result);

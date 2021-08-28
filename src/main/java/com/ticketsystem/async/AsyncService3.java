@@ -1,5 +1,6 @@
 package com.ticketsystem.async;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import com.ticketsystem.comp.LoginComp;
 import com.ticketsystem.service.FlightService3;
 import com.ticketsystem.util.DemoData;
 import com.ticketsystem.util.KnSqlManager;
+import com.ticketsystem.util.StringX;
 
 
 @Service
@@ -46,8 +48,21 @@ public class AsyncService3 {
     	String cabinCode = addData2.getString("cabinCode");
 		
 		boolean accessFlag = true;
-		//循环开始时间
-		long startTimeMillis = System.currentTimeMillis();
+		//获取订单开始时间作为循环开始时间
+		String oiId = preOrderData.getString("oiId");
+		JSONObject orderData0 = sqlManager.getOrderInfo(oiId);
+		long startTimeMillis = 0;
+		String inputTime0 = orderData0.getString("inputTime");
+		if(!StringX.empty(inputTime0)){
+			try {
+				startTimeMillis = format.parse(inputTime0).getTime();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}else{
+			startTimeMillis = System.currentTimeMillis();
+		}
+		String remark0 = orderData0.getString("remark");
 		//当前时间
 		long currentTimeMillis = System.currentTimeMillis();
 		while(currentTimeMillis-startTimeMillis<DemoData.COUNTDOWNMILLIS) {
@@ -57,7 +72,6 @@ public class AsyncService3 {
 				e.printStackTrace();
 			}
 			//时刻监控，该订单是否被取消了
-			String oiId = preOrderData.getString("oiId");
 			JSONObject orderData = sqlManager.getOrderInfo(oiId);
 			if(!"正常".equals(orderData.getString("orderStatus"))) {
 				//TODO 深层次循环唯一出口
@@ -68,7 +82,7 @@ public class AsyncService3 {
 				return;
 			}
 			//经历的实际时间+两分钟 > 规定等待时间，去提前登录下一个账号
-			if(currentTimeMillis-startTimeMillis+1000*60*2>DemoData.COUNTDOWNMILLIS && accessFlag) {
+			if(currentTimeMillis-startTimeMillis+1000*60*2>DemoData.COUNTDOWNMILLIS && accessFlag && !"second".equals(remark0)) {
 				log.info("===本轮循环剩余2分钟，开始登录=====");
 				System.out.println("===本轮循环剩余2分钟，开始登录=====");
 				//获取官网账户信息
@@ -134,16 +148,26 @@ public class AsyncService3 {
 		System.err.println("==="+format.format(intoDate3)+"===["+Thread.currentThread().getName()+"]===监听时段结束");
 		
 		//每轮循环结束后，后续调用取消订单，重新下单
-		//调用取消订单接口
-    	//TODO 调用接口----------取消订单接口
-		JSONObject cancelJson = new JSONObject();
-		cancelJson.put("oiId", preOrderData.getString("oiId"));
-		cancelJson.put("orderNo", preOrderData.getString("orderNo"));
-		cancelJson.put("accountNo", preOrderData.getString("accountNo"));
-		FlightService3.cancelTicket2(cancelJson);
-		Date cancelDate = new Date();
-		log.info("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");
-		System.err.println("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");
+		if(!"second".equals(remark0)) {
+			//调用取消订单接口
+			//TODO 调用接口----------取消订单接口
+			JSONObject cancelJson = new JSONObject();
+			cancelJson.put("oiId", preOrderData.getString("oiId"));
+			cancelJson.put("orderNo", preOrderData.getString("orderNo"));
+			cancelJson.put("accountNo", preOrderData.getString("accountNo"));
+			String cancelResult = FlightService3.cancelTicket2(cancelJson);
+			if("success".equalsIgnoreCase(cancelResult)) {
+				Date cancelDate = new Date();
+				log.info("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");
+				System.err.println("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");							
+			}else {
+				//取消失败后，已更新原订单开始时间，重新进入后续订单监听时段，不过不会再进入提前登录和取消订单步骤
+				deepLoop(loopData);
+			}
+		} else {
+			sqlManager.updateOrderStatus2(oiId, "正常结束", "");
+			log.info("当前时间:==="+format.format(new Date())+"===跳过取消阶段=====");
+		}
 		
 		//解锁客户
 		JSONArray customerArrData = loopData.getJSONArray("customerArrData");
@@ -161,7 +185,7 @@ public class AsyncService3 {
 		if(bigData2==null || !"true".equals(bigData2.getString("bookSucess"))) {
     		//压票失败，发出警报，更新订单状态为压票失败
 			sqlManager.insertLost(preOrderData.getString("accountNo"), "failed");
-	    	sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败");
+	    	sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败", "");
     		return;
     	}
 		
@@ -177,9 +201,8 @@ public class AsyncService3 {
 			//一直循环自身
 			deepLoop(loopData2);
 		}
-		Date intoDate4 = new Date();
-		log.info("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");
-		System.out.println("==="+format.format(intoDate4)+"===["+Thread.currentThread().getName()+"]===线程正常结束");
+		log.info("当前时间:==="+format.format(new Date())+"===循环放票成功===");
+		System.out.println("==="+format.format(new Date())+"===["+Thread.currentThread().getName()+"]===线程正常结束");
 	}
 
 }

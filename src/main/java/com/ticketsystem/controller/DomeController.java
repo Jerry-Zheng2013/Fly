@@ -113,7 +113,7 @@ public class DomeController {
         if("null"==ticketNumber || ticketNumber == null) { ticketNumber=""; }
         
         //先将原订单更新为“正常结束”
-        new KnSqlManager().updateOrderStatus2(oiId, "正常结束");
+        new KnSqlManager().updateOrderStatus2(oiId, "正常结束", "");
         //重新下单
         JSONObject addData = new JSONObject();
         //AVH/PKXSHA/21JUL/D/KN

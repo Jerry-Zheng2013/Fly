@@ -127,7 +127,7 @@ public class AsyncService4 {
 		if(bigData2==null) {
     		//压票失败，发出警报，更新订单状态为压票失败
 			sqlManager.insertLost(preOrderData.getString("accountNo"), "failed");
-	    	sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败");
+	    	sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败", "");
     		return;
     	}
 		

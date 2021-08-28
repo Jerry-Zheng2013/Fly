@@ -14,11 +14,14 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
 
 public class PostSender {
 	
-	
+	static Logger log = LogManager.getLogger(PostSender.class);
 	
 	public JSONObject sendHttpPost(String url, String postDataStr) {
 		return sendHttpPost(url, postDataStr, null);
@@ -55,9 +58,11 @@ public class PostSender {
                 result +=" " + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -103,9 +108,11 @@ public class PostSender {
                 result +=" " + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -147,9 +154,11 @@ public class PostSender {
                 result +=" " + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -193,6 +202,7 @@ public class PostSender {
                 result +=" " + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			
         } catch (IOException e) {
@@ -257,6 +267,7 @@ public class PostSender {
 				choosePost(url, postDataStr, cookieStr);
 			}
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			
         } catch (IOException e) {
@@ -314,9 +325,11 @@ public class PostSender {
                 result +="\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -369,9 +382,11 @@ public class PostSender {
                 result +="\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -415,9 +430,11 @@ public class PostSender {
                 result +=" " + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);

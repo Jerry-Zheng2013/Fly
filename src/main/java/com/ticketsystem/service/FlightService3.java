@@ -1,5 +1,6 @@
 package com.ticketsystem.service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -312,7 +313,6 @@ public class FlightService3 {
     			packageData.put("standbyCount", currStandBy);
     			packageArrData.add(packageData);
 			} else {
-
 				log.info("=====官网账号已不够用了！！！=====");
 				System.err.println("=====官网账号已不够用了！！！=====");
 			}
@@ -321,7 +321,6 @@ public class FlightService3 {
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
-
     		log.info("=====查询航班没有余票啦！！！=====");
     		System.err.println("=====查询航班没有余票啦！！！=====");
     	}
@@ -482,14 +481,22 @@ public class FlightService3 {
     			
     			//填充bookDataBiz
     			String flightStr = queryPost2.getString("responseBody");
-    			if (flightStr.length()<10) {return null;}
+    			if (flightStr.length()<10) {
+					log.info("=====查询航班具体信息失败！！！=====");
+					System.err.println("=====查询航班具体信息失败！！！=====");
+    				return null;
+    			}
     			JSONObject flightData = JSONObject.parseObject(flightStr);
     			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
     			bookDataBiz.addTripInfo(processTripParam);
     			
     			//TODO 调用接口----------加入购物车
     			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
-    			if(loginResult==null) {return null;}
+    			if(loginResult==null) {
+					log.info("=====加入购物车失败！！！=====");
+					System.err.println("=====加入购物车失败！！！=====");
+    				return null;
+    			}
     			String uuid = loginResult.getString("uuid");
     			
     			//预定信息-客户信息
@@ -523,9 +530,9 @@ public class FlightService3 {
     					bookDataBiz.addTotal(processTripParam.getString("amount"));
     					
     				} else {
-
     					log.info("=====乘机人信息已不够用了！！！=====");
     					System.err.println("=====乘机人信息已不够用了！！！=====");
+    					return null;
     				}
         		}
     			//bookDataBiz最后的组装
@@ -556,6 +563,8 @@ public class FlightService3 {
     					updateStatusData2.put("accountNo", accountNo);
     					sqlManager.updateCustomerStatus(updateStatusData2);
         			}
+					log.info("=====在此新增订单，压票失败！！！=====");
+					System.err.println("=====在此新增订单，压票失败！！！=====");
     				return null;
     			}
     			Date bookDate = new Date();
@@ -599,7 +608,6 @@ public class FlightService3 {
     			packageData.put("standbyCount", currStandBy);
     			packageArrData.add(packageData);
 			} else {
-
 				log.info("=====官网账号已不够用了！！！=====");
 				System.err.println("=====官网账号已不够用了！！！=====");
 				return null;
@@ -609,7 +617,6 @@ public class FlightService3 {
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
-
     		log.info("=====查询航班没有余票啦！！！=====");
     		System.err.println("=====查询航班没有余票啦！！！=====");
 			return null;
@@ -620,40 +627,53 @@ public class FlightService3 {
 
     /**
      * 取消订单(循环逻辑中)<br/>
-     *<br/>
+     * <br/>
      * @param cancelData{oiId, accountNo}<br/>
      * @return void<br/>
      */
-    public synchronized void cancelTicket2(JSONObject cancelData) {
+    public synchronized String cancelTicket2(JSONObject cancelData) {
+    	String result = "";
     	KnSqlManager sqlManager = new KnSqlManager();
     	String oiId = cancelData.getString("oiId");
     	String orderNo = cancelData.getString("orderNo");
     	String accountNo = cancelData.getString("accountNo");
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	
     	//TODO 调用接口----------取消订单接口
-    	boolean cancelFlag = true;
     	try {
 			new CancelComp().cancelTicket(orderNo, accountNo);
+			log.info("当前时间["+format.format(new Date())+"]=====取消成功之后，更新订单信息=====");
+			System.out.println("当前时间["+format.format(new Date())+"]=====取消成功之后，更新订单信息=====");
+			//更新订单信息
+			sqlManager.updateOrderStatus2(oiId, "正常结束", "");
+			result="success";
 		} catch (Exception e) {
-			log.info("===取消订单失败=====");
-			System.out.println("===取消订单失败=====");
-			cancelFlag = false;
+			log.info("当前时间["+format.format(new Date())+"]=====取消订单失败=====");
+			System.out.println("当前时间["+format.format(new Date())+"]=====取消订单失败=====");
 			e.printStackTrace();
-		}
-    	
-    	if (cancelFlag) {
-    		log.info("===取消成功之后，更新订单信息=====");
-			System.out.println("===取消成功之后，更新订单信息=====");
-    		//更新订单信息
-    		sqlManager.updateOrderStatus2(oiId, "正常结束");
-    	} else {
+			//取消失败后，等待两分零10秒后，直接开始下轮订票循环
+			JSONObject orderData0 = sqlManager.getOrderInfo(oiId);
+			String inputTime0 = orderData0.getString("inputTime");
+			try {
+				long waitTime = (1000*60*2+1000*10);
+				long startTime = format.parse(inputTime0).getTime();
+				long secondTime = startTime+waitTime;
+				String secondTimeStr = format.format(new Date(secondTime));
+				sqlManager.updateOrderInputTime(oiId,secondTimeStr,"second");
+			} catch (ParseException e2) {
+				e2.printStackTrace();
+			}
+			result="failed";
+			/*
     		log.info("===取消失败之后，更新订单信息=====");
 			System.out.println("===取消失败之后，更新订单信息=====");
     		//发出警报
     		sqlManager.insertLost(accountNo, "failed");
     		//取消失败，更新订单状态为取消失败
     		sqlManager.updateOrderStatus2(oiId, "取消失败");
-    	}
+			 */
+		}
     	
     	//更新账户使用时间
 		Date currentDate2 = new Date();
@@ -667,6 +687,7 @@ public class FlightService3 {
     	
     	//更新客户信息
     	sqlManager.updateCustomerByOrder2(accountNo, "1");
+    	return result;
     }
 
     /**
@@ -694,12 +715,12 @@ public class FlightService3 {
     		log.info("===取消订单成功=====");
     		System.out.println("===取消订单成功=====");
     		//更新订单信息
-    		sqlManager.updateOrderStatus2(oiId, "订单暂停");
+    		sqlManager.updateOrderStatus2(oiId, "订单暂停", "");
     	} else {
     		log.info("===取消订单失败=====");
     		System.out.println("===取消订单失败=====");
     		//取消失败，更新订单状态为取消失败
-    		sqlManager.updateOrderStatus2(oiId, "暂停失败");
+    		sqlManager.updateOrderStatus2(oiId, "暂停失败", "");
     	}
     	
     	//更新账户使用时间

@@ -16,10 +16,15 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
 
 
 public class GetSender {
+	
+	static Logger log = LogManager.getLogger(PostSender.class);
 	
 	public JSONObject sendHttpGet(String url, String param) {
 		return sendHttpGet(url, param, "null");
@@ -70,9 +75,11 @@ public class GetSender {
 				result += str;
 			}
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 
 			responseBody.append(result);
@@ -129,9 +136,11 @@ public class GetSender {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -177,9 +186,11 @@ public class GetSender {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -226,9 +237,11 @@ public class GetSender {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -319,9 +332,11 @@ public class GetSender {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
@@ -371,9 +386,11 @@ public class GetSender {
                 result += "\n" + line;
             }
 			//获取响应体
+    		log.info("responseBody:"+result);
 			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
+    		log.info("responseHead:"+responseHead.toString());
 			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);

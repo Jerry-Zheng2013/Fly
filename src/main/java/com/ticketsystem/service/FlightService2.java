@@ -317,7 +317,7 @@ public class FlightService2 {
 			cancelFlag = false;
 			e.printStackTrace();
 		}
-    	
+    	/*
     	if (cancelFlag) {
     		//更新订单信息
     		sqlManager.updateOrderStatus2(oiId, "订单暂停");
@@ -325,7 +325,7 @@ public class FlightService2 {
     		//取消失败，更新订单状态为取消失败
     		sqlManager.updateOrderStatus2(oiId, "暂停失败");
     	}
-    	
+    	*/
     	//更新客户信息
     	sqlManager.updateCustomerByOrder2(accountNo, "1");
     }
