@@ -19,6 +19,7 @@ import com.ticketsystem.service.FlightService3;
 import com.ticketsystem.util.CommUtils;
 import com.ticketsystem.util.DemoData;
 import com.ticketsystem.util.KnSqlManager;
+import com.ticketsystem.util.StringX;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,10 +40,18 @@ public class DomeController {
                       @RequestParam(value = "ticket_number",required = false) String ticketNumber, HttpServletResponse response) throws Exception {
         JSONObject addData = new JSONObject();
         //AVH/PKXSHA/21JUL/D/KN
-        tripStr = tripStr.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        flghtNo = flghtNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        cabinCode = cabinCode.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        if(!StringX.empty(tripStr)) {
+        	tripStr = tripStr.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        if(!StringX.empty(flghtNo)) {
+        	flghtNo = flghtNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        if(!StringX.empty(cabinCode)) {
+        	cabinCode = cabinCode.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        if(!StringX.empty(ticketNumber)) {
+        	ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
 		log.info("=====tripStr====="+tripStr);
 		System.out.println("=====tripStr====="+tripStr);
 		log.info("=====flghtNo====="+flghtNo);
@@ -72,10 +81,19 @@ public class DomeController {
     @RequestMapping("/cancel")
     @ResponseBody
     public void cancel(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
-    	String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        String orderNo = param.get("orderNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        String accountNo = param.get("accountNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-		log.info("=====oiId====="+oiId);
+    	String oiId = param.get("oiId");
+    	if(!StringX.empty(oiId)){
+    		oiId=oiId.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+    	}
+        String orderNo = param.get("orderNo");
+        if(!StringX.empty(orderNo)) {
+        	orderNo = orderNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        String accountNo = param.get("accountNo");
+        if(!StringX.empty(accountNo)) {
+        	accountNo = accountNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        log.info("=====oiId====="+oiId);
 		System.out.println("=====oiId====="+oiId);
 		log.info("=====orderNo====="+orderNo);
 		System.out.println("=====orderNo====="+orderNo);
@@ -95,12 +113,27 @@ public class DomeController {
     @ResponseBody
     public void readd(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
-        String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        String tripStr = param.get("tripCode").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        String flghtNo = param.get("flghtNo").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        String cabinCode = param.get("cabinCode").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-        String ticketNumber = param.get("ticketNumber").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-		log.info("=====oiId====="+oiId);
+        String oiId = param.get("oiId");
+        if(!StringX.empty(oiId)) {
+        	oiId = oiId.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        String tripStr = param.get("tripCode");
+        if(!StringX.empty(tripStr)) {
+        	tripStr = tripStr.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        String flghtNo = param.get("flghtNo");
+        if(!StringX.empty(flghtNo)) {
+        	flghtNo = flghtNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        String cabinCode = param.get("cabinCode");
+        if(!StringX.empty(cabinCode)) {
+        	cabinCode = cabinCode.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        String ticketNumber = param.get("ticketNumber");
+        if(!StringX.empty(ticketNumber)) {
+        	ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        log.info("=====oiId====="+oiId);
 		System.out.println("=====oiId====="+oiId);
 		log.info("=====tripStr====="+tripStr);
 		System.out.println("=====tripStr====="+tripStr);
@@ -138,8 +171,11 @@ public class DomeController {
     @ResponseBody
     public void delete(@RequestBody Map<String, String> param, HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
-        String oiId = param.get("oiId").toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-		log.info("=====oiId====="+oiId);
+        String oiId = param.get("oiId");
+        if(!StringX.empty(oiId)) {
+        	oiId = oiId.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+        }
+        log.info("=====oiId====="+oiId);
 		System.out.println("=====oiId====="+oiId);
         new FlightService3().deleteOrder(oiId);
         response.sendRedirect("/flight/allFlightList");
