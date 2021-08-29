@@ -296,7 +296,7 @@ public class FlightService3 {
         		orderInfoData.put("orderStatus", "正常");
         		orderInfoData.put("round", "1");
         		Date currentTime = new Date();
-        		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         		orderInfoData.put("inputTime", sdf2.format(currentTime));
         		orderInfoData.put("updateTime", sdf2.format(currentTime));
         		orderInfoData.put("inputUser", "user");
@@ -591,7 +591,7 @@ public class FlightService3 {
         		orderInfoData.put("orderStatus", "正常");
         		orderInfoData.put("round", "1");
         		Date currentTime = new Date();
-        		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         		orderInfoData.put("inputTime", sdf2.format(currentTime));
         		orderInfoData.put("updateTime", sdf2.format(currentTime));
         		orderInfoData.put("inputUser", "user");

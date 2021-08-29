@@ -39,7 +39,7 @@ public class OrderInfoService {
 			int countTimes = DemoData.COUNTMM;
     		for(OrderInfo orderInfo : orderInfoList) {
     			String inputTime = orderInfo.getInputTime();
-    			SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     			try {
 					Date orderBeginDate = df.parse(inputTime);
 					Date currentDate = new Date();
@@ -73,7 +73,7 @@ public class OrderInfoService {
 			int countTimes = DemoData.COUNTMM;
     		for(OrderInfo orderInfo : orderInfoList) {
     			String inputTime = orderInfo.getInputTime();
-    			SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     			try {
 					Date orderBeginDate = df.parse(inputTime);
 					Date currentDate = new Date();

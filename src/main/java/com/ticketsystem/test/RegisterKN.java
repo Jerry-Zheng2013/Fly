@@ -38,13 +38,13 @@ public class RegisterKN {
 					}
 				}catch(Exception e2) {
 					Date nowDate = new Date();
-					SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					System.out.println("==========["+format.format(nowDate)+"]循环内，系统运行出错==========");
 					e2.printStackTrace();
 				} finally {
 					registerCount++;
 					Date nowDate = new Date();
-					SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					System.out.println("！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
 					System.out.println("！！！！！！！！！！["+format.format(nowDate)+"]程序循环了"+registerCount+"次！！！！！！！！！！");
 					System.out.println("！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
@@ -52,7 +52,7 @@ public class RegisterKN {
 			}
 		}catch(Exception e) {
 			Date nowDate = new Date();
-			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			System.out.println("==========["+format.format(nowDate)+"]系统运行出错==========");
 			e.printStackTrace();
 		}
