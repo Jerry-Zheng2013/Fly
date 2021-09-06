@@ -32,7 +32,7 @@ public class Accurate5 {
 
             // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
             String accessToken = "";
-            accessToken = "24.b01aba6ed9fb14c3cbe85d40cc613572.2592000.1630587783.282335-24601534";
+            accessToken = "24.74faf2d1aacf07fcd8862374c8cbca1f.2592000.1633269471.282335-24601534";
             result = HttpUtil.post(url, accessToken, param);
             //System.out.println(result);
             return result;
