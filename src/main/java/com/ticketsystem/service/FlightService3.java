@@ -211,7 +211,7 @@ public class FlightService3 {
     			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
     			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
     			String basecabinfareamount = processTripParam.getString("baseFare");
-    			if("null".equalsIgnoreCase(basecabinfareamount) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
+    			if(("null".equalsIgnoreCase(basecabinfareamount) || basecabinfareamount==null) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
         			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
         			//填充bookDataBiz
         			String flightStr22 = queryPost22.getString("responseBody");
@@ -509,7 +509,7 @@ public class FlightService3 {
     			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
     			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
     			String basecabinfareamount = processTripParam.getString("baseFare");
-    			if("null".equalsIgnoreCase(basecabinfareamount) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
+    			if(("null".equalsIgnoreCase(basecabinfareamount) || basecabinfareamount==null) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
         			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
         			//填充bookDataBiz
         			String flightStr22 = queryPost22.getString("responseBody");
