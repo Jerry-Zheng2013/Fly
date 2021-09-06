@@ -220,6 +220,7 @@ public class FlightService3 {
     					System.err.println("=====查询航班具体信息失败！！！=====");
         				return null;
         			}
+        			addData.put("changeFlightFrom", "1");
         			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
         			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
     			}
@@ -517,6 +518,7 @@ public class FlightService3 {
     					System.err.println("=====查询航班具体信息失败！！！=====");
         				return null;
         			}
+        			addData.put("changeFlightFrom", "1");
         			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
         			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
     			}

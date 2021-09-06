@@ -148,6 +148,7 @@ public class LoginComp {
     	String fromDate = addData.getString("fromDate");
     	String fightNo = addData.getString("fightNo");
     	String cabinCode = addData.getString("cabinCode");
+    	String changeFlightFrom = addData.getString("changeFlightFrom");
 		
 		try {
 			//TODO 调用接口----------登录接口
@@ -162,6 +163,9 @@ public class LoginComp {
 	    	String currStandBy = addData.getString("currStandBy");
 	    	KnSqlManager sqlmanager = new KnSqlManager();
 	    	String fromCityCode = sqlmanager.getCityInfo(fromCity).getString("cityCode");
+	    	if("1".equals(changeFlightFrom)){
+	    		fromCityCode = "AirCnBEIJING888";//此处为特殊处理
+	    	}
 	    	String toCityCode = sqlmanager.getCityInfo(toCity).getString("cityCode");
 	    	
 	    	String queryUrl4 = DemoData.queryUrl3;
