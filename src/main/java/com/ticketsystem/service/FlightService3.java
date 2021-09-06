@@ -202,9 +202,27 @@ public class FlightService3 {
     			
     			//填充bookDataBiz
     			String flightStr = queryPost2.getString("responseBody");
-    			if (flightStr.length()<10) {return null;}
+    			if (flightStr.length()<10) {
+					log.info("=====查询航班具体信息失败！！！=====");
+					System.err.println("=====查询航班具体信息失败！！！=====");
+    				return null;
+    			}
     			JSONObject flightData = JSONObject.parseObject(flightStr);
     			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
+    			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
+    			String basecabinfareamount = processTripParam.getString("baseFare");
+    			if("null".equalsIgnoreCase(basecabinfareamount) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
+        			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
+        			//填充bookDataBiz
+        			String flightStr22 = queryPost22.getString("responseBody");
+        			if (flightStr22.length()<10) {
+    					log.info("=====查询航班具体信息失败！！！=====");
+    					System.err.println("=====查询航班具体信息失败！！！=====");
+        				return null;
+        			}
+        			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
+        			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
+    			}
     			bookDataBiz.addTripInfo(processTripParam);
     			
     			//TODO 调用接口----------加入购物车
@@ -488,6 +506,20 @@ public class FlightService3 {
     			}
     			JSONObject flightData = JSONObject.parseObject(flightStr);
     			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
+    			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
+    			String basecabinfareamount = processTripParam.getString("baseFare");
+    			if("null".equalsIgnoreCase(basecabinfareamount) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
+        			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
+        			//填充bookDataBiz
+        			String flightStr22 = queryPost22.getString("responseBody");
+        			if (flightStr22.length()<10) {
+    					log.info("=====查询航班具体信息失败！！！=====");
+    					System.err.println("=====查询航班具体信息失败！！！=====");
+        				return null;
+        			}
+        			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
+        			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
+    			}
     			bookDataBiz.addTripInfo(processTripParam);
     			
     			//TODO 调用接口----------加入购物车

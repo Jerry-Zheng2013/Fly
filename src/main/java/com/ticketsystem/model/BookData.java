@@ -1,8 +1,5 @@
 package com.ticketsystem.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ticketsystem.util.StringX;
@@ -33,6 +30,7 @@ public class BookData {
 	public void addPassenger(String name, String docId, String phoneNumber) {
 		String name1 = name.substring(0,1);
 		String name2 = name.substring(1,name.length());
+		/*
 		List<String> qw = new ArrayList<String>() {
 			private static final long serialVersionUID = 1L;
 		{
@@ -46,6 +44,7 @@ public class BookData {
 		if (qw.contains(docId.substring(docId.length()-2, docId.length()-1))) {
 			nameP = "Mrs";
 		};
+		*/
 		String ss = "{"
 				+ "\"index\":\""+addPassenger+"\","
 				+ " \"type\":\"ADT\","
