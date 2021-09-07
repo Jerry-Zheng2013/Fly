@@ -204,45 +204,29 @@
 			<div class="col-md-12 col-sm-12 ">
 				<div class="x_panel">
 					<div class="x_content">
-						<br />
 						<form id="searche-ticket" data-parsley-validate class="form-inline" action="/demo/add" method="post">
-
-							<div class="item form-group">
-								<label class="col-form-label col-md-4 col-sm-4 label-align" for="trip_no">行程代码:<span class="required">*</span>
-								</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input type="text" id="trip_no" name="trip_no" required="required" class="form-control ">
-								</div>
-							</div>
-							<div class="item form-group">
-								<label class="col-form-label col-md-4 col-sm-4 label-align" for="flght_no">航班号:<span class="required">*</span>
-								</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input type="text" id="flght_no" name="flght_no" required="required" class="form-control">
-								</div>
-							</div>
-							<div class="item form-group">
-								<label for="cabin_code" class="col-form-label col-md-4 col-sm-4 label-align">仓位:</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input id="cabin_code" class="form-control" type="text" name="cabin_code">
-								</div>
-							</div>
-							<div class="item form-group" style="margin-left: 10px">
-								<label for="ticket_number" class="col-form-label col-md-4 col-sm-4 label-align">票数:</label>
-								<div class="col-md-6 col-sm-6 ">
-									<input id="ticket_number" class="form-control" type="text" name="ticket_number">
-								</div>
-							</div>
-							<div class="item form-group col-md-12 col-sm-12" style="margin-top: 30px;">
-								<div class="col-md-7 col-sm-7 offset-md-3">
-									<button class="btn" id="startPlay"  style="display: none;" onclick="startAlarm()" type="reset" >开始警报</button>
-									<button class="btn" id="stopAlarm" type="reset" >关闭警报</button>
-									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-									<button class="btn btn-primary" type="reset">清空</button>
-									<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-									<button type="submit" class="btn btn-success">添加</button>
-								</div>
-							</div>
+							<label class="" for="trip_no">行程代码:<span class="required">*</span></label>
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<input type="text" id="trip_no" name="trip_no" required="required" class="form-control2" style="width:200px;" >
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<label class="" for="flght_no">航班号:<span class="required">*</span></label>
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<input type="text" id="flght_no" name="flght_no" required="required" class="form-control2" style="width:60px;" >
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<label for="cabin_code" class="">仓位:</label>
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<input id="cabin_code" class="form-control2" type="text" name="cabin_code" style="width:60px;" >
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<label for="ticket_number" class="">票数:</label>
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<input id="ticket_number" class="form-control2" type="text" name="ticket_number" style="width:60px;" >
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<button class="btn2" id="startPlay"  style="display: none;" onclick="startAlarm()" type="reset" >开始警报</button>
+							<button class="btn2" id="stopAlarm" type="reset" style="margin-bottom: 0px;">关闭警报</button>
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<button class="btn2 btn-primary" type="reset" style="margin-bottom: 0px;">清空</button>
+							<span>&nbsp;&nbsp;&nbsp;</span>
+							<button type="submit" class="btn2 btn-success" style="margin-bottom: 0px;">添加</button>
 						</form>
 					</div>
 				</div>

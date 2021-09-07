@@ -240,7 +240,7 @@
                             <th class="column-title">价格/张 </th>
                             <th class="column-title">余票 </th>
                             <th class="column-title">订单开始时间 </th>
-                            <th class="column-title">倒计时 </th>
+                            <th class="column-title" style="display: none;" >倒计时 </th>
                             <th class="column-title" style="display: none;" >轮次 </th>
                             <th class="column-title">订单状态 </th>
                             <th class="column-title no-link last"><span class="nobr">操作</span>
@@ -265,7 +265,7 @@
 	                            <td class="a-right a-right " th:text="${order.price}">￥</td>
 	                            <td class=" " th:text="${order.standbyCount}"></td>
 	                            <td class=" " th:text="${order.inputTime}"></td>
-	                            <td class="remainedTime" th:text="${order.countTime}"></td>
+	                            <td class="remainedTime" th:text="${order.countTime}" style="display: none;" ></td>
 	                            <td class=" "  style="display: none;" th:text="${order.round}"></td>
 	                            <td class="orderStatus" th:text="${order.orderStatus}"></td>
 	                            <td class="cancel_ticket last"><a href="#" th:text="删除"></a>
