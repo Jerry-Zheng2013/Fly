@@ -271,11 +271,11 @@ public class FlightService3 {
     			bookDataBiz.initPassengers2();
     			bookDataBiz.setUuid(uuid);
     			
-    	    	//TODO 调用接口----------机票预定接口
     			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
     			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
     			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
     			
+    			//TODO 调用接口----------机票预定接口
     			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
     			if(bookResult.getString("orderNo").length()<7) {
     				//新增压票失败，更新账户信息，更新客户信息
@@ -573,11 +573,11 @@ public class FlightService3 {
     			bookDataBiz.initPassengers2();
     			bookDataBiz.setUuid(uuid);
     			
-    	    	//TODO 调用接口----------机票预定接口
     			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
     			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
     			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
     			
+    			//TODO 调用接口----------机票预定接口
     			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
     			if(bookResult.getString("orderNo").length()<7) {
     				//新增压票失败，更新账户信息，更新客户信息

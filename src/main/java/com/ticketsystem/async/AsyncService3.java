@@ -177,17 +177,43 @@ public class AsyncService3 {
 			customerData.put("customerStatus", "1");
 			sqlManager.updateCustomerStatus(customerData);
 		}
-		//接着调用订票接口
+		//TODO 接着调用订票接口
 		addData2.put("oiId", preOrderData.getString("oiId"));
 		addData2.put("ticketNumber", "");
 		addData2.put("preNumber", loopData.getString("preNumber"));
 		JSONObject bigData2 = FlightService3.booking2(addData2);
 		if(bigData2==null || !"true".equals(bigData2.getString("bookSucess"))) {
-    		//压票失败，发出警报，更新订单状态为压票失败
-			sqlManager.insertLost(preOrderData.getString("accountNo"), "failed");
-	    	sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败", "");
-    		return;
+			//循环压，第一次压失败了，在接下来两分钟内再次尝试压票
+			long currentTimeMillis2 = System.currentTimeMillis();
+			long endTimeMillis2 = (long) (currentTimeMillis2+1000*60*1.5);
+			while(currentTimeMillis2<endTimeMillis2) {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				//TODO 再次尝试循环压票失败
+				bigData2 = FlightService3.booking2(addData2);
+				if(bigData2==null || !"true".equals(bigData2.getString("bookSucess"))) {
+					currentTimeMillis2 = System.currentTimeMillis();
+					log.info("当前时间:==="+format.format(new Date())+"===再次尝试循环压票失败===");
+					System.out.println("当前时间:==="+format.format(new Date())+"===再次尝试循环压票失败===");
+				} else {
+					log.info("当前时间:==="+format.format(new Date())+"===再次尝试循环压票成功===");
+					System.out.println("当前时间:==="+format.format(new Date())+"===再次尝试循环压票成功===");
+					break;
+				}
+			}
     	}
+		if(bigData2==null || !"true".equals(bigData2.getString("bookSucess"))) {
+			log.info("当前时间:==="+format.format(new Date())+"===最终循环压票失败，将发出警报===");
+			System.out.println("当前时间:==="+format.format(new Date())+"===最终循环压票失败，将发出警报===");
+			//压票失败，发出警报，更新订单状态为压票失败
+			sqlManager.insertLost(preOrderData.getString("accountNo"), "failed");
+			sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败", "");
+			return;			
+		}
+		
 		
 		//调用自身，递归，进行下一轮循环订票
 		//组装新一轮的packageData
