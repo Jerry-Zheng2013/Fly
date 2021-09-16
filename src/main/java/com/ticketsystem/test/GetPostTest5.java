@@ -65,11 +65,11 @@ public class GetPostTest5 {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("headers", responseHead.toString());
         } catch (IOException e) {
@@ -122,11 +122,11 @@ public class GetPostTest5 {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("headers", responseHead.toString());
 			resultJson.put("result", result);
@@ -165,7 +165,7 @@ public class GetPostTest5 {
 				fos.write(buf, 0, size);
 			}
 			fos.flush();
-			System.out.println("fileName=="+fileName);
+			log.info("fileName=="+fileName);
 			resultJson.put("fileName", fileName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -215,11 +215,11 @@ public class GetPostTest5 {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("result", result);
 			resultJson.put("headers", responseHead.toString());
@@ -254,11 +254,11 @@ public class GetPostTest5 {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("result", result);
 			resultJson.put("headers", responseHead.toString());

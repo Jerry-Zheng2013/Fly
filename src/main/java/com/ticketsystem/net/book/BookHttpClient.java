@@ -8,11 +8,16 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 
 public class BookHttpClient {
+	
+	static Logger log = LogManager.getLogger(BookHttpClient.class);
 
 	/**
 	 * 以post或get方式调用对方接口方法，
@@ -64,7 +69,7 @@ public class BookHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			
 			// 关闭流
 			is.close();

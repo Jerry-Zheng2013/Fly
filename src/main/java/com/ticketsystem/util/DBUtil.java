@@ -8,7 +8,13 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class DBUtil {
+	
+	Logger log = LogManager.getLogger(DBUtil.class);
+	
 	private Connection conn;
 	public Statement stmt;
   	private DataSource ds;
@@ -28,7 +34,7 @@ public class DBUtil {
 	public int executeUpdate(String sql) throws SQLException {
 		int ret = 0;
 		ret = stmt.executeUpdate(sql);
-		System.out.println ("执行更新");
+		log.info ("执行更新");
 		return ret;
 	}
 
@@ -40,9 +46,9 @@ public class DBUtil {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/ticket?useSSL=false&serverTimezone=UTC","qfly","qfly");
 			stmt=conn.createStatement();
-			//System.out.println("打开数据库连接");
+			//log.info("打开数据库连接");
 		} catch (Exception ex) {
-			System.err.println("打开数据库时出错: " + ex.getMessage());
+			log.error("打开数据库时出错: " + ex.getMessage());
 		}
 	}
 
@@ -52,9 +58,9 @@ public class DBUtil {
 	public void close() {
 		try{
 			conn.close();
-			//System.out.println ("释放连接");
+			//log.info ("释放连接");
 		} catch (SQLException ex) {
-			System.err.println("返还连接池出错: " + ex.getMessage());
+			log.error("返还连接池出错: " + ex.getMessage());
 		}
 	}
 }

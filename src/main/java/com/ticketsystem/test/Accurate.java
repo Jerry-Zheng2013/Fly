@@ -3,10 +3,17 @@ package com.ticketsystem.test;
 
 import java.net.URLEncoder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ticketsystem.comp.QueryComp;
+
 /**
 * 通用文字识别（高精度含位置版）
 */
 public class Accurate {
+	
+	static Logger log = LogManager.getLogger(QueryComp.class);
 
     /**
     * 重要提示代码中所需工具类
@@ -33,7 +40,7 @@ public class Accurate {
             String accessToken = "24.889ba8206844a9bfed7d0b0653506ec7.2592000.1629569738.282335-24592255";
 
             String result = HttpUtil.post(url, accessToken, param);
-            System.out.println(result);
+            log.info(result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,9 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
 
 public class KnSqlManager {
+	
+	Logger log = LogManager.getLogger(KnSqlManager.class);
 	
 	/**
 	 * 获取单个账户详情<br/>
@@ -146,7 +151,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -175,7 +180,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -217,7 +222,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 			orderReturnData.put("oiId", oiId);
 			orderReturnData.put("orderNo", orderNo);
 		} catch (SQLException e) {
@@ -253,7 +258,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -303,7 +308,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -323,7 +328,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -345,7 +350,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -365,7 +370,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -432,7 +437,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -489,7 +494,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -512,7 +517,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -531,7 +536,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -596,7 +601,7 @@ public class KnSqlManager {
 		try {
 			db.open();
 			int updateCount = db.executeUpdate(sqlStr);
-			System.out.println("更新数量："+updateCount);
+			log.info("更新数量："+updateCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {

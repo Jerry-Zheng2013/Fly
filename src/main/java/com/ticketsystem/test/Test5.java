@@ -1,16 +1,18 @@
 package com.ticketsystem.test;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class Test5 {
+	
+	static Logger log = LogManager.getLogger(Test5.class);
 	
 	public static void main(String[] args) {
 		try {
@@ -34,7 +36,7 @@ public class Test5 {
 					int startIndex = checkHeaders.indexOf("set-cookie=[session=s~")+20;
 					int endIndex = checkHeaders.indexOf("; Path=/; Expires=");
 					checkSession1 = checkHeaders.substring(startIndex, endIndex);
-					System.out.println("checkSession=========="+checkSession1);
+					log.info("checkSession=========="+checkSession1);
 				}
 			}
 			//3、登录-跳转至登录页
@@ -58,16 +60,16 @@ public class Test5 {
 				int endIndex = getUuidBody.indexOf("\"}");
 				loginUUID = getUuidBody.substring(startIndex, endIndex);
 			}
-			System.out.println("loginUUID=========="+loginUUID);
+			log.info("loginUUID=========="+loginUUID);
 			
 			//5、刷新随机码
 			try {
 				int waitTime = 1;
-				System.out.println("等待"+waitTime+"秒，等待刷新随机码！");
+				log.info("等待"+waitTime+"秒，等待刷新随机码！");
 				int sleepTime = 0;
 				while(true) {
 					if(sleepTime==waitTime) {break;}
-					System.out.println(sleepTime+"s");
+					log.info(sleepTime+"s");
 					Thread.sleep(1000);
 					sleepTime++;
 				}
@@ -87,25 +89,25 @@ public class Test5 {
 			//7、登录-识别随机码
 			String fieFullName = "C:/img/"+fileName;
 			String accurate = Accurate5.accurate(fieFullName);
-			System.out.println(accurate);
+			log.info(accurate);
 			JSONObject accurateJson = new JSONObject();
 			String validateCode = "";
 			if (accurate==null || accurate.length()<7) {
-				System.out.println("百度识别随机码失败！");
+				log.info("百度识别随机码失败！");
 				return;
 			}
 			accurateJson = JSONObject.parseObject(accurate);
 			JSONArray accArr = accurateJson.getJSONArray("words_result");
 			if(accArr==null || accArr.size()<1) {
-				System.out.println("百度识别随机码失败！");
+				log.info("百度识别随机码失败！");
 				return;
 			}
 			String ss = accArr.getJSONObject(0).getString("words");
 			validateCode = ss.trim().replaceAll(" ", "");
-			System.out.println("session="+checkSession1);
-			System.out.println("==========百度识别成功:"+fileName+"--"+validateCode+"==========");
-			System.out.println("17656175477");
-			System.out.println("z1310305");
+			log.info("session="+checkSession1);
+			log.info("==========百度识别成功:"+fileName+"--"+validateCode+"==========");
+			log.info("17656175477");
+			log.info("z1310305");
 			
 			//8、登录-触发登录
 			//http://www.flycua.com/app/login/userLogin?_=1627204027546
@@ -127,26 +129,26 @@ public class Test5 {
 				Map<String, List<String>> headMap = (Map<String, List<String>>)userLoginRes1.get("headMap");
 				for (Entry<String, List<String>> entry : headMap.entrySet()) {
 					String headKey = entry.getKey();
-					//System.out.println(headKey);
-					//System.out.println(entry.getValue());	
+					//log.info(headKey);
+					//log.info(entry.getValue());	
 					if ("set-cookie".equalsIgnoreCase(headKey)) {
 						for (String entryValue: entry.getValue()) {
 							if (entryValue != null) {
 								if (entryValue.toLowerCase().contains("jsessionid")) {
 									String xlbValue = entryValue.substring(11, entryValue.indexOf(";"));
-									System.out.println("JSESSIONID="+xlbValue);
+									log.info("JSESSIONID="+xlbValue);
 									JsessionId=xlbValue;
 								} else if (entryValue.toLowerCase().contains("session")) {
 									String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-									System.out.println("sessionValue="+xlbValue);
+									log.info("sessionValue="+xlbValue);
 									session = xlbValue;
 								} else if (entryValue.toLowerCase().contains("tokenuuid")) {
 									String xlbValue = entryValue.substring(10, entryValue.indexOf(";"));
-									System.out.println("tokenUUID="+xlbValue);
+									log.info("tokenUUID="+xlbValue);
 									tokenUUID = xlbValue;
 								}else if (entryValue.toLowerCase().contains("tokenid")) {
 									String xlbValue = entryValue.substring(8, entryValue.indexOf(";"));
-									System.out.println("tokenId="+xlbValue);
+									log.info("tokenId="+xlbValue);
 									tokenId = xlbValue;
 								}
 							}

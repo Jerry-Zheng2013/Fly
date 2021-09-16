@@ -1,6 +1,11 @@
 package com.ticketsystem.async;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class MyThread04 extends Thread {
+	
+	static Logger log = LogManager.getLogger(MyThread04.class);
 
 	private boolean stop = false;
 
@@ -14,7 +19,7 @@ public class MyThread04 extends Thread {
 		for (int j = 0; j < 100; j++) {
 			if (this.isInterrupted())
 				break;
-			System.out.println(Thread.currentThread().getName() + ":" + j);
+			log.info(Thread.currentThread().getName() + ":" + j);
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -34,9 +39,9 @@ public class MyThread04 extends Thread {
 		t.start();
 
 		for (int i = 0; i < 10; i++) {
-			System.out.println(Thread.currentThread().getName() + ":" + i);
+			log.info(Thread.currentThread().getName() + ":" + i);
 		}
-		System.out.println("....................");
+		log.info("....................");
 		t.interrupt();
 
 	}

@@ -53,13 +53,9 @@ public class DomeController {
         	ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         }
 		log.info("=====tripStr====="+tripStr);
-		System.out.println("=====tripStr====="+tripStr);
 		log.info("=====flghtNo====="+flghtNo);
-		System.out.println("=====flghtNo====="+flghtNo);
 		log.info("=====cabinCode====="+cabinCode);
-		System.out.println("=====cabinCode====="+cabinCode);
 		log.info("=====ticketNumber====="+ticketNumber);
-		System.out.println("=====ticketNumber====="+ticketNumber);
         addData.put("fromCityCode", tripStr.substring(4, 7));
         addData.put("toCityCode", tripStr.substring(7, 10));
         addData.put("ticketNumber", ticketNumber);
@@ -94,11 +90,8 @@ public class DomeController {
         	accountNo = accountNo.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         }
         log.info("=====oiId====="+oiId);
-		System.out.println("=====oiId====="+oiId);
 		log.info("=====orderNo====="+orderNo);
-		System.out.println("=====orderNo====="+orderNo);
 		log.info("=====accountNo====="+accountNo);
-		System.out.println("=====accountNo====="+accountNo);
         JSONObject cancelData = new JSONObject();
         cancelData.put("oiId", oiId);
         cancelData.put("orderNo", orderNo);
@@ -134,15 +127,10 @@ public class DomeController {
         	ticketNumber = ticketNumber.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         }
         log.info("=====oiId====="+oiId);
-		System.out.println("=====oiId====="+oiId);
 		log.info("=====tripStr====="+tripStr);
-		System.out.println("=====tripStr====="+tripStr);
 		log.info("=====flghtNo====="+flghtNo);
-		System.out.println("=====flghtNo====="+flghtNo);
 		log.info("=====cabinCode====="+cabinCode);
-		System.out.println("=====cabinCode====="+cabinCode);
 		log.info("=====ticketNumber====="+ticketNumber);
-		System.out.println("=====ticketNumber====="+ticketNumber);
         if("null"==ticketNumber || ticketNumber == null) { ticketNumber=""; }
         
         //先将原订单更新为“正常结束”
@@ -176,7 +164,6 @@ public class DomeController {
         	oiId = oiId.toUpperCase().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
         }
         log.info("=====oiId====="+oiId);
-		System.out.println("=====oiId====="+oiId);
         new FlightService3().deleteOrder(oiId);
         response.sendRedirect("/flight/allFlightList");
     }
@@ -186,7 +173,6 @@ public class DomeController {
     public void deleteLost(HttpServletResponse response) throws Exception {
 		//从前端获取到了数据
 		log.info("删除丢票记录");
-		System.out.println("删除丢票记录");
 		new FlightService3().deleteLost();
     }
     

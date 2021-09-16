@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import com.ticketsystem.util.SqlManager;
 
 @Service
 public class DemoService {
+	
+	Logger log = LogManager.getLogger(DemoService.class);
 
 	@Autowired
 	private AsyncService asyncService;
@@ -149,7 +153,7 @@ public class DemoService {
             					updateStatusData.put("accountNo", accountData.getString("accountNo"));
             					sqlManager.updateCustomerStatus(updateStatusData);
             				} else {
-            					System.out.println("乘机人信息已不够用了！！！");
+            					log.info("乘机人信息已不够用了！！！");
             				}
             			}
             		}
@@ -209,7 +213,7 @@ public class DemoService {
         			packageData.put("standbyCount", standbyCount);
         			packageArrData.add(packageData);
     			} else {
-    				System.out.println("官网账号已不够用了！！！");
+    				log.info("官网账号已不够用了！！！");
     			}
     		}
     		
@@ -217,7 +221,7 @@ public class DemoService {
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
-    		System.out.println("查询航班没有余票啦！");
+    		log.info("查询航班没有余票啦！");
     	}
     	return bigData;
     }

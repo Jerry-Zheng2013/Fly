@@ -1,8 +1,13 @@
 package com.ticketsystem.test;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
 
 public class Test {
+	
+	static Logger log = LogManager.getLogger(Test.class);
 	
 	public static void main(String[] args) {
 		try {
@@ -45,7 +50,7 @@ public class Test {
 	        		loginCookie
 	        		);
 			String uuid = chooseFlightData.getString("uuid");
-			System.out.println(uuid);
+			log.info(uuid);
 			
 			//加入购物车
 			JSONObject addToCartData = GetPostTest2.addToCartPost(
@@ -54,13 +59,13 @@ public class Test {
 	        		loginCookie
 	        		);
 			String uuid2 = addToCartData.getString("uuid");
-			System.out.println(uuid2);
+			log.info(uuid2);
 			
 			//预定
 			String bookData = flightPackager.getBookData(uuid2);
-			System.out.println("bookData==="+bookData);
-			System.out.println("loginCookie==="+loginCookie);
-			System.out.println("============");
+			log.info("bookData==="+bookData);
+			log.info("loginCookie==="+loginCookie);
+			log.info("============");
 			
 			JSONObject bookPost2 = GetPostTest2.bookPost(
 					"http://www.flycua.com/app/booking/book?_="+Math.random(), 
@@ -90,7 +95,7 @@ public class Test {
 	        		"session="+session+"; "
 	        		);
 			String session3 = queryPost2.getString("session");
-			System.out.println(session3);
+			log.info(session3);
 			
 			
 			String session = "s~8367814a-306d-4e53-8c62-a07ceeb0fa34.a02524dc4cfca25b159b77e2b5796728";
@@ -107,7 +112,7 @@ public class Test {
 			
 			
 			//String uuid = chooseFlightData.getString("uuid");
-			//System.out.println(uuid);
+			//log.info(uuid);
 			
 			//选择航班
 			JSONObject chooseFlightData = GetPostTest2.chooseFlightPost(
@@ -116,7 +121,7 @@ public class Test {
 	        		chooseFlightCookie
 	        		);
 			String uuid = chooseFlightData.getString("uuid");
-			System.out.println(uuid);
+			log.info(uuid);
 			
 			
 			//加入购物车
@@ -126,7 +131,7 @@ public class Test {
 	        		chooseFlightCookie
 	        		);
 			String uuid2 = addToCartData.getString("uuid");
-			System.out.println(uuid2);
+			log.info(uuid2);
 			
 			
 			//预定

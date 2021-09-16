@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import com.ticketsystem.util.KnSqlManager;
 @Service
 public class AsyncService4 {
 	
+	Logger log = LogManager.getLogger(AsyncService4.class);
+	
 	/**
 	 * 开启新线程<br>
 	 * @param bookResultData
@@ -28,9 +32,7 @@ public class AsyncService4 {
 	}
 	
 	public void deepLoop(JSONObject loopData) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date intoDate = new Date();
-		System.err.println("==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===开始循环，监听开始");
+		log.error("开始循环，监听开始");
 
 		KnSqlManager sqlManager = new KnSqlManager();
 		FlightService3 FlightService3 = new FlightService3();
@@ -53,8 +55,7 @@ public class AsyncService4 {
 			if(!"正常".equals(orderData.getString("orderStatus"))) {
 				//TODO 深层次循环唯一出口
 				//如果订单状态不是 1 ，则直接跳出所有循环，结束循环订票逻辑，也就结束了此线程
-				Date intoDate2 = new Date();
-				System.err.println("==="+format.format(intoDate2)+"===["+Thread.currentThread().getName()+"]===监听时段【提前】结束");
+				log.error("监听时段【提前】结束");
 				return;
 			}
 			//经历的实际时间+两分钟 > 规定等待时间，去提前登录下一个账号
@@ -79,7 +80,7 @@ public class AsyncService4 {
 	    			String session = logInResult.getString("session");
 	    			//String JSESSIONID = loginResult.getString("JSESSIONID");
 	    			if(session==null||session.length()<5) {
-	    				System.out.println("==========登陆失败==========");
+	    				log.error("登陆失败！！！");
 	    			} else {
 	    				//登录成功之后，更新当前账户的session以及useTime=2000-01-01
 	        			JSONObject updateSessionData = new JSONObject();
@@ -96,8 +97,7 @@ public class AsyncService4 {
 			
 			currentTimeMillis = System.currentTimeMillis();
 		}
-		Date intoDate3 = new Date();
-		System.err.println("==="+format.format(intoDate3)+"===["+Thread.currentThread().getName()+"]===监听时段结束");
+		log.info("监听时段结束");
 		
 		//每轮循环结束后，后续调用取消订单，重新下单
 		//调用取消订单接口
@@ -107,8 +107,7 @@ public class AsyncService4 {
 		cancelJson.put("orderNo", preOrderData.getString("orderNo"));
 		cancelJson.put("accountNo", preOrderData.getString("accountNo"));
 		FlightService3.cancelTicket2(cancelJson);
-		Date cancelDate = new Date();
-		System.err.println("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");
+		log.info("循环放票成功");
 		
 		//解锁客户
 		JSONArray customerArrData = loopData.getJSONArray("customerArrData");
@@ -142,8 +141,7 @@ public class AsyncService4 {
 			//一直循环自身
 			deepLoop(loopData2);
 		}
-		Date intoDate4 = new Date();
-		System.out.println("==="+format.format(intoDate4)+"===["+Thread.currentThread().getName()+"]===线程正常结束");
+		log.info("线程正常结束");
 	}
 
 }

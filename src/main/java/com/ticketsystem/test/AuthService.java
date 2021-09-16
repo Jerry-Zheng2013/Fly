@@ -1,7 +1,5 @@
 package com.ticketsystem.test;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -9,14 +7,20 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
+
 /**
  * 获取token类
  */
 public class AuthService {
+	
+	static Logger log = LogManager.getLogger(AuthService.class);
 
 	public static void main(String[] args) {
 		String authStr = AuthService.getAuth();
-		System.out.println(authStr);
+		log.info(authStr);
 	}
 	
     /**
@@ -64,7 +68,7 @@ public class AuthService {
             Map<String, List<String>> map = connection.getHeaderFields();
             // 遍历所有的响应头字段
             for (String key : map.keySet()) {
-                System.err.println(key + "--->" + map.get(key));
+                log.error(key + "--->" + map.get(key));
             }
             // 定义 BufferedReader输入流来读取URL的响应
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -76,7 +80,7 @@ public class AuthService {
             /**
              * 返回结果示例
              */
-            System.out.println("responseBody:"+result);
+            log.info("responseBody:"+result);
             JSONObject jsonObject = new JSONObject(result);
             String access_token = jsonObject.getString("access_token");
             return access_token;

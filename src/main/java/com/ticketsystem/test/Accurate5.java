@@ -34,7 +34,7 @@ public class Accurate5 {
             String accessToken = "";
             accessToken = "24.74faf2d1aacf07fcd8862374c8cbca1f.2592000.1633269471.282335-24601534";
             result = HttpUtil.post(url, accessToken, param);
-            //System.out.println(result);
+            //log.info(result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

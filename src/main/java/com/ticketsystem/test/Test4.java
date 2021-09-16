@@ -1,10 +1,15 @@
 package com.ticketsystem.test;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Test4 {
+	
+	static Logger log = LogManager.getLogger(Test4.class);
+	
 	public static StringBuffer sb = new StringBuffer();
 	
 	public static void main(String[] args) {
@@ -20,16 +25,16 @@ public class Test4 {
 			b[0] = (new Integer(highPos)).byteValue();            //高字节
 			b[1] = (new Integer(lowPos)).byteValue();         //低字节
 			str = new String(b, "GBK");
-			//System.out.println(str);
+			//log.info(str);
 			
-			//System.out.println(str.matches("[\u4E00-\u9FA5]+$"));
+			//log.info(str.matches("[\u4E00-\u9FA5]+$"));
 			
 			
 			
 			int starIndex = 0;
 			int endIndex = 3754;
 			int x=starIndex+(int)(Math.random()*endIndex);
-			System.out.println(sb.charAt(x));
+			log.info(sb.charAt(x));
 			
 			/*
 			
@@ -39,7 +44,7 @@ public class Test4 {
 					char ssName = (char) (0x4e00 + (int) (Math.random() * (0x9fa5 - 0x4e00 + 1)));
 					if(String.valueOf(ssName).matches("[\u4E00-\u9FA5]+$")) {
 						hanzi = String.valueOf(ssName);
-						System.out.println(hanzi);
+						log.info(hanzi);
 					}
 				}
 			} catch (Exception e) {
@@ -49,7 +54,7 @@ public class Test4 {
 			/*
 			*/
 			
-			//System.out.println(URLEncoder.encode("张三", "UTF-8"));
+			//log.info(URLEncoder.encode("张三", "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -15,6 +17,9 @@ import org.jdom.input.SAXBuilder;
 import com.alibaba.fastjson.JSONObject;
 
 public class Xml2JsonUtil {
+	
+	Logger log = LogManager.getLogger(Xml2JsonUtil.class);
+	
 	/**
 	 * 转换一个xml格式的字符串到json格式
 	 * 

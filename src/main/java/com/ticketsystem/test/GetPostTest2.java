@@ -5,10 +5,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -19,12 +17,17 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
  
 /**
  * Hello world!
  */
 public class GetPostTest2 {
+	
+	static Logger log = LogManager.getLogger(GetPostTest2.class);
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
@@ -100,10 +103,10 @@ public class GetPostTest2 {
                 result +="\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 
             //获取loginPost
@@ -169,10 +172,10 @@ public class GetPostTest2 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 
 			//获取头信息
 			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
@@ -228,10 +231,10 @@ public class GetPostTest2 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("head", responseHead.toString());
         } catch (IOException e) {
@@ -268,7 +271,7 @@ public class GetPostTest2 {
 				fos.write(buf, 0, size);
 			}
 			fos.flush();
-			System.out.println("fileName=="+fileName);
+			log.info("fileName=="+fileName);
 			resultJson.put("fileName", fileName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -313,10 +316,10 @@ public class GetPostTest2 {
                 result +="\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 
             //获取头信息
 			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
@@ -381,10 +384,10 @@ public class GetPostTest2 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 
 			//获取头信息
 			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
@@ -443,7 +446,7 @@ public class GetPostTest2 {
             while((line = in.readLine()) != null){
                 result +="\n" + line;
             }
-            System.out.println("responseBody:"+result);
+            log.info("responseBody:"+result);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -477,10 +480,10 @@ public class GetPostTest2 {
                 result +="\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
             String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
             resultJson.put("uuid", uuidStr2);
@@ -531,10 +534,10 @@ public class GetPostTest2 {
                 result +="\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
             String uuidStr2 = result.substring(result.indexOf("\"uuid\":\"")+8, result.indexOf("\"}"));
             resultJson.put("uuid", uuidStr2);
@@ -585,10 +588,10 @@ public class GetPostTest2 {
                 result +="\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			//获取头信息
 			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
@@ -629,10 +632,10 @@ public class GetPostTest2 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
             resultJson.put("flightData", result);
 
@@ -699,10 +702,10 @@ public class GetPostTest2 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			//获取头信息
 			for (Entry<String, List<String>> entry : responseHead.entrySet()) {
@@ -766,10 +769,10 @@ public class GetPostTest2 {
                 result +="\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
             //获取loginPost
 			for (Entry<String, List<String>> entry : responseHead.entrySet()) {

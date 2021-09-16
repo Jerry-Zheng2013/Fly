@@ -1,11 +1,13 @@
 package com.ticketsystem.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-
-import com.ticketsystem.workflow.WorkFlowAction;
 
 @Service
 public class TimerAction {
+	
+	Logger log = LogManager.getLogger(TimerAction.class);
 
 	/**
 	 * 倒计时
@@ -17,14 +19,14 @@ public class TimerAction {
 		boolean result = true;
 		long leftCountdownMillis = countdownMillis;
 		long startTimeMillis = System.currentTimeMillis();
-		System.out.println("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时开始");
+		log.info("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时开始");
 		while (leftCountdownMillis > 0) {
 			//倒计时
 			leftCountdownMillis=leftCountdownMillis-(System.currentTimeMillis()-startTimeMillis);
-			System.out.println("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时还剩【"+leftCountdownMillis+"】毫秒");
+			log.info("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时还剩【"+leftCountdownMillis+"】毫秒");
 		}
 		result = false;
-		System.out.println("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时结束");
+		log.info("["+Thread.currentThread().getName()+"]线程编号【" + threadNo + "】----------倒计时结束");
 		return result;
 	}
 

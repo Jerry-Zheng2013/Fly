@@ -76,11 +76,11 @@ public class GetSender {
 			}
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 
 			responseBody.append(result);
 		} catch (Exception e) {
@@ -137,11 +137,11 @@ public class GetSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
             
@@ -187,11 +187,11 @@ public class GetSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
             
@@ -238,11 +238,11 @@ public class GetSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
             
@@ -257,7 +257,7 @@ public class GetSender {
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
-            System.out.println("Warning: URL Host: " + urlHostName + " vs. "
+            log.info("Warning: URL Host: " + urlHostName + " vs. "
                                + session.getPeerHost());
             return true;
         }
@@ -333,11 +333,11 @@ public class GetSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
             
@@ -387,11 +387,11 @@ public class GetSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
             

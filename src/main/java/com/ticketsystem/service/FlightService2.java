@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ import com.ticketsystem.util.KnSqlManager;
 
 @Service
 public class FlightService2 {
+	
+	Logger log = LogManager.getLogger(FlightService2.class);
 
 	@Autowired
 	private AsyncService3 asyncService3;
@@ -59,10 +63,7 @@ public class FlightService2 {
      * 		}<br/>
      */
     public synchronized JSONObject booking(JSONObject addData) {
-    	Date intoDate = new Date();
-    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	System.out.println("当前时间：==="+format.format(intoDate));
-		System.out.println("["+Thread.currentThread().getName()+"]----------线程进入预定阶段");
+		log.info("线程进入预定阶段");
     	
     	JSONObject bigData = new JSONObject();
     	bigData.put("addData", addData);
@@ -149,7 +150,7 @@ public class FlightService2 {
         			String session = logInResult.getString("session");
         			//String JSESSIONID = loginResult.getString("JSESSIONID");
         			if(session==null||session.length()<5) {
-        				System.out.println("==========登陆失败==========");
+        				log.info("登陆失败！！！");
         				return null;
         			}
         			
@@ -215,7 +216,7 @@ public class FlightService2 {
             					bookDataBiz.addTotal(processTripParam.getString("amount"));
             					
             				} else {
-            					System.out.println("=====乘机人信息已不够用了！！！=====");
+            					log.info("乘机人信息已不够用了！！！");
             				}
             			}
             		}
@@ -283,7 +284,7 @@ public class FlightService2 {
         			packageData.put("standbyCount", standbyCount);
         			packageArrData.add(packageData);
     			} else {
-    				System.out.println("官网账号已不够用了！！！");
+    				log.info("官网账号已不够用了！！！");
     			}
     		}
     		
@@ -291,7 +292,7 @@ public class FlightService2 {
     		bigData.put("packageArrData", packageArrData);
     		
     	} else {
-    		System.out.println("查询航班没有余票啦！");
+    		log.info("查询航班没有余票啦！！！");
     	}
     	return bigData;
     }

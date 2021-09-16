@@ -35,7 +35,7 @@ public class Accurate2 {
             //24.5cb78c01ce4f8a231717aa7043d9e953.2592000.1629576258.282335-24585859
             accessToken = "24.6aa3b5ee126cd327bbb6e6098687964b.2592000.1630545142.282335-24601534";
             result = HttpUtil.post(url, accessToken, param);
-            //System.out.println(result);
+            //log.info(result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

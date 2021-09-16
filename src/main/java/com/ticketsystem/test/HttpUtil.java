@@ -8,10 +8,15 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * http 工具类
  */
 public class HttpUtil {
+	
+	static Logger log = LogManager.getLogger(HttpUtil.class);
 
     public static String post(String requestUrl, String accessToken, String params)
             throws Exception {
@@ -59,7 +64,7 @@ public class HttpUtil {
         Map<String, List<String>> headers = connection.getHeaderFields();
         // 遍历所有的响应头字段
         for (String key : headers.keySet()) {
-            //System.err.println(key + "--->" + headers.get(key));
+            //log.error(key + "--->" + headers.get(key));
         }
         // 定义 BufferedReader输入流来读取URL的响应
         BufferedReader in = null;
@@ -69,7 +74,7 @@ public class HttpUtil {
         while ((getLine = in.readLine()) != null) {
             result += getLine;
         }
-        System.out.println("responseBody:"+result);
+        log.info("responseBody:"+result);
         in.close();
         return result;
     }

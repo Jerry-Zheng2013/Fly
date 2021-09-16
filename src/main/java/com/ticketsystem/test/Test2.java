@@ -1,12 +1,13 @@
 package com.ticketsystem.test;
 
-import java.io.IOException;
-import java.util.HashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.util.IOUtils;
 
 public class Test2 {
+	
+	static Logger log = LogManager.getLogger(Test2.class);
 	
 	public static void main(String[] args) {
 		Test2.testLogin();
@@ -33,7 +34,7 @@ public class Test2 {
 		//百度识别
 		String fieFullName = "C:/img/"+fileName;
 		String accurate = Accurate2.accurate(fieFullName);
-		System.out.println(accurate);
+		log.info(accurate);
 		JSONObject accurateJson = new JSONObject();
 		if (accurate.length()>7) {
 			accurateJson = JSONObject.parseObject(accurate);

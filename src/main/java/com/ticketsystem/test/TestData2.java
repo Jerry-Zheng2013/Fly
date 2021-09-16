@@ -1,6 +1,11 @@
 package com.ticketsystem.test;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class TestData2 {
+	
+	static Logger log = LogManager.getLogger(TestData2.class);
 	
 	public static String getQueryPostData(String postOrigin) {
 		String queryPostData = postOrigin;
@@ -184,7 +189,7 @@ public class TestData2 {
 				"    }," + 
 				"    \"uuid\": \"" + uuid + "\"" +
 				"}";
-		System.out.println("ssss");
+		log.info("ssss");
 		return bookPostData.trim().replaceAll(" ", "");
 	}
 	public static String getBookCookieData(String session, String tokenId, String tokenUUID) {

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/netdemo")
 public class NetDomeController {
 	
+	Logger log = LogManager.getLogger(NetDomeController.class);
+	
 	@Autowired
     private static String orderNo="";
 	
@@ -40,8 +44,8 @@ public class NetDomeController {
         User user = new User();
         user.setUserName(username);
         user.setUserPassword(password);
-        System.out.println(username);
-        System.out.println(password);
+        log.info(username);
+        log.info(password);
         String urlStr = "http://api.panhe.net/flight/query?appKey=f46a96420331ea3be28eaf1036af4252&fromCityCode=PKX&toCityCode=CTU&fromDate=2021-07-23&sign=243c69ffa789b404b1041d728f7e6bf4";
         String requestType = "GET";
         String dataStr = "";
@@ -61,8 +65,8 @@ public class NetDomeController {
         User user = new User();
         user.setUserName(username);
         user.setUserPassword(password);
-        System.out.println(username);
-        System.out.println(password);
+        log.info(username);
+        log.info(password);
         String urlStr = "http://api.panhe.net/flight/createOrder";
         String requestType = "POST";
         
@@ -121,8 +125,8 @@ public class NetDomeController {
         User user = new User();
         user.setUserName(username);
         user.setUserPassword(password);
-        System.out.println(username);
-        System.out.println(password);
+        log.info(username);
+        log.info(password);
         String urlStr = "http://api.panhe.net/flight/cancelOrder?appKey=f46a96420331ea3be28eaf1036af4252&orderNo=FO2106271719267";
         String requestType = "GET";
         String dataStr = "";

@@ -7,7 +7,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class TalkServer {
+	
+	static Logger log = LogManager.getLogger(TalkServer.class);
 
 	public static void main(String[] args) {
 		ServerSocket server = null;
@@ -33,7 +38,7 @@ public class TalkServer {
 			// 由系统标准输入设备构造BufferedReader对象
 			BufferedReader sin = new BufferedReader(new InputStreamReader(System.in));
 			// 在标准输出上打印从客户端读入的字符串
-			System.out.println("Client say: " + is.readLine());
+			log.info("Client say: " + is.readLine());
 			// 从标准输入读入一字符串
 			line = sin.readLine();
 			// 如果该字符串为“bye”，则停止循环
@@ -43,9 +48,9 @@ public class TalkServer {
 				// 刷新输出流，使Client马上收到该字符串
 				os.flush();
 				// 在系统标准输出上打印读入的字符串
-				System.out.println("Server:" + line);
+				log.info("Server:" + line);
 				// 从Client读入一个字符串，并打印到标准输出上
-				System.out.println("Client:" + is.readLine());
+				log.info("Client:" + is.readLine());
 				// 从系统标准输入读入一个字符串
 				line = sin.readLine();
 			}

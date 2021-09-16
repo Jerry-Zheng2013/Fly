@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -18,38 +20,40 @@ import com.ticketsystem.workflow.WorkFlowAction;
 
 @Service
 public class AsyncService2 {
+	
+	Logger log = LogManager.getLogger(AsyncService2.class);
 
 	private static long CountdownMillis = (long) (30 * 1000);
 
 	// 指定使用beanname为doSomethingExecutor的线程池
 	@Async("doSomethingExecutor")
 	public String doSomething(String message) {
-		System.out.println("调用线程---" + message);
+		log.info("调用线程---" + message);
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			System.out.println("调用线程出错----" + message);
+			log.info("调用线程出错----" + message);
 		}
 		return message;
 	}
 
 	@Async("doSomethingExecutor")
 	public CompletableFuture<String> doSomething1(String message) throws InterruptedException {
-		System.out.println("调用线程---" + message);
+		log.info("调用线程---" + message);
 		Thread.sleep(1000);
 		return CompletableFuture.completedFuture("do something1: " + message);
 	}
 
 	@Async("doSomethingExecutor")
 	public CompletableFuture<String> doSomething2(String message) throws InterruptedException {
-		System.out.println("调用线程---" + message);
+		log.info("调用线程---" + message);
 		Thread.sleep(1000);
 		return CompletableFuture.completedFuture("; do something2: " + message);
 	}
 
 	@Async("doSomethingExecutor")
 	public CompletableFuture<String> doSomething3(String message) throws InterruptedException {
-		System.out.println("调用线程---" + message);
+		log.info("调用线程---" + message);
 		Thread.sleep(1000);
 		return CompletableFuture.completedFuture("; do something3: " + message);
 	}
@@ -60,29 +64,29 @@ public class AsyncService2 {
 		try {
 			addComp(message);
 		} catch (InterruptedException e) {
-			System.out.println("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------出错！");
+			log.info("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------出错！");
 		}
 		return CompletableFuture.completedFuture(Thread.currentThread().getName()+"----------结束");
 	}
 	private void addComp(String message) throws InterruptedException {
-		System.out.println("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------执行中");
+		log.info("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------执行中");
 		Thread.sleep(1000);
 		long createTimeMillis = System.currentTimeMillis();
 		String orderStr = String.valueOf(createTimeMillis);
 		Date date1 = new Date();  //获取系统时间
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日"); //日期格式
 		String createDate = sdf.format(date1);
-		System.out.println("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------创建订单号【"+orderStr+"】，订单创建的时间为【"+createDate+"】");
+		log.info("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------创建订单号【"+orderStr+"】，订单创建的时间为【"+createDate+"】");
 		WorkFlowAction.OrderNoMap.put(message, orderStr);
 		long currentCountdownMillis = CountdownMillis;
 		while ("true".equals(WorkFlowAction.ThreadNoMap.get(message))) {
 			if (currentCountdownMillis > 0) {
-				System.out.println("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------执行中");
+				log.info("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------执行中");
 				Thread.sleep(1000);
 				//倒计时
 				currentCountdownMillis=currentCountdownMillis-(System.currentTimeMillis()-createTimeMillis);
 			} else {
-				System.out.println("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------自动取消订单【"+WorkFlowAction.OrderNoMap.get(message)+"】");
+				log.info("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------自动取消订单【"+WorkFlowAction.OrderNoMap.get(message)+"】");
 				Thread.sleep(1000);
 
 				//重新下单
@@ -90,7 +94,7 @@ public class AsyncService2 {
 				addComp(message);
 			}
 		}
-		System.out.println("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------结束");
+		log.info("["+Thread.currentThread().getName()+"]订单线程，编号【" + message + "】----------结束");
 	}
 
 
@@ -100,8 +104,8 @@ public class AsyncService2 {
 	 */
 	@Async("doSomethingExecutor")
 	public void bookLoop(JSONObject loopData) {
-		System.out.println("["+Thread.currentThread().getName()+"]----------线程创建");
-		System.out.println("["+Thread.currentThread().getName()+"]----------开始循环逻辑");
+		log.info("线程创建");
+		log.info("开始循环逻辑");
 
 		SqlManager sqlManager = new SqlManager();
 		DemoService demoService = new DemoService();
@@ -120,7 +124,7 @@ public class AsyncService2 {
 			JSONObject orderData = sqlManager.getOrderInfo(oiId);
 			if(!"1".equals(orderData.getString("orderStatus"))) {
 				//如果订单状态不是 1 ，则直接跳出所有循环，结束循环订票逻辑，也就结束了此线程
-				System.out.println("["+Thread.currentThread().getName()+"]----------线程提前结束");
+				log.info("线程提前结束");
 				return;
 			}
 			currentTimeMillis = System.currentTimeMillis();
@@ -161,7 +165,7 @@ public class AsyncService2 {
 			asyncService.bookLoop(loopData2);
 		}
 		
-		System.out.println("["+Thread.currentThread().getName()+"]----------线程正常结束");
+		log.info("线程正常结束");
 	}
 	
 	

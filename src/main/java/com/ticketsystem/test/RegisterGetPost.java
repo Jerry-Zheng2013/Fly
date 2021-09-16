@@ -5,19 +5,17 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
  
@@ -26,9 +24,11 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class RegisterGetPost {
 	
+	static Logger log = LogManager.getLogger(RegisterGetPost.class);
+	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
-            System.out.println("Warning: URL Host: " + urlHostName + " vs. "
+            log.info("Warning: URL Host: " + urlHostName + " vs. "
                                + session.getPeerHost());
             return true;
         }
@@ -92,12 +92,12 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("responseBody:"+result);
+            log.info("responseBody:"+result);
             resultJson.put("result", result);
 
 			//获取头信息
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
+			log.info("headers:"+headerFields.toString());
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,12 +123,12 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("responseBody:"+result);
+            log.info("responseBody:"+result);
             resultJson.put("result", result);
 
 			//获取头信息
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
+			log.info("headers:"+headerFields.toString());
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,12 +154,12 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("responseBody:"+result);
+            log.info("responseBody:"+result);
             resultJson.put("flightData", result);
 
 			//获取头信息
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
+			log.info("headers:"+headerFields.toString());
             resultJson.put("headers", headerFields.toString());
             
         } catch (IOException e) {
@@ -196,7 +196,7 @@ public class RegisterGetPost {
 				fos.write(buf, 0, size);
 			}
 			fos.flush();
-			System.out.println("fileName=="+fileName);
+			log.info("fileName=="+fileName);
 			resultJson.put("fileName", fileName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -230,12 +230,12 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("responseBody:"+result);
+            log.info("responseBody:"+result);
 			resultJson.put("result", result);
 
 			//获取头信息
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
+			log.info("headers:"+headerFields.toString());
 			resultJson.put("headers", headerFields.toString());
 			
         } catch (IOException e) {
@@ -245,9 +245,9 @@ public class RegisterGetPost {
 	}
 
 	public static JSONObject userRegAndAct(String userRegAndActUrl, String addParam, String addCookie) {
-		System.out.println("==========userRegAndActUrl=========="+userRegAndActUrl);
-		System.out.println("==========addParam=========="+addParam);
-		System.out.println("==========addCookie=========="+addCookie);
+		log.info("userRegAndActUrl---"+userRegAndActUrl);
+		log.info("addParam---"+addParam);
+		log.info("addCookie---"+addCookie);
 		JSONObject resultJson = new JSONObject();
         String result = "";
         String urlName = userRegAndActUrl + "?" + addParam;
@@ -266,12 +266,12 @@ public class RegisterGetPost {
             while ((line = in.readLine()) != null) {
                 result += "\n" + line;
             }
-            System.out.println("responseBody:"+result);
+            log.info("responseBody:"+result);
 			resultJson.put("result", result);
 
 			//获取头信息
 			Map<String, List<String>> headerFields = conn.getHeaderFields();
-			System.out.println("headers:"+headerFields.toString());
+			log.info("headers:"+headerFields.toString());
 			resultJson.put("headers", headerFields.toString());
 			
         } catch (IOException e) {

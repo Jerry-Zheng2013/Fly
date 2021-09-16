@@ -5,19 +5,17 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
  
@@ -25,6 +23,8 @@ import com.alibaba.fastjson.JSONObject;
  * Hello world!
  */
 public class GetPostTest3 {
+	
+	static Logger log = LogManager.getLogger(GetPostTest3.class);
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
@@ -91,10 +91,10 @@ public class GetPostTest3 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("result", result);
             
@@ -123,10 +123,10 @@ public class GetPostTest3 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
             resultJson.put("flightData", result);
             
@@ -164,7 +164,7 @@ public class GetPostTest3 {
 				fos.write(buf, 0, size);
 			}
 			fos.flush();
-			System.out.println("fileName=="+fileName);
+			log.info("fileName=="+fileName);
 			resultJson.put("fileName", fileName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -199,10 +199,10 @@ public class GetPostTest3 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("headers", responseHead.toString());
 			resultJson.put("result", result);
@@ -233,10 +233,10 @@ public class GetPostTest3 {
                 result += "\n" + line;
             }
 			//获取响应体
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			//获取头信息
 			Map<String, List<String>> responseHead = conn.getHeaderFields();
-			System.out.println("responseHead:"+responseHead.toString());
+			log.info("responseHead:"+responseHead.toString());
 			
 			resultJson.put("headers", responseHead.toString());
 			resultJson.put("result", result);

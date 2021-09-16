@@ -6,7 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class TalkClient {
+	
+	static Logger log = LogManager.getLogger(TalkClient.class);
 
 	public static void main(String[] args) {
 		try {
@@ -27,9 +32,9 @@ public class TalkClient {
 				// 刷新输出流，使Server发上收到该字符串
 				os.flush();
 				// 在系统标准输出上打印读入的字符串
-				System.out.println("Client say:" + readline);
+				log.info("Client say:" + readline);
 				// 从Server读入一字符串，并打印到标准输出上
-				System.out.println("Server say:" + is.readLine());
+				log.info("Server say:" + is.readLine());
 				// 从系统标准输入读入一字符串
 				readline = sin.readLine();
 			}

@@ -16,15 +16,13 @@ public class BookComp {
 		JSONObject bookResult = new JSONObject();
 		String bookUrl = DemoData.bookUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
 
-		log.info("---机票预定URL="+bookUrl+"---PARAM="+bookDataStr+"---COOKIE="+bookCookie);
-		System.err.println("---机票预定URL="+bookUrl+"---PARAM="+bookDataStr+"---COOKIE="+bookCookie);
+		log.error("机票预定---URL["+bookUrl+"]---PARAM["+bookDataStr+"]---COOKIE["+bookCookie+"]");
 		PostSender.bookPost(bookUrl, bookDataStr, bookCookie);
 		
 		//预定后，获取订单详情
 		String paymentDetailUrl = DemoData.paymentDetailUrl;
 		String param ="_="+String.valueOf(Math.random()).substring(2, 15);
-		log.info("---预定后，获取订单详情URL="+paymentDetailUrl+"---PARAM="+param+"---COOKIE="+bookCookie);
-		System.err.println("---预定后，获取订单详情URL="+paymentDetailUrl+"---PARAM="+param+"---COOKIE="+bookCookie);
+		log.error("预定后，获取订单详情---URL["+paymentDetailUrl+"-]--PARAM["+param+"]---COOKIE["+bookCookie+"]");
 		JSONObject paymentResult = new GetSender().sendHttpGet(paymentDetailUrl, param, bookCookie);
 		String paymentResultBody = paymentResult.getString("responseBody");
 		if (paymentResultBody.length() > 0) {

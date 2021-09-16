@@ -1,5 +1,7 @@
 package com.ticketsystem.async;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,16 @@ import com.ticketsystem.util.SqlManager;
 @Service
 public class AsyncService {
 	
+	Logger log = LogManager.getLogger(AsyncService.class);
+	
 	/**
 	 * 开启新线程<br>
 	 * @param bookResultData
 	 */
 	@Async("doSomethingExecutor")
 	public void bookLoop(JSONObject loopData) {
-		System.out.println("["+Thread.currentThread().getName()+"]----------线程创建");
-		System.out.println("["+Thread.currentThread().getName()+"]----------开始循环逻辑");
+		log.info("线程创建");
+		log.info("开始循环逻辑");
 
 		SqlManager sqlManager = new SqlManager();
 		DemoService demoService = new DemoService();
@@ -40,7 +44,7 @@ public class AsyncService {
 			JSONObject orderData = sqlManager.getOrderInfo(oiId);
 			if(!"1".equals(orderData.getString("orderStatus"))) {
 				//如果订单状态不是 1 ，则直接跳出所有循环，结束循环订票逻辑，也就结束了此线程
-				System.out.println("["+Thread.currentThread().getName()+"]----------线程提前结束");
+				log.info("线程提前结束");
 				return;
 			}
 			currentTimeMillis = System.currentTimeMillis();
@@ -80,8 +84,7 @@ public class AsyncService {
 			//启动线程
 			asyncService2.bookLoop(loopData2);
 		}
-		
-		System.out.println("["+Thread.currentThread().getName()+"]----------线程正常结束");
+		log.info("线程正常结束");
 	}
 
 }

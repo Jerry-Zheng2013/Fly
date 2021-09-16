@@ -59,11 +59,9 @@ public class PostSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
 			
@@ -109,11 +107,9 @@ public class PostSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
 			
@@ -155,11 +151,9 @@ public class PostSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
 			
@@ -203,7 +197,6 @@ public class PostSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			
         } catch (IOException e) {
             e.printStackTrace();
@@ -268,7 +261,6 @@ public class PostSender {
 			}
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			
         } catch (IOException e) {
             e.printStackTrace();
@@ -326,11 +318,9 @@ public class PostSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
 			
@@ -383,11 +373,9 @@ public class PostSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
 			
@@ -431,11 +419,9 @@ public class PostSender {
             }
 			//获取响应体
     		log.info("responseBody:"+result);
-			System.out.println("responseBody:"+result);
 			//获取头信息
 			responseHead = conn.getHeaderFields();
     		log.info("responseHead:"+responseHead.toString());
-			System.out.println("responseHead:"+responseHead.toString());
 			
 			responseBody.append(result);
 			
@@ -455,7 +441,7 @@ public class PostSender {
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
-            System.out.println("Warning: URL Host: " + urlHostName + " vs. "
+            log.info("Warning: URL Host: " + urlHostName + " vs. "
                                + session.getPeerHost());
             return true;
         }

@@ -1,15 +1,17 @@
 package com.ticketsystem.test;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.util.IOUtils;
 import com.ticketsystem.util.SqlManager;
 
 public class Test3 {
+	
+	static Logger log = LogManager.getLogger(Test3.class);
 	
 	private static String sendStatus = "";
 	
@@ -27,7 +29,7 @@ public class Test3 {
 		JSONObject queryPost2 = GetPostTest3.getTokenGet(getMobileUrl, mobileParam);
 		String mobileResult = queryPost2.getString("result");
 		if(mobileResult ==null||mobileResult.length()<10) {
-			System.out.println("获取手机号失败！");
+			log.info("获取手机号失败！");
 			return;
 		}
 		JSONObject mobileJson = JSONObject.parseObject(mobileResult);
@@ -41,7 +43,7 @@ public class Test3 {
 		char ssName = (char) (0x4e00 + (int) (Math.random() * (0x9fa5 - 0x4e00 + 1)));
 		char ssName2 = (char) (0x4e00 + (int) (Math.random() * (0x9fa5 - 0x4e00 + 1)));
 		char ssName3 = (char) (0x4e00 + (int) (Math.random() * (0x9fa5 - 0x4e00 + 1)));
-		System.out.println(String.valueOf(ssName)+String.valueOf(ssName2)+String.valueOf(ssName3));
+		log.info(String.valueOf(ssName)+String.valueOf(ssName2)+String.valueOf(ssName3));
 		String firstName = "张";
 		String lastName = "三";
 		try {
@@ -64,7 +66,7 @@ public class Test3 {
 			sessionStr = headers.substring(firstIndex+20, secondIndex);
 		}
 		if (sessionStr.length()<40) {
-			System.out.println("获取官网session失败！");
+			log.info("获取官网session失败！");
 			return;
 		}
 		
@@ -75,22 +77,22 @@ public class Test3 {
 		String valiateCookie = "session="+sessionStr;
 		JSONObject queryPost4 = GetPostTest3.getImageGet(valiateUrl, valiateParam, valiateCookie);
 		String fileName = queryPost4.getString("fileName");
-		System.out.println(fileName);
+		log.info(fileName);
 		
 		//百度识别
 		String fieFullName = "C:/img/"+fileName;
 		String accurate = Accurate2.accurate(fieFullName);
-		System.out.println(accurate);
+		log.info(accurate);
 		JSONObject accurateJson = new JSONObject();
 		String validateCode = "";
 		if (accurate.length()<7) {
-			System.out.println("百度识别随机码失败！");
+			log.info("百度识别随机码失败！");
 			return;
 		}
 		accurateJson = JSONObject.parseObject(accurate);
 		String ss = accurateJson.getJSONArray("words_result").getJSONObject(0).getString("words");
 		validateCode = ss.trim().replaceAll(" ", "");
-		System.out.println("validateCode===="+validateCode);
+		log.info("validateCode===="+validateCode);
 		
 		//获取手机验证码
 		//http://www.flycua.com/app/shortMessage/sendMsg?_=1627131529922&phoneNumber=16742051417&verifi=f3posw
@@ -104,20 +106,20 @@ public class Test3 {
 		JSONObject sendJson = JSONObject.parseObject(sendMsgResult);
 		sendStatus = sendJson.getString("resultStatus");
 		if (sendStatus == null || sendStatus.length()<1) {
-			System.out.println("发送手机验证码失败！");
+			log.info("发送手机验证码失败！");
 			return;
 		}
 		if("failed".equalsIgnoreCase(sendStatus)) {
 			sendValiate(sessionStr, phoneNo);
 		}
 		if(!"success".equals(sendStatus)) {
-			System.out.println("十次识别随机码都失败，程序结束");
+			log.info("十次识别随机码都失败，程序结束");
 			return;
 		}
 		
 		//等待手机接收验证码
 		try {
-			System.out.println("等待20秒，等待手机接收到验证码！");
+			log.info("等待20秒，等待手机接收到验证码！");
 			Thread.sleep(20000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -131,12 +133,12 @@ public class Test3 {
 		String massgeStatus = messageJson.getString("message");
 		String massgeCode = "";
 		if (massgeStatus == null || massgeStatus.length()<2||!"ok".equalsIgnoreCase(massgeStatus)) {
-			System.out.println("获取手机验证码失败！");
+			log.info("获取手机验证码失败！");
 			return;
 		}
 		massgeCode = messageJson.getString("code");
 		if(massgeCode == null || massgeCode.length()<3) {return;}
-		System.out.println("获取手机验证码成功："+massgeCode);
+		log.info("获取手机验证码成功："+massgeCode);
 
 		
 		//http://www.flycua.com/app/loginRegister/userRegAndAct?_=1627132645375&channel=B2C&email=&loginName=&mobile=18321342934&lastName=%E5%BC%A0&firstName=%E4%B8%89&password=ASDF1234&verifCode=435028
@@ -159,7 +161,7 @@ public class Test3 {
 		JSONObject addJson = JSONObject.parseObject(addResult);
 		String addStatus = addJson.getString("resultStatus");
 		if(!"success".equalsIgnoreCase(addStatus)) {
-			System.out.println("账号注册失败！");
+			log.info("账号注册失败！");
 			return;
 		}
 		
@@ -188,22 +190,22 @@ public class Test3 {
 		String valiateCookie = "session="+sessionStr;
 		JSONObject queryPost4 = GetPostTest3.getImageGet(valiateUrl, valiateParam, valiateCookie);
 		String fileName = queryPost4.getString("fileName");
-		System.out.println(fileName);
+		log.info(fileName);
 		
 		//百度识别
 		String fieFullName = "C:/img/"+fileName;
 		String accurate = Accurate2.accurate(fieFullName);
-		System.out.println(accurate);
+		log.info(accurate);
 		JSONObject accurateJson = new JSONObject();
 		String validateCode = "";
 		if (accurate.length()<7) {
-			System.out.println("百度识别随机码失败！");
+			log.info("百度识别随机码失败！");
 			return;
 		}
 		accurateJson = JSONObject.parseObject(accurate);
 		String ss = accurateJson.getJSONArray("words_result").getJSONObject(0).getString("words");
 		validateCode = ss.trim().replaceAll(" ", "");
-		System.out.println("validateCode===="+validateCode);
+		log.info("validateCode===="+validateCode);
 		
 		//获取手机验证码
 		//http://www.flycua.com/app/shortMessage/sendMsg?_=1627131529922&phoneNumber=16742051417&verifi=f3posw
@@ -217,12 +219,12 @@ public class Test3 {
 		JSONObject sendJson = JSONObject.parseObject(sendMsgResult);
 		sendStatus = sendJson.getString("resultStatus");
 		if (sendStatus == null || sendStatus.length()<1) {
-			System.out.println("发送手机验证码失败！");
+			log.info("发送手机验证码失败！");
 			return;
 		}
 		if("failed".equalsIgnoreCase(sendStatus)) {
 			if (getValiateCount>10) {
-				System.out.println("获取随机码已经获取超过10次！");
+				log.info("获取随机码已经获取超过10次！");
 				return;
 			}
 			//准备再来一次

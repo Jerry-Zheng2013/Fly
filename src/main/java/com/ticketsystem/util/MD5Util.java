@@ -7,7 +7,7 @@ import org.springframework.util.DigestUtils;
 public class MD5Util {
 	/*
 	public static void main(String[] args) {
-		System.out.println(MD5Util.getMD5("4c4d668e890976a42ff5c3e9e76076a7CTUPKX2021-07-244c4d668e890976a42ff5c3e9e76076a7"));
+		log.info(MD5Util.getMD5("4c4d668e890976a42ff5c3e9e76076a7CTUPKX2021-07-244c4d668e890976a42ff5c3e9e76076a7"));
 	}
 	*/
 	/**

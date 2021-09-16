@@ -35,9 +35,7 @@ public class AsyncService3 {
 	
 	public void deepLoop(JSONObject loopData) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date intoDate = new Date();
-		log.info("==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===开始循环，监听开始");
-		System.err.println("==="+format.format(intoDate)+"===["+Thread.currentThread().getName()+"]===开始循环，监听开始");
+		log.info("开始循环，监听开始");
 
 		KnSqlManager sqlManager = new KnSqlManager();
 		FlightService3 FlightService3 = new FlightService3();
@@ -76,15 +74,12 @@ public class AsyncService3 {
 			if(!"正常".equals(orderData.getString("orderStatus"))) {
 				//TODO 深层次循环唯一出口
 				//如果订单状态不是 1 ，则直接跳出所有循环，结束循环订票逻辑，也就结束了此线程
-				Date intoDate2 = new Date();
-				log.info("==="+format.format(intoDate2)+"===["+Thread.currentThread().getName()+"]===监听时段【提前】结束");
-				System.err.println("==="+format.format(intoDate2)+"===["+Thread.currentThread().getName()+"]===监听时段【提前】结束");
+				log.info("监听时段【提前】结束");
 				return;
 			}
 			//经历的实际时间+两分钟 > 规定等待时间，去提前登录下一个账号
 			if(currentTimeMillis-startTimeMillis+1000*60*2>DemoData.COUNTDOWNMILLIS && accessFlag && !"second".equals(remark0)) {
-				log.info("===本轮循环剩余2分钟，开始登录=====");
-				System.out.println("===本轮循环剩余2分钟，开始登录=====");
+				log.info("本轮循环剩余2分钟，开始登录");
 				//获取官网账户信息
 	    		JSONObject filterData = new JSONObject();
 	    		Date currentDate = new Date();
@@ -104,11 +99,9 @@ public class AsyncService3 {
 	    			String session = logInResult.getString("session");
 	    			//String JSESSIONID = loginResult.getString("JSESSIONID");
 	    			if(session==null||session.length()<5) {
-	    				log.info("==========登陆失败==========");
-	    				System.out.println("==========登陆失败==========");
+	    				log.error("登陆失败！！！");
 	    			} else {
-	    				log.info("===登录成功=====");
-	    				System.out.println("===登录成功=====");
+	    				log.info("登录成功");
 	    				//登录成功之后，更新当前账户的session以及useTime=2000-01-01
 	        			JSONObject updateSessionData = new JSONObject();
 	        			updateSessionData.put("accountNo", accountNo);
@@ -126,8 +119,7 @@ public class AsyncService3 {
 		try {
 			Date bookTimeDate = DemoData.PreBookTimeMap.get(tripStr+fightNo+cabinCode);
 			if (bookTimeDate!=null) {
-				log.info("===循环存在上次预定时间=====");
-				System.out.println("===循环存在上次预定时间=====");
+				log.info("循环存在上次预定时间");
 				while(true) {
 					Date currTime = new Date();
 					if (currTime.before(new Date(bookTimeDate.getTime()+1000*15))) {
@@ -136,16 +128,12 @@ public class AsyncService3 {
 						break;
 					}
 				}
-				log.info("===增加间隔结束=====");
-				System.out.println("===增加间隔结束=====");
+				log.info("增加间隔结束");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		Date intoDate3 = new Date();
-		log.info("==="+format.format(intoDate3)+"===["+Thread.currentThread().getName()+"]===监听时段结束");
-		System.err.println("==="+format.format(intoDate3)+"===["+Thread.currentThread().getName()+"]===监听时段结束");
+		log.info("监听时段结束");
 		
 		//每轮循环结束后，后续调用取消订单，重新下单
 		if(!"second".equals(remark0)) {
@@ -157,16 +145,14 @@ public class AsyncService3 {
 			cancelJson.put("accountNo", preOrderData.getString("accountNo"));
 			String cancelResult = FlightService3.cancelTicket2(cancelJson);
 			if("success".equalsIgnoreCase(cancelResult)) {
-				Date cancelDate = new Date();
-				log.info("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");
-				System.err.println("当前时间:==="+format.format(cancelDate)+"===循环放票成功===");							
+				log.info("循环放票成功");
 			}else {
 				//取消失败后，已更新原订单开始时间，重新进入后续订单监听时段，不过不会再进入提前登录和取消订单步骤
 				deepLoop(loopData);
 			}
 		} else {
 			sqlManager.updateOrderStatus2(oiId, "正常结束", "");
-			log.info("当前时间:==="+format.format(new Date())+"===跳过取消阶段=====");
+			log.info("跳过取消阶段");
 		}
 		
 		//解锁客户
@@ -196,18 +182,15 @@ public class AsyncService3 {
 				bigData2 = FlightService3.booking2(addData2);
 				if(bigData2==null || !"true".equals(bigData2.getString("bookSucess"))) {
 					currentTimeMillis2 = System.currentTimeMillis();
-					log.info("当前时间:==="+format.format(new Date())+"===再次尝试循环压票失败===");
-					System.out.println("当前时间:==="+format.format(new Date())+"===再次尝试循环压票失败===");
+					log.error("再次尝试循环压票失败！！！");
 				} else {
-					log.info("当前时间:==="+format.format(new Date())+"===再次尝试循环压票成功===");
-					System.out.println("当前时间:==="+format.format(new Date())+"===再次尝试循环压票成功===");
+					log.info("再次尝试循环压票成功");
 					break;
 				}
 			}
     	}
 		if(bigData2==null || !"true".equals(bigData2.getString("bookSucess"))) {
-			log.info("当前时间:==="+format.format(new Date())+"===最终循环压票失败，将发出警报===");
-			System.out.println("当前时间:==="+format.format(new Date())+"===最终循环压票失败，将发出警报===");
+			log.error("最终循环压票失败，将发出警报！！！");
 			//压票失败，发出警报，更新订单状态为压票失败
 			sqlManager.insertLost(preOrderData.getString("accountNo"), "failed");
 			sqlManager.updateOrderStatus2(preOrderData.getString("oiId"), "压票失败", "");
@@ -227,8 +210,8 @@ public class AsyncService3 {
 			//一直循环自身
 			deepLoop(loopData2);
 		}
-		log.info("当前时间:==="+format.format(new Date())+"===循环放票成功===");
-		System.out.println("==="+format.format(new Date())+"===["+Thread.currentThread().getName()+"]===线程正常结束");
+		log.info("循环放票成功");
+		log.info("线程正常结束");
 	}
 
 }

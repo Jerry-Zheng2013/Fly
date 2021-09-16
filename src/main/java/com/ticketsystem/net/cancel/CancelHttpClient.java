@@ -1,11 +1,19 @@
 package com.ticketsystem.net.cancel;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class CancelHttpClient {
+	
+	static Logger log = LogManager.getLogger(CancelHttpClient.class);
 
 	/**
 	 * 以post或get方式调用对方接口方法，
@@ -48,7 +56,7 @@ public class CancelHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。

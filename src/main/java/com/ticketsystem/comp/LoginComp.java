@@ -44,6 +44,7 @@ public class LoginComp {
 			//TODO 调用接口----------登录接口
 			PostSender postSender = new PostSender();
 			String loginUrl = DemoData.loginUrl;
+			log.info("登录接口---url["+loginUrl+"]---param["+encryptStr+"]");
 			JSONObject logInPost = postSender.loginPost(loginUrl, encryptStr);
 			if (logInPost.get("responseHead") != null) {
 				Map<String, List<String>> headMap = (Map<String, List<String>>)logInPost.get("responseHead");
@@ -79,16 +80,19 @@ public class LoginComp {
 			String pointsDataStr = "number="+fightNo.substring(2, fightNo.length())+"&cabin="+cabinCode+"&org="+fromCity+"&dst="+toCity+"&basecabinfareamount="+flightPackager2.baseFare
 					+ "&flightdate="+fromDate+"T23%3A15%3A00.000%2B0000"
 					+ "&segment="+fromCity+"%7C"+toCity+"%2C1%2CCNY%2C1630";
+			log.info("确认航班---url["+pointsUrl+"]---param["+pointsDataStr+"]---["+bookCookie+"]");
 			postSender.pointsPost(pointsUrl, pointsDataStr, bookCookie);
 			
 			//选择航班
 			String chooseUrl = DemoData.chooseUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
 			String chooseDataStr = "farefamilycode="+flightPackager2.farefamily+"&seqNum="+flightPackager2.priceInfoSeq+"&type=1&airline="+flightPackager2.airline+"&validate="+flightPackager2.priceInfoSeq+"#"+flightPackager2.priceInfoSeq2+"#"+flightPackager2.airline+"#1#"+flightPackager2.farefamily+"#"+flightPackager2.cabinClass+"#"+flightPackager2.flightNumber+"#ONE_WAY#"+flightPackager2.baseFare+"&memberType=COMMON&pricetype=COMMON";
+			log.info("选择航班---url["+chooseUrl+"]---param["+chooseDataStr+"]---["+bookCookie+"]");
 			postSender.choosePost(chooseUrl, chooseDataStr, bookCookie);
 			
 			//加入购物车
 			String addUrl = DemoData.add2CartUrl + "?_="+String.valueOf(Math.random()).substring(2, 15);
 			String postData = "";
+			log.info("加入购物车---url["+addUrl+"]---param["+postData+"]---["+bookCookie+"]");
 			JSONObject addToCartPost = postSender.sendHttpPost(addUrl, postData, bookCookie);
 			String uuid2 = "";
 			if (addToCartPost.size()>0) {
@@ -110,6 +114,7 @@ public class LoginComp {
 			//TODO 调用接口----------登录接口
 			PostSender postSender = new PostSender();
 			String loginUrl = DemoData.loginUrl;
+			log.info("登录接口---url["+loginUrl+"]---param["+encryptStr+"]");
 			JSONObject logInPost = postSender.loginPost(loginUrl, encryptStr);
 			if (logInPost.get("responseHead") != null) {
 				Map<String, List<String>> headMap = (Map<String, List<String>>)logInPost.get("responseHead");
@@ -171,8 +176,7 @@ public class LoginComp {
 	    	String queryUrl4 = DemoData.queryUrl3;
 	    	String param4 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
 	    	String queryCookie4 = "session="+session;
-			log.info("=====登录完之后再查询一次=====url["+queryUrl4+"]=====param["+param4+"]=====cookie["+queryCookie4+"]");
-			System.out.println("=====登录完之后再查询一次=====url["+queryUrl4+"]=====param["+param4+"]=====cookie["+queryCookie4+"]");
+			log.info("登录完之后再查询一次---url["+queryUrl4+"]---param["+param4+"]---cookie["+queryCookie4+"]");
 	    	new GetSender().queryGet3(queryUrl4, param4, queryCookie4);
 			
 			
@@ -184,8 +188,7 @@ public class LoginComp {
 					+ "&flightdate="+fromDate+"T23%3A15%3A00.000%2B0000"
 					+ "&segment="+fromCity+"%7C"+toCity+"%2C1%2CCNY%2C1630";
 
-			log.info("=====确认航班=====url["+pointsUrl+"]=====param["+pointsDataStr+"]=====cookie["+bookCookie+"]");
-			System.out.println("=====确认航班=====url["+pointsUrl+"]=====param["+pointsDataStr+"]=====cookie["+bookCookie+"]");
+			log.info("确认航班---url["+pointsUrl+"]---param["+pointsDataStr+"]---cookie["+bookCookie+"]");
 			postSender.pointsPost(pointsUrl, pointsDataStr, bookCookie);
 			
 			//选择航班
@@ -197,15 +200,13 @@ public class LoginComp {
 				+"&validate="+tripParam.getString("priceInfoSeq")+"%23"+tripParam.getString("priceInfoSeq2")+"%23"+tripParam.getString("airline")+"%231%23"+tripParam.getString("fareFamily")+"%23"+cabinCode+"%23"+tripParam.getString("flightNumber")+"%23ONE_WAY%23"+tripParam.getString("baseFare")
 				+"&memberType=COMMON&pricetype=COMMON&suppliercode=";
 			String chooseCookie = "session="+session;
-			log.info("=====选择航班=====url["+chooseUrl+"]=====param["+chooseDataStr+"]=====cookie["+chooseCookie+"]");
-			System.out.println("=====选择航班=====url["+chooseUrl+"]=====param["+chooseDataStr+"]=====cookie["+chooseCookie+"]");
+			log.info("选择航班---url["+chooseUrl+"]---param["+chooseDataStr+"]---cookie["+chooseCookie+"]");
 			postSender.choosePost(chooseUrl, chooseDataStr, chooseCookie);
 			
 			//加入购物车
 			String addUrl = DemoData.add2CartUrl + "?_="+String.valueOf(Math.random()).substring(2, 15);
 			String postData = "";
-			log.info("=====加入购物车=====url["+addUrl+"]=====param["+postData+"]=====cookie["+bookCookie+"]");
-			System.out.println("=====加入购物车=====url["+addUrl+"]=====param["+postData+"]=====cookie["+bookCookie+"]");
+			log.info("加入购物车---url["+addUrl+"]---param["+postData+"]---cookie["+bookCookie+"]");
 			JSONObject addToCartPost = postSender.sendHttpPost(addUrl, postData, bookCookie);
 			String uuid2 = "";
 			if (addToCartPost.size()>0) {
@@ -230,15 +231,13 @@ public class LoginComp {
 			//1、主页
 			//http://www.flycua.com
 			String indexUrl = "http://www.flycua.com";
-			log.info("=====1、重新进入主页=====url["+indexUrl+"]");
-			System.out.println("=====1、重新进入主页=====url["+indexUrl+"]");
+			log.info("1、重新进入主页---url["+indexUrl+"]");
 			GetPostTest5.indexGet(indexUrl);
 			
 			//2、检查
 			String checkUrl1 = "http://www.flycua.com/app/login/queryUserStatus";
 			String checkparam1 = "_="+String.valueOf(Math.random()).substring(2, 15);
-			log.info("=====2、检查登录状态=====url["+checkUrl1+"]=====param["+checkparam1+"]");
-			System.out.println("=====2、检查登录状态=====url["+checkUrl1+"]=====param["+checkparam1+"]");
+			log.info("2、检查登录状态---url["+checkUrl1+"]---param["+checkparam1+"]");
 			JSONObject checkRes1 = GetPostTest5.checkGet1(checkUrl1, checkparam1);
 			//获取session
 			String checkSession1 = "";
@@ -258,8 +257,7 @@ public class LoginComp {
 					+ "_gid=GA1.2.2119893899.1627116780; "
 					+ "session="+checkSession1+"";
 
-			log.info("=====3、跳转至登录页=====url["+loginUrl1+"]=====param["+loginParam1+"]=====cookie["+loginCookie1+"]");
-			System.out.println("=====3、跳转至登录页=====url["+loginUrl1+"]=====param["+loginParam1+"]=====cookie["+loginCookie1+"]");
+			log.info("3、跳转至登录页---url["+loginUrl1+"]---param["+loginParam1+"]---cookie["+loginCookie1+"]");
 			GetPostTest5.loginGet1(loginUrl1, loginParam1, loginCookie1);
 			
 			
@@ -273,8 +271,7 @@ public class LoginComp {
 					+ "_gat=1; "
 					+ "session="+checkSession1+"";
 
-			log.info("=====4、获取UUID=====url["+getUuidUrl+"]=====param["+getUuidParam+"]=====cookie["+getUuidCookie+"]");
-			System.out.println("=====4、获取UUID=====url["+getUuidUrl+"]=====param["+getUuidParam+"]=====cookie["+getUuidCookie+"]");
+			log.info("4、获取UUID---url["+getUuidUrl+"]---param["+getUuidParam+"]---cookie["+getUuidCookie+"]");
 			JSONObject getUuidRes = GetPostTest5.getUuidGet1(getUuidUrl, getUuidParam, getUuidCookie);
 			String getUuidBody = getUuidRes.getString("result");
 			//String loginUUID = "";
@@ -287,13 +284,11 @@ public class LoginComp {
 			//5、刷新随机码
 			try {
 				int waitTime = 1;
-				log.info("=====5、等待"+waitTime+"秒，等待刷新随机码！");
-				System.out.println("=====5、等待"+waitTime+"秒，等待刷新随机码！");
+				log.info("5、等待"+waitTime+"秒，等待刷新随机码！");
 				int sleepTime = 0;
 				while(true) {
 					if(sleepTime==waitTime) {break;}
 					log.info(sleepTime+"s");
-					System.out.println(sleepTime+"s");
 					Thread.sleep(1000);
 					sleepTime++;
 				}
@@ -310,8 +305,7 @@ public class LoginComp {
 					+ "session="+checkSession1+"; "
 					+ "X-LB=2.729.6fd82452.50; _gat=1";
 
-			log.info("=====6、登录准备-获取随机码=====url["+validateUrl1+"]=====param["+validateParam1+"]=====cookie["+validateCookie1+"]");
-			System.out.println("=====6、登录准备-获取随机码=====url["+validateUrl1+"]=====param["+validateParam1+"]=====cookie["+validateCookie1+"]");
+			log.info("6、登录准备-获取随机码---url["+validateUrl1+"]---param["+validateParam1+"]---cookie["+validateCookie1+"]");
 			JSONObject validateRes1 = GetPostTest5.validateGet1(validateUrl1, validateParam1, validateCookie1);
 			String fileName = validateRes1.getString("fileName");
 			
@@ -321,21 +315,18 @@ public class LoginComp {
 			JSONObject accurateJson = new JSONObject();
 			String validateCode = "";
 			if (accurate==null || accurate.length()<7) {
-				log.info("百度识别随机码失败！");
-				System.out.println("百度识别随机码失败！");
+				log.error("百度识别随机码失败！");
 				return loginJson;
 			}
 			accurateJson = JSONObject.parseObject(accurate);
 			JSONArray accArr = accurateJson.getJSONArray("words_result");
 			if(accArr==null || accArr.size()<1) {
-				log.info("百度识别随机码失败！");
-				System.out.println("百度识别随机码失败！");
+				log.error("百度识别随机码失败！");
 				return loginJson;
 			}
 			String ss = accArr.getJSONObject(0).getString("words");
 			validateCode = ss.trim().replaceAll(" ", "");
-			log.info("=====7、百度识别结果为:"+fileName+"--"+validateCode+"==========");
-			System.out.println("=====7、百度识别结果为:"+fileName+"--"+validateCode+"==========");
+			log.info("7、百度识别结果为:"+fileName+"--"+validateCode+"");
 			
 			//8、登录-触发登录
 			String userLoginUrl1 = "http://www.flycua.com/app/login/userLogin?_="+String.valueOf(Math.random()).substring(2, 15);
@@ -350,17 +341,14 @@ public class LoginComp {
 					+ "_gat=1; "
 					+ "session="+checkSession1+"";
 
-			log.info("=====8、登录-触发登录=====url["+userLoginUrl1+"]=====param["+userLoginParam+"]=====cookie["+userLoginCookie+"]");
-			System.out.println("=====8、登录-触发登录=====url["+userLoginUrl1+"]=====param["+userLoginParam+"]=====cookie["+userLoginCookie+"]");
+			log.info("8、登录-触发登录---url["+userLoginUrl1+"]---param["+userLoginParam+"]---cookie["+userLoginCookie+"]");
 			JSONObject userLoginRes1 = GetPostTest5.userLoginPost1(userLoginUrl1, userLoginParam, userLoginCookie);
 			String userLoginResult = userLoginRes1.getString("result");
 			String session = "";
 			String tokenUUID = "";
 			String tokenId = "";
 			if (userLoginResult!=null && userLoginResult.contains("\"code\":\"success\"")) {
-
-				log.info("==========登录成功==========");
-				System.out.println("==========登录成功==========");
+				log.info("登录成功");
 				String userLoginHeader = userLoginRes1.getString("headers");
 				if (userLoginHeader!= null &&userLoginHeader.length()>5) {
 					Map<String, List<String>> headMap = (Map<String, List<String>>)userLoginRes1.get("headMap");
@@ -392,9 +380,8 @@ public class LoginComp {
 				loginJson.put("tokenUUID", tokenUUID);
 				
 			} else {
-				log.info("==========登录失败==========");
-				System.out.println("==========登录失败==========");
-				return loginJson;				
+				log.error("登录失败");
+				return loginJson;
 			}
 			
 			/*

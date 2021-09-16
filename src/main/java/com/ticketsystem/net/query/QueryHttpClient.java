@@ -12,10 +12,15 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class QueryHttpClient {
+	
+	static Logger log = LogManager.getLogger(QueryHttpClient.class);
 
 	/**
 	 * 以post或get方式调用对方接口方法，
@@ -58,7 +63,7 @@ public class QueryHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
@@ -86,12 +91,12 @@ public class QueryHttpClient {
 	 * @param pathUrl
 	 */
 	public static JSONObject doPostOrGet2(String urlStr, String requestType, String dataStr) {
-		System.out.println("请求地址");
-		System.out.println(urlStr);
-		System.out.println("请求方式");
-		System.out.println(requestType);
-		System.out.println("请求数据");
-		System.out.println(dataStr);
+		log.info("请求地址");
+		log.info(urlStr);
+		log.info("请求方式");
+		log.info(requestType);
+		log.info("请求数据");
+		log.info(dataStr);
 		OutputStreamWriter out = null;
 		BufferedReader br = null;
 		String result = "";
@@ -127,7 +132,7 @@ public class QueryHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
@@ -181,12 +186,12 @@ public class QueryHttpClient {
 	 * @param pathUrl
 	 */
 	public static JSONObject logInPost(String urlStr, String requestType, String dataStr) {
-		System.out.println("请求地址");
-		System.out.println(urlStr);
-		System.out.println("请求方式");
-		System.out.println(requestType);
-		System.out.println("请求数据");
-		System.out.println(dataStr);
+		log.info("请求地址");
+		log.info(urlStr);
+		log.info("请求方式");
+		log.info(requestType);
+		log.info("请求数据");
+		log.info(dataStr);
 		OutputStreamWriter out = null;
 		BufferedReader br = null;
 		String result = "";
@@ -226,7 +231,7 @@ public class QueryHttpClient {
 			while ((str = br.readLine()) != null) {
 				result += str;
 			}
-			System.out.println("responseBody:"+result);
+			log.info("responseBody:"+result);
 			// 关闭流
 			is.close();
 			// 断开连接，disconnect是在底层tcp socket链接空闲时才切断，如果正在被其他线程使用就不切断。
@@ -254,7 +259,7 @@ public class QueryHttpClient {
 	
 	HostnameVerifier hv = new HostnameVerifier() {
         public boolean verify(String urlHostName, SSLSession session) {
-            System.out.println("Warning: URL Host: " + urlHostName + " vs. "
+            log.info("Warning: URL Host: " + urlHostName + " vs. "
                                + session.getPeerHost());
             return true;
         }

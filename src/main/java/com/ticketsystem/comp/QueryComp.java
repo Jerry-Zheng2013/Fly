@@ -32,8 +32,7 @@ public class QueryComp {
     			+ "&FlightDate="+fromDate
     			+ "&Airline=KN&direct=true&eticket=true&limittime=0000&outstyle=0";
 
-		log.info("=====黑屏查询余票=====url["+queryUrl+"]=====param["+postDataStr+"]");
-    	System.out.println("=====黑屏查询余票=====url["+queryUrl+"]=====param["+postDataStr+"]");
+		log.info("黑屏查询余票---url["+queryUrl+"]---param["+postDataStr+"]");
     	JSONObject queryPost = new PostSender().queryPost(queryUrl, postDataStr);
     	if (queryPost.size()>0) {
     		String queryBody = queryPost.getString("responseBody");
@@ -96,8 +95,7 @@ public class QueryComp {
     	
     	String queryUrl4 = DemoData.queryUrl3;
     	String param4 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
-		log.info("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
-    	System.out.println("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
+		log.info("查询具体航班详情---URL4["+queryUrl4+"]---PARAM4["+param4+"]---COOKIE4["+queryCookie+"]");
     	JSONObject queryPost = getSender.queryGet4(queryUrl4, param4, queryCookie);
 		return queryPost;
 	}
@@ -117,8 +115,7 @@ public class QueryComp {
 		
 		String queryUrl4 = DemoData.queryUrl3;
 		String param4 = "_="+String.valueOf(Math.random()).substring(2, 15)+"&org="+fromCityCode+"&des="+toCityCode+"&type=oneway&depd="+fromDate+"&cals=false&adt="+currStandBy+"&chd=0&gm=0&jc=0";
-		log.info("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
-		System.out.println("---查询具体航班详情URL4="+queryUrl4+"---PARAM4="+param4+"---COOKIE4="+queryCookie);
+		log.info("查询具体航班详情---URL4["+queryUrl4+"]---PARAM4["+param4+"]---COOKIE4["+queryCookie+"]");
 		JSONObject queryPost = getSender.queryGet4(queryUrl4, param4, queryCookie);
 		return queryPost;
 	}
