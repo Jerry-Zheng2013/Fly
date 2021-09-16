@@ -769,6 +769,48 @@ public class FlightService3 {
 			e.printStackTrace();
 		}
     }
+    
+    
+    /**
+     * 官网账号登录<br/>
+     * @param oiId 订单流水号
+     */
+	public void loginAccount() {
+		log.info("官网账号登录");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		KnSqlManager sqlManager = new KnSqlManager();
+		
+		JSONObject filterData = new JSONObject();
+		filterData.put("useTime", sdf.format(new Date()));
+		//获取官网账户信息
+		ArrayList<JSONObject> accountList = sqlManager.getAccountList(filterData);
+		
+		if (accountList.size()>0) {
+			//从数据库获取一条官网账户信息
+			JSONObject accountData = accountList.get(0);
+			String accountNo = accountData.getString("accountNo");
+			String accountPas = accountData.getString("accountPas");
+			// TODO 调用接口----------登录
+			JSONObject logInResult = new LoginComp().login2(accountNo, accountPas);
+			String tokenUUID = logInResult.getString("tokenUUID");
+			String tokenId = logInResult.getString("tokenId");
+			String session = logInResult.getString("session");
+			//String JSESSIONID = loginResult.getString("JSESSIONID");
+			if(session==null||session.length()<5) {
+				log.error("登陆失败！！！");
+			} else {
+				log.info("登录成功");
+				//登录成功之后，更新当前账户的session以及useTime=2000-01-01
+    			JSONObject updateSessionData = new JSONObject();
+    			updateSessionData.put("accountNo", accountNo);
+    			updateSessionData.put("useTime", "2000-01-01");
+    			updateSessionData.put("tokenUUID", tokenUUID);
+    			updateSessionData.put("tokenId", tokenId);
+    			updateSessionData.put("session", session);
+    			sqlManager.updateAccountSession(updateSessionData);
+			}
+		}
+	}
 
     /**
      * 删除订单<br/>

@@ -138,6 +138,28 @@ $(document).ready(function () {
         });
     });
     
+    $("#PreLogin").click(function () {
+        setTimeout(function(){
+        	$("#PreLogin").css("background-color","#555555");
+        	$("#PreLogin").css("color","white");
+        }, 100);
+    	//预先登录
+    	var jsonObj1 = new Object();
+        $.ajax({
+            url: "/demo/prelogin",
+            contentType: "application/json;charset=utf-8",
+            type: "POST",
+            data: JSON.stringify(jsonObj1),
+            success: function () {
+            	alert("登录成功");
+                location.reload();
+            },
+            error: function() {
+            	alert("登录失败");
+            }
+        });
+    });
+    
     
     
     

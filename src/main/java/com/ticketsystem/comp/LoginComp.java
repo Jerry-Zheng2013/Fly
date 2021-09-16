@@ -165,6 +165,7 @@ public class LoginComp {
 			String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
 			
 			//再查询一次
+			/*
 	    	String currStandBy = addData.getString("currStandBy");
 	    	KnSqlManager sqlmanager = new KnSqlManager();
 	    	String fromCityCode = sqlmanager.getCityInfo(fromCity).getString("cityCode");
@@ -178,9 +179,12 @@ public class LoginComp {
 	    	String queryCookie4 = "session="+session;
 			log.info("登录完之后再查询一次---url["+queryUrl4+"]---param["+param4+"]---cookie["+queryCookie4+"]");
 	    	new GetSender().queryGet3(queryUrl4, param4, queryCookie4);
+			*/
+	    	
 			
 			
 			//确认航班
+			/*
 			String pointsUrl = DemoData.pointsInfoUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
 			String pointsDataStr = "number="+fightNo.substring(2, fightNo.length())
 					+"&cabin="+cabinCode+"&org="+fromCity+"&dst="+toCity
@@ -190,6 +194,7 @@ public class LoginComp {
 
 			log.info("确认航班---url["+pointsUrl+"]---param["+pointsDataStr+"]---cookie["+bookCookie+"]");
 			postSender.pointsPost(pointsUrl, pointsDataStr, bookCookie);
+			*/
 			
 			//选择航班
 			String chooseUrl = DemoData.chooseUrl +"?_="+String.valueOf(Math.random()).substring(2, 15);
@@ -214,6 +219,7 @@ public class LoginComp {
 				if(addBody.contains("\"uuid\":\"")) {
 					uuid2 = addBody.substring(addBody.indexOf("\"uuid\":\"")+8, addBody.indexOf("\"}"));
 				} else {
+					log.error("加入购物车失败！！！");
 					return null;
 				}
 			}

@@ -30,7 +30,8 @@ public class SessionInterceptor implements WebMvcConfigurer {
                 "/demo/readd",
                 "/demo/delete",
                 "/demo/deletelost",
-                "/demo/getlost"
+                "/demo/getlost",
+                "/demo/prelogin"
                 );
 
     }

@@ -176,6 +176,15 @@ public class DomeController {
 		new FlightService3().deleteLost();
     }
     
+    @ApiOperation(value = "预登录", notes = "预先登录")
+    @RequestMapping("/prelogin")
+    @ResponseBody
+    public void prelogin(HttpServletResponse response) throws Exception {
+		//从前端获取到了数据
+		log.info("预先登录");
+		new FlightService3().loginAccount();
+    }
+    
     @ApiOperation(value = "获取", notes = "获取丢票记录")
     @RequestMapping("/getlost")
     @ResponseBody
