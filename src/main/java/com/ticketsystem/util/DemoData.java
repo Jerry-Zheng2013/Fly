@@ -65,6 +65,8 @@ public class DemoData {
 	
 	public static String alarmFilePath = "src/main/resources/doc/alarm606.wav";
 	
+	public static String baiduTokenId = "24.fefe11c9f053a44c10e8904188c6c1f9.2592000.1636109425.282335-24601534";
+	
 	/**
 	 * 系统信息
 	 * @return 系统信息

@@ -3,6 +3,11 @@ package com.ticketsystem.test;
 
 import java.net.URLEncoder;
 
+import com.alibaba.fastjson.JSONObject;
+import com.ticketsystem.util.DemoData;
+import com.ticketsystem.util.KnSqlManager;
+import com.ticketsystem.util.StringX;
+
 /**
 * 通用文字识别（高精度含位置版）
 */
@@ -31,9 +36,17 @@ public class Accurate5 {
             String param = "image=" + imgParam;
 
             // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
-            String accessToken = "";
-            accessToken = "24.74faf2d1aacf07fcd8862374c8cbca1f.2592000.1633269471.282335-24601534";
+            //KnSqlManager knSqlManager = new KnSqlManager();
+            //JSONObject baiduTokenData = knSqlManager.getBaiduTokenId();
+            //String accessToken = baiduTokenData.getString("itemValue");
+            String accessToken = DemoData.baiduTokenId;
+            
             result = HttpUtil.post(url, accessToken, param);
+            if (!StringX.empty(result) && !result.contains("words_result")) {
+            	accessToken = BaiduTokenUtil.getAuth();
+            	//knSqlManager.updateBaiduTokenId(accessToken);
+            	result = HttpUtil.post(url, accessToken, param);
+            }
             //log.info(result);
             return result;
         } catch (Exception e) {

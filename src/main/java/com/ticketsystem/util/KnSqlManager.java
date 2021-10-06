@@ -613,5 +613,52 @@ public class KnSqlManager {
 		}
 	}
 	
+	public synchronized JSONObject getBaiduTokenId() {
+		JSONObject baiduTokenData = new JSONObject();
+		//字段可自行扩展
+		String sqlStr = "select code_no,item_no,item_value,remark from code_library where code_no='System' and item_no='BaiduTokenId' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			ResultSet rs = db.executeQuery(sqlStr);
+			if(rs.next()) {
+				baiduTokenData.put("codeNo", rs.getString(1));
+				baiduTokenData.put("itemNo", rs.getString(2));
+				baiduTokenData.put("itemValue", rs.getString(3));
+				baiduTokenData.put("remark", rs.getString(4));
+				//可扩展
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return baiduTokenData;
+	}
+
+	public void updateBaiduTokenId(String tokenId) {
+		String sqlStr = "update code_library set "
+				+ " item_value='"+tokenId+"' "
+				+ " where code_no='System' and item_no='BaiduTokenId' ";
+		DBUtil db = new DBUtil();
+		try {
+			db.open();
+			int updateCount = db.executeUpdate(sqlStr);
+			log.info("更新数量："+updateCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				db.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	
 }
