@@ -118,18 +118,28 @@ public class FlightService3 {
     		filterData2.put("customerStatus", "1");
     		ArrayList<JSONObject> customerList = sqlManager.getCustomerList(filterData2);
     		
+			if (accountList.size()<=0) {
+				log.error("官网账号已不够用了！！！");
+				return null;
+			}
+			
 			JSONObject packageData = new JSONObject();
 			JSONObject accountData = new JSONObject();
-			
-			if (accountList.size()>0) {
-				//预定信息
-				BookData bookDataBiz = new BookData();
-				
+			JSONObject loginResult0 = new JSONObject();
+			String session ="";
+			String accountNo = "";
+			String accountPas = "";
+			String encryptStr = "";
+			String tokenUUID = "";
+			String tokenId = "";
+			//String JSESSIONID ="";
+			BookData bookDataBiz = new BookData();
+			for (int k=0;k<accountList.size();k++) {
 				//从数据库获取一条官网账户信息
-    			accountData = accountList.get(0);
-    			String accountNo = accountData.getString("accountNo");
-    			String accountPas = accountData.getString("accountPas");
-    			String encryptStr = accountData.getString("encryptStr");
+    			accountData = accountList.get(k);
+    			accountNo = accountData.getString("accountNo");
+    			accountPas = accountData.getString("accountPas");
+    			encryptStr = accountData.getString("encryptStr");
     			String accountName = accountData.getString("name");
     			String accountContactMobile = accountData.getString("contactMobile");
     			String useTime = accountData.getString("useTime");
@@ -143,11 +153,6 @@ public class FlightService3 {
     			bookDataBiz.setCustomer(accountName, accountContactMobile);
     			
     			// TODO 调用接口----------登录
-    			JSONObject loginResult0 = new JSONObject();
-    			String tokenUUID = "";
-    			String tokenId = "";
-    			String session ="";
-    			//String JSESSIONID ="";
     			//判断账户是否已经登录
     			if(!StringX.empty(useTime) && "2000-01-01".equals(useTime)) {
     				//已经登录
@@ -159,21 +164,18 @@ public class FlightService3 {
         			session =accountSession;
         			//JSESSIONID =accountJsessionid;
         			//更新账户使用时间
-            		Date currentDate2 = new Date();
-            		String currentDateStr2 = sdf.format(currentDate2);
         			JSONObject updateTimeData = new JSONObject();
         			updateTimeData.put("accountNo", accountNo);
-        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("useTime", sdf.format(new Date()));
         			updateTimeData.put("session", accountSession);
         			sqlManager.updateAccountTime(updateTimeData);
+        			break;
     			} else {
     				//未登录
         			//更新账户使用时间
-            		Date currentDate2 = new Date();
-            		String currentDateStr2 = sdf.format(currentDate2);
         			JSONObject updateTimeData = new JSONObject();
         			updateTimeData.put("accountNo", accountNo);
-        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("useTime", sdf.format(new Date()));
         			updateTimeData.put("session", session);
         			sqlManager.updateAccountTime(updateTimeData);
         			
@@ -185,149 +187,155 @@ public class FlightService3 {
     				//再更新一次
         			updateTimeData.put("session", session);
         			sqlManager.updateAccountTime(updateTimeData);
+        			if(session==null||session.length()<5) {
+        				log.error("登陆失败！！！");
+        				continue;
+        			}else {
+        				log.error("登陆成功！！！");
+        				break;
+        			}
     			}
-    			if(session==null||session.length()<5) {
-    				log.error("登陆失败！！！");
-    				return null;
-    			}
-    			
-    			//TODO 调用接口----------查询航班具体信息
-    			addData.put("currStandBy", currStandBy);
-    			addData.put("session", session);
-    			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
-    			
+			}
+			if(session==null||session.length()<5) {
+				log.error("登陆失败！！！");
+				return null;
+			}
+			
+			//TODO 调用接口----------查询航班具体信息
+			addData.put("currStandBy", currStandBy);
+			addData.put("session", session);
+			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
+			
+			//填充bookDataBiz
+			String flightStr = queryPost2.getString("responseBody");
+			if (flightStr.length()<10) {
+				log.error("查询航班具体信息失败！！！");
+				return null;
+			}
+			JSONObject flightData = JSONObject.parseObject(flightStr);
+			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
+			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
+			String basecabinfareamount = processTripParam.getString("baseFare");
+			if(("null".equalsIgnoreCase(basecabinfareamount) || basecabinfareamount==null) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
+    			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
     			//填充bookDataBiz
-    			String flightStr = queryPost2.getString("responseBody");
-    			if (flightStr.length()<10) {
+    			String flightStr22 = queryPost22.getString("responseBody");
+    			if (flightStr22.length()<10) {
 					log.error("查询航班具体信息失败！！！");
     				return null;
     			}
-    			JSONObject flightData = JSONObject.parseObject(flightStr);
-    			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
-    			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
-    			String basecabinfareamount = processTripParam.getString("baseFare");
-    			if(("null".equalsIgnoreCase(basecabinfareamount) || basecabinfareamount==null) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
-        			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
-        			//填充bookDataBiz
-        			String flightStr22 = queryPost22.getString("responseBody");
-        			if (flightStr22.length()<10) {
-    					log.error("查询航班具体信息失败！！！");
-        				return null;
-        			}
-        			addData.put("changeFlightFrom", "1");
-        			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
-        			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
-    			}
-    			bookDataBiz.addTripInfo(processTripParam);
-    			
-    			//TODO 调用接口----------加入购物车
-    			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
-    			if(loginResult==null) {
-    				log.error("加入购物车失败！！！");
-    				return null;
-    			}
-    			String uuid = loginResult.getString("uuid");
-    			
-    			//预定信息-客户信息
-        		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
-        		String eachAmount = "";
-        		//判断乘机人人数是否已经超过当前轮次上线
-    			for (int f = 0;f<currStandBy;f++) {
-    				if(f<customerList.size()) {
-    					//获取一条乘客信息
-    					JSONObject customerData = customerList.get(f);
-    					customerDataArr.add(customerData);
-    					
-    					//更新客户状态-锁定客户
-    					JSONObject updateStatusData = new JSONObject();
-    					updateStatusData.put("customerId", customerData.getString("customerId"));
-    					updateStatusData.put("customerStatus", "2");
-    					updateStatusData.put("accountNo", accountNo);
-    					sqlManager.updateCustomerStatus(updateStatusData);
-    					
-    					//填充bookDataBiz
-    					bookDataBiz.addPassenger(customerData.getString("name"), customerData.getString("cardNo"), customerData.getString("mobile"));
-    					JSONObject passInfo = new JSONObject();
-    					passInfo.put("flightDate", fromDate);
-    					passInfo.put("amountOld", processTripParam.getString("baseFare"));
-    					passInfo.put("amount", processTripParam.getString("amount"));
-    					eachAmount = processTripParam.getString("amount");
-    					passInfo.put("name", customerData.getString("name"));
-    					passInfo.put("quantity", currStandBy);
-    					bookDataBiz.addPassengersInfo2(passInfo);
-    					
-    					bookDataBiz.addTotal(processTripParam.getString("amount"));
-    					
-    				} else {
-    					log.error("乘机人信息已不够用了！！！");
-    				}
-        		}
-    			//bookDataBiz最后的组装
-    			bookDataBiz.initPassengers2();
-    			bookDataBiz.setUuid(uuid);
-    			
-    			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-    			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
-    			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
-    			
-    			//TODO 调用接口----------机票预定接口
-    			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
-    			if(StringX.empty(bookResult.getString("orderNo"))) {
-    				//新增压票失败，更新账户信息，更新客户信息
-        			//更新账户信息-初始化使用时间
-        			/*JSONObject updateTimeData2 = new JSONObject();
-        			updateTimeData2.put("accountNo", accountNo);
-        			updateTimeData2.put("useTime", "2021/07/11");
-        			updateTimeData2.put("session", session);
-        			sqlManager.updateAccountTime(updateTimeData2);
-        			*/
-        			//更新客户信息-解锁
-        			for (int cc=0;cc<customerDataArr.size();cc++) {
-        				JSONObject customerObject = customerDataArr.get(cc);
-    					JSONObject updateStatusData2 = new JSONObject();
-    					updateStatusData2.put("customerId", customerObject.getString("customerId"));
-    					updateStatusData2.put("customerStatus", "1");
-    					updateStatusData2.put("accountNo", accountNo);
-    					sqlManager.updateCustomerStatus(updateStatusData2);
-        			}
-        			log.error("预定失败！！！");
-    				return null;
-    			}
-    			Date bookDate = new Date();
-    			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
-
-    			log.info("订票成功！！！");
-    			
-        		//新增订单信息
-        		JSONObject orderInfoData = new JSONObject();
-        		orderInfoData.put("accountNo", accountNo);
-        		orderInfoData.put("orderNo", bookResult.getString("orderNo"));
-        		orderInfoData.put("tripCode", addData.getString("tripCode"));
-        		orderInfoData.put("flightNo", addData.getString("fightNo"));
-        		orderInfoData.put("cabinCode", addData.getString("cabinCode"));
-        		orderInfoData.put("standbyCount", currStandBy);
-        		orderInfoData.put("price", eachAmount);
-        		orderInfoData.put("orderStatus", "正常");
-        		orderInfoData.put("round", "1");
-        		orderInfoData.put("inputTime", format.format(new Date()));
-        		orderInfoData.put("updateTime", format.format(new Date()));
-        		orderInfoData.put("inputUser", "user");
-        		
-        		JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
-    			addData.put("oiId", insertOrderInfo.getString("oiId"));
-    			bookResult.put("oiId", insertOrderInfo.getString("oiId"));
-    			bookResult.put("accountNo", accountNo);
-        		
-    			packageData.put("accountData", accountData);
-    			packageData.put("customerArrData", customerDataArr);
-    			packageData.put("bookDataStr", bookDataStr);
-    			packageData.put("orderData", bookResult);
-    			packageData.put("standbyCount", currStandBy);
-    			packageArrData.add(packageData);
-			} else {
-				log.error("官网账号已不够用了！！！");
+    			addData.put("changeFlightFrom", "1");
+    			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
+    			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
 			}
+			bookDataBiz.addTripInfo(processTripParam);
+			
+			//TODO 调用接口----------加入购物车
+			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
+			if(loginResult==null) {
+				log.error("加入购物车失败！！！");
+				return null;
+			}
+			String uuid = loginResult.getString("uuid");
+			
+			//预定信息-客户信息
+    		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
+    		String eachAmount = "";
+    		//判断乘机人人数是否已经超过当前轮次上线
+			for (int f = 0;f<currStandBy;f++) {
+				if(f<customerList.size()) {
+					//获取一条乘客信息
+					JSONObject customerData = customerList.get(f);
+					customerDataArr.add(customerData);
+					
+					//更新客户状态-锁定客户
+					JSONObject updateStatusData = new JSONObject();
+					updateStatusData.put("customerId", customerData.getString("customerId"));
+					updateStatusData.put("customerStatus", "2");
+					updateStatusData.put("accountNo", accountNo);
+					sqlManager.updateCustomerStatus(updateStatusData);
+					
+					//填充bookDataBiz
+					bookDataBiz.addPassenger(customerData.getString("name"), customerData.getString("cardNo"), customerData.getString("mobile"));
+					JSONObject passInfo = new JSONObject();
+					passInfo.put("flightDate", fromDate);
+					passInfo.put("amountOld", processTripParam.getString("baseFare"));
+					passInfo.put("amount", processTripParam.getString("amount"));
+					eachAmount = processTripParam.getString("amount");
+					passInfo.put("name", customerData.getString("name"));
+					passInfo.put("quantity", currStandBy);
+					bookDataBiz.addPassengersInfo2(passInfo);
+					
+					bookDataBiz.addTotal(processTripParam.getString("amount"));
+					
+				} else {
+					log.error("乘机人信息已不够用了！！！");
+					return null;
+				}
+    		}
+			//bookDataBiz最后的组装
+			bookDataBiz.initPassengers2();
+			bookDataBiz.setUuid(uuid);
+			
+			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
+			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
+			
+			//TODO 调用接口----------机票预定接口
+			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
+			if(StringX.empty(bookResult.getString("orderNo"))) {
+				//新增压票失败，更新账户信息，更新客户信息
+    			//更新账户信息-初始化使用时间
+    			/*JSONObject updateTimeData2 = new JSONObject();
+    			updateTimeData2.put("accountNo", accountNo);
+    			updateTimeData2.put("useTime", "2021/07/11");
+    			updateTimeData2.put("session", session);
+    			sqlManager.updateAccountTime(updateTimeData2);
+    			*/
+    			//更新客户信息-解锁
+    			for (int cc=0;cc<customerDataArr.size();cc++) {
+    				JSONObject customerObject = customerDataArr.get(cc);
+					JSONObject updateStatusData2 = new JSONObject();
+					updateStatusData2.put("customerId", customerObject.getString("customerId"));
+					updateStatusData2.put("customerStatus", "1");
+					updateStatusData2.put("accountNo", accountNo);
+					sqlManager.updateCustomerStatus(updateStatusData2);
+    			}
+    			log.error("预定失败！！！");
+				return null;
+			}
+			Date bookDate = new Date();
+			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
+
+			log.info("订票成功！！！");
+			
+    		//新增订单信息
+    		JSONObject orderInfoData = new JSONObject();
+    		orderInfoData.put("accountNo", accountNo);
+    		orderInfoData.put("orderNo", bookResult.getString("orderNo"));
+    		orderInfoData.put("tripCode", addData.getString("tripCode"));
+    		orderInfoData.put("flightNo", addData.getString("fightNo"));
+    		orderInfoData.put("cabinCode", addData.getString("cabinCode"));
+    		orderInfoData.put("standbyCount", currStandBy);
+    		orderInfoData.put("price", eachAmount);
+    		orderInfoData.put("orderStatus", "正常");
+    		orderInfoData.put("round", "1");
+    		orderInfoData.put("inputTime", format.format(new Date()));
+    		orderInfoData.put("updateTime", format.format(new Date()));
+    		orderInfoData.put("inputUser", "user");
     		
+    		JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
+			addData.put("oiId", insertOrderInfo.getString("oiId"));
+			bookResult.put("oiId", insertOrderInfo.getString("oiId"));
+			bookResult.put("accountNo", accountNo);
+    		
+			packageData.put("accountData", accountData);
+			packageData.put("customerArrData", customerDataArr);
+			packageData.put("bookDataStr", bookDataStr);
+			packageData.put("orderData", bookResult);
+			packageData.put("standbyCount", currStandBy);
+			packageArrData.add(packageData);
+
     		//返回信息
     		bigData.put("packageArrData", packageArrData);
     		
@@ -407,18 +415,28 @@ public class FlightService3 {
     		filterData2.put("customerStatus", "1");
     		ArrayList<JSONObject> customerList = sqlManager.getCustomerList(filterData2);
     		
+			if (accountList.size()<=0) {
+				log.error("官网账号已不够用了！！！");
+				return null;
+			}
+			
 			JSONObject packageData = new JSONObject();
 			JSONObject accountData = new JSONObject();
-			
-			if (accountList.size()>0) {
-				//预定信息
-				BookData bookDataBiz = new BookData();
-				
+			JSONObject loginResult0 = new JSONObject();
+			String session ="";
+			String accountNo = "";
+			String accountPas = "";
+			String encryptStr = "";
+			String tokenUUID = "";
+			String tokenId = "";
+			//String JSESSIONID ="";
+			BookData bookDataBiz = new BookData();
+			for (int k=0;k<accountList.size();k++) {
 				//从数据库获取一条官网账户信息
-    			accountData = accountList.get(0);
-    			String accountNo = accountData.getString("accountNo");
-    			String accountPas = accountData.getString("accountPas");
-    			String encryptStr = accountData.getString("encryptStr");
+    			accountData = accountList.get(k);
+    			accountNo = accountData.getString("accountNo");
+    			accountPas = accountData.getString("accountPas");
+    			encryptStr = accountData.getString("encryptStr");
     			String accountName = accountData.getString("name");
     			String accountContactMobile = accountData.getString("contactMobile");
     			String useTime = accountData.getString("useTime");
@@ -430,13 +448,8 @@ public class FlightService3 {
     			//填充bookDataBiz
     			bookDataBiz.setFlightDate(fromDate);
     			bookDataBiz.setCustomer(accountName, accountContactMobile);
-    			
+
     			// TODO 调用接口----------登录
-    			JSONObject loginResult0 = new JSONObject();
-    			String tokenUUID = "";
-    			String tokenId = "";
-    			String session ="";
-    			//String JSESSIONID ="";
     			//判断账户是否已经登录
     			if(!StringX.empty(useTime) && "2000-01-01".equals(useTime)) {
     				//已经登录
@@ -448,21 +461,18 @@ public class FlightService3 {
         			session =accountSession;
         			//JSESSIONID =accountJsessionid;
         			//更新账户使用时间
-            		Date currentDate2 = new Date();
-            		String currentDateStr2 = sdf.format(currentDate2);
         			JSONObject updateTimeData = new JSONObject();
         			updateTimeData.put("accountNo", accountNo);
-        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("useTime", sdf.format(new Date()));
         			updateTimeData.put("session", accountSession);
         			sqlManager.updateAccountTime(updateTimeData);
+        			break;
     			} else {
     				//未登录
         			//更新账户使用时间
-            		Date currentDate2 = new Date();
-            		String currentDateStr2 = sdf.format(currentDate2);
         			JSONObject updateTimeData = new JSONObject();
         			updateTimeData.put("accountNo", accountNo);
-        			updateTimeData.put("useTime", currentDateStr2);
+        			updateTimeData.put("useTime", sdf.format(new Date()));
         			updateTimeData.put("session", session);
         			sqlManager.updateAccountTime(updateTimeData);
         			
@@ -474,156 +484,160 @@ public class FlightService3 {
     				//再更新一次
         			updateTimeData.put("session", session);
         			sqlManager.updateAccountTime(updateTimeData);
+        			if(session==null||session.length()<5) {
+        				log.error("登陆失败！！！");
+        				continue;
+        			}else {
+        				log.error("登陆成功！！！");
+        				break;
+        			}
     			}
-    			if(session==null||session.length()<5) {
-    				log.error("登陆失败！！！");
-    				return null;
-    			}    				
+			}
+			if(session==null||session.length()<5) {
+				log.error("登陆失败！！！");
+				return null;
+			}
     			
-    			//TODO 调用接口----------查询航班具体信息
-    			addData.put("currStandBy", currStandBy);
-    			addData.put("session", session);
-    			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
-    			
+			//TODO 调用接口----------查询航班具体信息
+			addData.put("currStandBy", currStandBy);
+			addData.put("session", session);
+			JSONObject queryPost2 = new QueryComp().queryTicket2(addData);
+			
+			//填充bookDataBiz
+			String flightStr = queryPost2.getString("responseBody");
+			if (flightStr.length()<10) {
+				log.error("查询航班具体信息失败！！！");
+				return null;
+			}
+			JSONObject flightData = JSONObject.parseObject(flightStr);
+			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
+			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
+			String basecabinfareamount = processTripParam.getString("baseFare");
+			if(("null".equalsIgnoreCase(basecabinfareamount) || basecabinfareamount==null) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
+    			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
     			//填充bookDataBiz
-    			String flightStr = queryPost2.getString("responseBody");
-    			if (flightStr.length()<10) {
+    			String flightStr22 = queryPost22.getString("responseBody");
+    			if (flightStr22.length()<10) {
 					log.error("查询航班具体信息失败！！！");
     				return null;
     			}
-    			JSONObject flightData = JSONObject.parseObject(flightStr);
-    			JSONObject processTripParam = bookDataBiz.processTripParam(flightData, fightNo, cabinCode);
-    			//确认是否已经拿到正确的仓位价格信息，北京有点特殊，此处为特殊处理
-    			String basecabinfareamount = processTripParam.getString("baseFare");
-    			if(("null".equalsIgnoreCase(basecabinfareamount) || basecabinfareamount==null) && "PKX".equalsIgnoreCase(addData.getString("fromCityCode"))) {
-        			JSONObject queryPost22 = new QueryComp().queryTicket3(addData);
-        			//填充bookDataBiz
-        			String flightStr22 = queryPost22.getString("responseBody");
-        			if (flightStr22.length()<10) {
-    					log.error("查询航班具体信息失败！！！");
-        				return null;
-        			}
-        			addData.put("changeFlightFrom", "1");
-        			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
-        			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
-    			}
-    			bookDataBiz.addTripInfo(processTripParam);
-    			
-    			//TODO 调用接口----------加入购物车
-    			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
-    			if(loginResult==null) {
-					log.error("加入购物车失败！！！");
-    				return null;
-    			}
-    			String uuid = loginResult.getString("uuid");
-    			
-    			//预定信息-客户信息
-        		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
-        		String eachAmount = "";
-        		//判断乘机人人数是否已经超过当前轮次上线
-    			for (int f = 0;f<currStandBy;f++) {
-    				if(f<customerList.size()) {
-    					//获取一条乘客信息
-    					JSONObject customerData = customerList.get(f);
-    					customerDataArr.add(customerData);
-    					
-    					//更新客户状态-锁定客户
-    					JSONObject updateStatusData = new JSONObject();
-    					updateStatusData.put("customerId", customerData.getString("customerId"));
-    					updateStatusData.put("customerStatus", "2");
-    					updateStatusData.put("accountNo", accountNo);
-    					sqlManager.updateCustomerStatus(updateStatusData);
-    					
-    					//填充bookDataBiz
-    					bookDataBiz.addPassenger(customerData.getString("name"), customerData.getString("cardNo"), customerData.getString("mobile"));
-    					JSONObject passInfo = new JSONObject();
-    					passInfo.put("flightDate", fromDate);
-    					passInfo.put("amountOld", processTripParam.getString("baseFare"));
-    					passInfo.put("amount", processTripParam.getString("amount"));
-    					eachAmount = processTripParam.getString("amount");
-    					passInfo.put("name", customerData.getString("name"));
-    					passInfo.put("quantity", currStandBy);
-    					bookDataBiz.addPassengersInfo2(passInfo);
-    					
-    					bookDataBiz.addTotal(processTripParam.getString("amount"));
-    					
-    				} else {
-    					log.error("乘机人信息已不够用了！！！");
-    					return null;
-    				}
-        		}
-    			//bookDataBiz最后的组装
-    			bookDataBiz.initPassengers2();
-    			bookDataBiz.setUuid(uuid);
-    			
-    			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
-    			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
-    			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
-    			
-    			//TODO 调用接口----------机票预定接口
-    			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
-    			if(StringX.empty(bookResult.getString("orderNo"))) {
-    				//新增压票失败，更新账户信息，更新客户信息
-        			//更新账户信息-初始化使用时间
-        			/*JSONObject updateTimeData2 = new JSONObject();
-        			updateTimeData2.put("accountNo", accountNo);
-        			updateTimeData2.put("useTime", "2021/07/11");
-        			updateTimeData2.put("session", session);
-        			sqlManager.updateAccountTime(updateTimeData2);
-        			*/
-        			//更新客户信息-解锁
-        			for (int cc=0;cc<customerDataArr.size();cc++) {
-        				JSONObject customerObject = customerDataArr.get(cc);
-    					JSONObject updateStatusData2 = new JSONObject();
-    					updateStatusData2.put("customerId", customerObject.getString("customerId"));
-    					updateStatusData2.put("customerStatus", "1");
-    					updateStatusData2.put("accountNo", accountNo);
-    					sqlManager.updateCustomerStatus(updateStatusData2);
-        			}
-					log.error("在此新增订单，压票失败！！！");
-    				return null;
-    			}
-    			Date bookDate = new Date();
-    			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
-
-    			log.info("订票成功！！！");
-    	    	bigData.put("bookSucess", "true");
-    			
-    	    	//订票成功之后，检查是否当前订票张数 小于 前一轮订票张数
-    			if (currStandBy<Integer.valueOf(preNumber)) {
-    				sqlManager.insertLost(accountNo, "less");
-    			}
-    			
-        		//新增订单信息
-        		JSONObject orderInfoData = new JSONObject();
-        		orderInfoData.put("accountNo", accountNo);
-        		orderInfoData.put("orderNo", bookResult.getString("orderNo"));
-        		orderInfoData.put("tripCode", addData.getString("tripCode"));
-        		orderInfoData.put("flightNo", addData.getString("fightNo"));
-        		orderInfoData.put("cabinCode", addData.getString("cabinCode"));
-        		orderInfoData.put("standbyCount", currStandBy);
-        		orderInfoData.put("price", eachAmount);
-        		orderInfoData.put("orderStatus", "正常");
-        		orderInfoData.put("round", "1");
-        		orderInfoData.put("inputTime", format.format(new Date()));
-        		orderInfoData.put("updateTime", format.format(new Date()));
-        		orderInfoData.put("inputUser", "user");
-        		
-        		JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
-    			addData.put("oiId", insertOrderInfo.getString("oiId"));
-    			bookResult.put("oiId", insertOrderInfo.getString("oiId"));
-    			bookResult.put("accountNo", accountNo);
-        		
-    			packageData.put("accountData", accountData);
-    			packageData.put("customerArrData", customerDataArr);
-    			packageData.put("bookDataStr", bookDataStr);
-    			packageData.put("orderData", bookResult);
-    			packageData.put("standbyCount", currStandBy);
-    			packageArrData.add(packageData);
-			} else {
-				log.error("官网账号已不够用了！！！");
+    			addData.put("changeFlightFrom", "1");
+    			JSONObject flightData22 = JSONObject.parseObject(flightStr22);
+    			processTripParam = bookDataBiz.processTripParam(flightData22, fightNo, cabinCode);
+			}
+			bookDataBiz.addTripInfo(processTripParam);
+			
+			//TODO 调用接口----------加入购物车
+			JSONObject loginResult = new LoginComp().accountLogin3(addData, accountNo, accountPas, encryptStr, processTripParam, loginResult0);
+			if(loginResult==null) {
+				log.error("加入购物车失败！！！");
 				return null;
 			}
+			String uuid = loginResult.getString("uuid");
+			
+			//预定信息-客户信息
+    		ArrayList<JSONObject> customerDataArr = new ArrayList<JSONObject>();
+    		String eachAmount = "";
+    		//判断乘机人人数是否已经超过当前轮次上线
+			for (int f = 0;f<currStandBy;f++) {
+				if(f<customerList.size()) {
+					//获取一条乘客信息
+					JSONObject customerData = customerList.get(f);
+					customerDataArr.add(customerData);
+					
+					//更新客户状态-锁定客户
+					JSONObject updateStatusData = new JSONObject();
+					updateStatusData.put("customerId", customerData.getString("customerId"));
+					updateStatusData.put("customerStatus", "2");
+					updateStatusData.put("accountNo", accountNo);
+					sqlManager.updateCustomerStatus(updateStatusData);
+					
+					//填充bookDataBiz
+					bookDataBiz.addPassenger(customerData.getString("name"), customerData.getString("cardNo"), customerData.getString("mobile"));
+					JSONObject passInfo = new JSONObject();
+					passInfo.put("flightDate", fromDate);
+					passInfo.put("amountOld", processTripParam.getString("baseFare"));
+					passInfo.put("amount", processTripParam.getString("amount"));
+					eachAmount = processTripParam.getString("amount");
+					passInfo.put("name", customerData.getString("name"));
+					passInfo.put("quantity", currStandBy);
+					bookDataBiz.addPassengersInfo2(passInfo);
+					
+					bookDataBiz.addTotal(processTripParam.getString("amount"));
+					
+				} else {
+					log.error("乘机人信息已不够用了！！！");
+					return null;
+				}
+    		}
+			//bookDataBiz最后的组装
+			bookDataBiz.initPassengers2();
+			bookDataBiz.setUuid(uuid);
+			
+			String bookDataStr = bookDataBiz.toString().replaceAll(" ", "").replaceAll(" +","").replaceAll("\\s*", "");
+			//String bookCookie = CookieUtil.getBookCookie(tokenId, tokenUUID, session);
+			String bookCookie = CookieUtil.getBookCookie2(tokenId, tokenUUID, session);
+			
+			//TODO 调用接口----------机票预定接口
+			JSONObject bookResult = new BookComp().bookTicket(bookDataStr, bookCookie);
+			if(StringX.empty(bookResult.getString("orderNo"))) {
+				//新增压票失败，更新账户信息，更新客户信息
+    			//更新账户信息-初始化使用时间
+    			/*JSONObject updateTimeData2 = new JSONObject();
+    			updateTimeData2.put("accountNo", accountNo);
+    			updateTimeData2.put("useTime", "2021/07/11");
+    			updateTimeData2.put("session", session);
+    			sqlManager.updateAccountTime(updateTimeData2);
+    			*/
+    			//更新客户信息-解锁
+    			for (int cc=0;cc<customerDataArr.size();cc++) {
+    				JSONObject customerObject = customerDataArr.get(cc);
+					JSONObject updateStatusData2 = new JSONObject();
+					updateStatusData2.put("customerId", customerObject.getString("customerId"));
+					updateStatusData2.put("customerStatus", "1");
+					updateStatusData2.put("accountNo", accountNo);
+					sqlManager.updateCustomerStatus(updateStatusData2);
+    			}
+				log.error("在此新增订单，压票失败！！！");
+				return null;
+			}
+			Date bookDate = new Date();
+			DemoData.PreBookTimeMap.put(tripStr+fightNo+cabinCode, bookDate);
+
+			log.info("订票成功！！！");
+	    	bigData.put("bookSucess", "true");
+			
+	    	//订票成功之后，检查是否当前订票张数 小于 前一轮订票张数
+			if (currStandBy<Integer.valueOf(preNumber)) {
+				sqlManager.insertLost(accountNo, "less");
+			}
+			
+    		//新增订单信息
+    		JSONObject orderInfoData = new JSONObject();
+    		orderInfoData.put("accountNo", accountNo);
+    		orderInfoData.put("orderNo", bookResult.getString("orderNo"));
+    		orderInfoData.put("tripCode", addData.getString("tripCode"));
+    		orderInfoData.put("flightNo", addData.getString("fightNo"));
+    		orderInfoData.put("cabinCode", addData.getString("cabinCode"));
+    		orderInfoData.put("standbyCount", currStandBy);
+    		orderInfoData.put("price", eachAmount);
+    		orderInfoData.put("orderStatus", "正常");
+    		orderInfoData.put("round", "1");
+    		orderInfoData.put("inputTime", format.format(new Date()));
+    		orderInfoData.put("updateTime", format.format(new Date()));
+    		orderInfoData.put("inputUser", "user");
+    		
+    		JSONObject insertOrderInfo = sqlManager.insertOrderInfo(orderInfoData);
+			addData.put("oiId", insertOrderInfo.getString("oiId"));
+			bookResult.put("oiId", insertOrderInfo.getString("oiId"));
+			bookResult.put("accountNo", accountNo);
+    		
+			packageData.put("accountData", accountData);
+			packageData.put("customerArrData", customerDataArr);
+			packageData.put("bookDataStr", bookDataStr);
+			packageData.put("orderData", bookResult);
+			packageData.put("standbyCount", currStandBy);
+			packageArrData.add(packageData);
     		
     		//返回信息
     		bigData.put("packageArrData", packageArrData);
@@ -785,9 +799,13 @@ public class FlightService3 {
 		//获取官网账户信息
 		ArrayList<JSONObject> accountList = sqlManager.getAccountList(filterData);
 		
-		if (accountList.size()>0) {
+		if (accountList.size()<=0) {
+			log.error("官网账号已不够用了！！！");
+			return;
+		}
+		for (int i=0;i<accountList.size();i++) {
 			//从数据库获取一条官网账户信息
-			JSONObject accountData = accountList.get(0);
+			JSONObject accountData = accountList.get(i);
 			String accountNo = accountData.getString("accountNo");
 			String accountPas = accountData.getString("accountPas");
 			// TODO 调用接口----------登录
@@ -797,7 +815,15 @@ public class FlightService3 {
 			String session = logInResult.getString("session");
 			//String JSESSIONID = loginResult.getString("JSESSIONID");
 			if(session==null||session.length()<5) {
-				log.error("登陆失败！！！");
+				log.error("第"+i+1+"次登陆失败！！！");
+				//登录失败之后，将账号更新为已使用
+				JSONObject updateSessionData = new JSONObject();
+    			updateSessionData.put("accountNo", accountNo);
+    			updateSessionData.put("useTime", sdf.format(new Date()));
+    			updateSessionData.put("tokenUUID", tokenUUID);
+    			updateSessionData.put("tokenId", tokenId);
+    			updateSessionData.put("session", session);
+    			sqlManager.updateAccountSession(updateSessionData);
 			} else {
 				log.info("登录成功");
 				//登录成功之后，更新当前账户的session以及useTime=2000-01-01
@@ -808,8 +834,11 @@ public class FlightService3 {
     			updateSessionData.put("tokenId", tokenId);
     			updateSessionData.put("session", session);
     			sqlManager.updateAccountSession(updateSessionData);
+    			return;
 			}
 		}
+		//for循环结束了，说明都没有登录成功
+		log.info("登陆失败！！！且可用账号已用尽");
 	}
 
     /**
